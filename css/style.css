@@ -1,0 +1,71 @@
+body{
+    background-color:#f9f9f9;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: 600;
+}
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.button_1{
+    height: 38px;
+	border: 0;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-top: 2px;
+	color: #ffffff;
+}
+.button_1 a{
+    color:#ffffff;
+    text-decoration:none;
+}
+
+#showcase-info h3{
+    color:blue;
+}
+#social ul{
+    margin-bottom: 20px;
+    padding:0px;
+}
+#social ul li {
+    float: left;
+    width: 160px;
+    height: 40px;
+    opacity: .8;
+    line-height: 40px;
+    text-align: center;
+    font-size: 20px;
+    
+}
+#social ul li a{
+    text-decoration: none;
+    color:#ffffff;
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+#show-text ul li{
+    line-height: 30px;
+    font-size: 18px;
+    font-weight: 500;
+}
+section#aboutme{
+    margin-top:50px;
+    float:left;
+    text-align: justify;
+}
+section#skillset{
+    margin-top: 50px;
+    width: 100%;
+    float:left;
+}
+#skillset ul{
+    font-size:20px;
+    list-style-type: circle;
+    margin-left: 20px;
+}
+#skillset ul li{
+    font-weight: 500;
+}
