@@ -1,0 +1,499 @@
+---
+/**
+ * The Journey: one continuous scroll from planet to planet.
+ * A path runs down the page; a traveller dot moves along it with the scroll,
+ * and each planet lights up as you arrive. Content: src/data/journey.ts
+ */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Planet from '../components/space/Planet.astro';
+import Sparkle from '../components/space/Sparkle.astro';
+import portrait from '../assets/photos/chi-editorial-orange.jpg';
+import { intro, stops, finale } from '../data/journey';
+---
+
+<Base
+  title="The Journey"
+  description="Web building, CRM, CMS, product coordination and product management: the five lenses that shaped how Chinenye Ndigwe builds products."
+>
+  <section class="intro wrap" aria-labelledby="journey-title">
+    <div class="intro-copy">
+      <p class="kicker mono" data-reveal>The journey</p>
+      <h1 id="journey-title" data-reveal style="--reveal-i:1">{intro.title}</h1>
+      <p class="lede" data-reveal style="--reveal-i:2">{intro.lede}</p>
+      <p class="hint mono" data-reveal style="--reveal-i:3" aria-hidden="true">
+        scroll to travel <span class="down">↓</span>
+      </p>
+    </div>
+
+    <figure class="portrait" data-reveal style="--reveal-i:2">
+      <svg class="portrait-orbit" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="97" />
+        <g class="moon-spin"><circle class="moon" cx="100" cy="3" r="5" /></g>
+      </svg>
+      <Image
+        src={portrait}
+        alt="Chinenye Ndigwe in an orange knit sweater, resting her head on one hand and looking straight at the camera."
+        widths={[280, 420, 560]}
+        sizes="(max-width: 52rem) 240px, 300px"
+        loading="eager"
+        class="portrait-img"
+      />
+    </figure>
+  </section>
+
+  <section class="voyage wrap" aria-label="Five lenses">
+    <div class="spine" aria-hidden="true">
+      <span class="spine-fill"></span>
+      <span class="traveller"></span>
+    </div>
+
+    <ol class="stops" role="list">
+      {
+        stops.map((s, i) => (
+          <li class:list={['stop', i % 2 ? 'left' : 'right']} id={s.id} data-stop>
+            <div class="world" aria-hidden="true">
+              <svg viewBox="-80 -80 160 160">
+                <circle class="halo" r="66" />
+                <circle class="orbit" r="62" />
+                <g class="moons">
+                  <circle cx="0" cy="-62" r="3.2" />
+                  <circle cx="54" cy="31" r="2.6" />
+                  <circle cx="-54" cy="31" r="2.2" />
+                </g>
+                <Planet id={`j-${s.id}`} r={s.ringed ? 34 : 40} tone={s.tone} ring={s.ringed} />
+              </svg>
+            </div>
+
+            <div class="copy">
+              <p class="num mono">
+                0{i + 1} <span>· lens</span>
+              </p>
+              <h2>{s.lens}</h2>
+              <p class="body">{s.body}</p>
+              <p class="annotation">what I see now</p>
+              <p class="see">{s.see}</p>
+              <ul class="carried" role="list" aria-label="Carried forward">
+                {s.carried.map((c) => (
+                  <li class="mono">{c}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="finale wrap" aria-labelledby="finale-title">
+    <div class="aligned" aria-hidden="true" data-reveal>
+      <svg viewBox="0 0 520 120">
+        <line x1="20" y1="60" x2="500" y2="60" class="axis" />
+        {
+          stops.map((s, i) => (
+            <g transform={`translate(${60 + i * 100} 60)`}>
+              <Planet id={`f-${s.id}`} r={s.ringed ? 20 : 22} tone={s.tone} ring={s.ringed} />
+            </g>
+          ))
+        }
+        <g transform="translate(500 22)"><Sparkle size={8} delay={0.6} /></g>
+        <g transform="translate(18 100)"><Sparkle size={6} delay={2} /></g>
+      </svg>
+    </div>
+    <h2 id="finale-title" data-reveal style="--reveal-i:1">
+      Everyday <span class="warm">buddies</span>.
+    </h2>
+    <p class="finale-body" data-reveal style="--reveal-i:2">{finale.body}</p>
+    <p class="actions" data-reveal style="--reveal-i:3">
+      <a class="btn" href="/work">See the work <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="/contact">Say hello</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  /* ── Intro ─────────────────────────────── */
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: center;
+    gap: var(--space-7);
+    min-height: calc(88svh - 76px);
+    padding-block: var(--space-8);
+  }
+  .kicker,
+  .num {
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .intro h1 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.6rem, 1.5rem + 4.4vw, 5.2rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    max-width: 11ch;
+  }
+  .lede {
+    margin-top: var(--space-5);
+    max-width: 40ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .hint {
+    margin-top: var(--space-7);
+    color: var(--accent);
+  }
+  .down {
+    display: inline-block;
+    animation: bob 2.4s var(--ease-drift) infinite;
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(5px);
+    }
+  }
+
+  .portrait {
+    position: relative;
+    justify-self: center;
+    width: 300px;
+    aspect-ratio: 1;
+  }
+  .portrait :global(.portrait-img) {
+    position: absolute;
+    inset: 16px;
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 40%;
+  }
+  .portrait-orbit {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+  .portrait-orbit > circle {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1;
+    stroke-dasharray: 2 5;
+  }
+  .moon {
+    fill: var(--accent-warm);
+  }
+  .moon-spin {
+    transform-box: view-box;
+    transform-origin: 100px 100px;
+    animation: spin 40s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ── The voyage ────────────────────────── */
+  .voyage {
+    position: relative;
+    padding-block: var(--space-7) var(--space-9);
+    --spine-x: 50%;
+  }
+  .spine {
+    position: absolute;
+    top: 0;
+    bottom: var(--space-9);
+    left: var(--spine-x);
+    width: 2px;
+    transform: translateX(-1px);
+    background: repeating-linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--accent) 45%, transparent) 0 2px,
+      transparent 2px 9px
+    );
+  }
+  .spine-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--purple-300), var(--peach-500));
+    transform-origin: top;
+    transform: scaleY(var(--p, 0));
+    border-radius: 2px;
+  }
+  .traveller {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: var(--purple-50);
+    box-shadow:
+      0 0 0 4px color-mix(in oklab, var(--peach-500) 35%, transparent),
+      0 0 22px 6px color-mix(in oklab, var(--purple-300) 55%, transparent);
+    will-change: transform;
+  }
+
+  .stops {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: clamp(4rem, 10vh, 8rem);
+  }
+  .stop {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-6);
+  }
+  .world {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .world svg {
+    width: 200px;
+    height: 200px;
+    overflow: visible;
+  }
+  .right .copy {
+    grid-column: 3;
+  }
+  .left .copy {
+    grid-column: 1;
+    text-align: right;
+  }
+  .left .carried {
+    justify-content: flex-end;
+  }
+  .copy {
+    grid-row: 1;
+    max-width: 30rem;
+    opacity: 0.45;
+    transform: translateY(14px);
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+  }
+  .left .copy {
+    justify-self: end;
+  }
+
+  .halo {
+    fill: var(--bg);
+  }
+  .orbit {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+  .moons circle {
+    fill: var(--purple-200);
+    opacity: 0.5;
+  }
+  .world :global(.planet) {
+    transform: scale(0.82);
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .moons {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    animation: spin 60s linear infinite;
+    animation-play-state: paused;
+  }
+
+  /* arriving at a planet */
+  .stop.is-here .copy {
+    opacity: 1;
+    transform: none;
+  }
+  .stop.is-here .world :global(.planet) {
+    transform: scale(1);
+  }
+  .stop.is-here .orbit {
+    stroke: color-mix(in oklab, var(--accent) 45%, transparent);
+  }
+  .stop.is-here .moons {
+    animation-play-state: running;
+  }
+  .stop.is-here .moons circle {
+    opacity: 1;
+  }
+
+  .num span {
+    letter-spacing: 0.1em;
+  }
+  .num {
+    color: var(--accent-warm);
+  }
+  .copy h2 {
+    margin-top: var(--space-2);
+    font-size: var(--step-3);
+    font-weight: 500;
+  }
+  .body {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+  }
+  .copy .annotation {
+    margin-top: var(--space-5);
+  }
+  .see {
+    margin-top: var(--space-1);
+    font-size: var(--step-1);
+    color: var(--heading);
+    text-wrap: balance;
+  }
+  .carried {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .carried li {
+    padding: 0.3em 0.75em;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Finale ────────────────────────────── */
+  .finale {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    padding-block: var(--space-6) var(--space-8);
+  }
+  .aligned svg {
+    width: min(520px, 100%);
+    height: auto;
+    overflow: visible;
+  }
+  .axis {
+    stroke: color-mix(in oklab, var(--accent) 45%, transparent);
+    stroke-width: 1.5;
+    stroke-dasharray: 2 6;
+    stroke-linecap: round;
+  }
+  .finale h2 {
+    margin-top: var(--space-6);
+    font-size: clamp(2.4rem, 1.4rem + 4vw, 4.6rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .warm {
+    background: linear-gradient(95deg, var(--grad-a), var(--grad-b) 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .finale-body {
+    margin-top: var(--space-5);
+    max-width: 46ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  /* ── Phones: path on the left, text to the right ── */
+  @media (max-width: 52rem) {
+    .intro {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      gap: var(--space-6);
+      padding-top: var(--space-6);
+    }
+    .portrait {
+      grid-row: 1;
+      justify-self: start;
+      width: 240px;
+    }
+    .voyage {
+      --spine-x: calc(var(--gutter) + 44px);
+    }
+    .stop,
+    .stop.left,
+    .stop.right {
+      grid-template-columns: 88px minmax(0, 1fr);
+      align-items: start;
+      gap: var(--space-4);
+    }
+    .world {
+      grid-column: 1;
+    }
+    .world svg {
+      width: 88px;
+      height: 88px;
+    }
+    .left .copy,
+    .right .copy {
+      grid-column: 2;
+      text-align: left;
+      justify-self: start;
+    }
+    .left .carried {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .down,
+    .moon-spin,
+    .moons {
+      animation: none;
+    }
+    .copy {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Scroll-linked travel: fill the path, move the traveller, light the planet
+  // you are at. One rAF per scroll frame, transforms only.
+  const voyage = document.querySelector<HTMLElement>('.voyage')!;
+  const spine = voyage.querySelector<HTMLElement>('.spine')!;
+  const fill = voyage.querySelector<HTMLElement>('.spine-fill')!;
+  const traveller = voyage.querySelector<HTMLElement>('.traveller')!;
+  const stops = [...voyage.querySelectorAll<HTMLElement>('[data-stop]')];
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const r = spine.getBoundingClientRect();
+    const focus = window.innerHeight * 0.55;
+    const p = Math.min(1, Math.max(0, (focus - r.top) / r.height));
+    fill.style.setProperty('--p', String(reduced ? 1 : p));
+    traveller.style.transform = `translateY(${(reduced ? 1 : p) * r.height}px)`;
+
+    for (const s of stops) {
+      const b = s.getBoundingClientRect();
+      s.classList.toggle('is-here', reduced || (b.top < focus + 40 && b.bottom > focus - 40) || b.bottom < focus - 40);
+    }
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+</script>

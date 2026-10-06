@@ -2,15 +2,19 @@
 /**
  * Home teaser for the Journey: stage 01 as a planet with its skills in orbit,
  * and the next planet waiting further down the path.
- * Facts are from BRIEF.md section 3 only.
+ * Copy comes from src/data/journey.ts, the same source as the Journey page.
  */
 import Planet from './Planet.astro';
 import Sparkle from './Sparkle.astro';
+import { stops } from '../../data/journey';
+
+const first = stops[0];
+const next = stops[1];
 
 const skills = [
-  { label: 'WordPress', angle: -40 },
-  { label: 'SEO', angle: 70 },
-  { label: 'GIS tools', angle: 185 },
+  { label: first.carried[0], angle: -40 },
+  { label: first.carried[1], angle: 70 },
+  { label: first.carried[2], angle: 185 },
 ];
 const rad = (d: number) => (d * Math.PI) / 180;
 const C = 200; // centre of the 400×400 drawing
@@ -57,28 +61,21 @@ const ORBIT = 150;
     </figure>
 
     <div class="copy" data-reveal style="--reveal-i:1">
-      <p class="mono when"><span class="idx">01</span> Nov 2020 → Feb 2022</p>
-      <h3>Web builder</h3>
-      <p>
-        Remote web developer at Light House Multimedia. I redesigned the company site, did SEO
-        that lifted daily traffic by 30%, and built WordPress sites for clients. Then Head of IT at
-        Great Source Investment, building tools for a street naming, house numbering and GIS
-        mapping project covering 4,000+ buildings.
-      </p>
+      <p class="mono when"><span class="idx">01</span> · the first lens</p>
+      <h3>{first.lens}</h3>
+      <p>{first.body}</p>
       <p class="annotation">what I see now</p>
-      <p class="see">
-        I know what is actually buildable, so I scope honestly.<span class="draft mono">draft</span>
-      </p>
+      <p class="see">{first.see}</p>
     </div>
   </div>
 
-  <a class="next" href="/journey" data-reveal>
+  <a class="next" href={`/journey#${next.id}`} data-reveal>
     <svg viewBox="0 0 60 60" aria-hidden="true" class="next-planet">
       <g transform="translate(30 30)"><Planet id="peek-next" r={18} tone="peach" /></g>
     </svg>
     <span>
-      <span class="mono">02 · next stop</span>
-      <span class="next-title">CRM <span class="arrow" aria-hidden="true">→</span></span>
+      <span class="mono">02 · next lens</span>
+      <span class="next-title">{next.lens} <span class="arrow" aria-hidden="true">→</span></span>
     </span>
   </a>
 </section>
@@ -176,15 +173,6 @@ const ORBIT = 150;
     margin-top: var(--space-2) !important;
     color: var(--text) !important;
     font-size: var(--step-1);
-  }
-  .draft {
-    margin-left: 0.6em;
-    padding: 0.1em 0.5em;
-    border: 1px dashed var(--border-strong);
-    border-radius: var(--radius-pill);
-    font-size: 0.65rem;
-    vertical-align: middle;
-    color: var(--text-muted);
   }
 
   .next {
