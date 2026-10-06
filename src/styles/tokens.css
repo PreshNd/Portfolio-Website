@@ -30,6 +30,15 @@
   --purple-900: #22022b; /* ★ deepest plum, night */
   --purple-950: #16011c;
 
+  /* ── Space (warm near-black night canvas) ─
+   * Neutral dark so the brand colours can glow on top of it.
+   * lilac 16 : 1, orchid 8.7 : 1, peach 7.4 : 1 on --space-900. */
+  --space-950: #0f0a12;
+  --space-900: #16101a;
+  --space-850: #1d1622;
+  --space-800: #261d2d;
+  --space-700: #3a2e42;
+
   /* ── Peach ramp (accent, used sparingly) ── */
   --peach-100: #fde4ea;
   --peach-300: #f6b3c2;
@@ -37,7 +46,7 @@
   --peach-700: #b8425d;
 
   /* ── Type ─────────────────────────────────── */
-  --font-display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
+  --font-display: 'Outfit Variable', 'Avenir Next', system-ui, sans-serif;
   --font-body: 'Figtree Variable', 'Avenir Next', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
@@ -80,14 +89,15 @@
   --dur-slow: 900ms;
 
   /* ── Semantic: night (default) ────────────── */
-  --bg: var(--purple-900);
-  --bg-deep: var(--purple-950);
-  --surface: color-mix(in oklab, var(--purple-875) 72%, transparent);
-  --surface-solid: var(--purple-875);
-  --border: color-mix(in oklab, var(--purple-300) 18%, transparent);
-  --border-strong: color-mix(in oklab, var(--purple-300) 40%, transparent);
+  --bg: var(--space-900);
+  --bg-deep: var(--space-950);
+  --surface: color-mix(in oklab, var(--space-850) 80%, transparent);
+  --surface-solid: var(--space-850);
+  --border: color-mix(in oklab, var(--purple-100) 12%, transparent);
+  --border-strong: color-mix(in oklab, var(--purple-100) 26%, transparent);
+  --line: color-mix(in oklab, var(--purple-100) 9%, transparent); /* orbit lines */
   --text: var(--purple-100);
-  --text-muted: #cbaed3; /* 9.5 : 1 on night */
+  --text-muted: #c9b6cf; /* 9.9 : 1 on night */
   --heading: var(--purple-50);
   --accent: var(--purple-300);
   --accent-strong: var(--purple-500);
@@ -98,7 +108,7 @@
   --glow: color-mix(in oklab, var(--purple-300) 45%, transparent);
   --grad-a: var(--purple-300);
   --grad-b: var(--peach-500);
-  --overlay: color-mix(in oklab, var(--purple-950) 94%, transparent);
+  --overlay: color-mix(in oklab, var(--space-950) 95%, transparent);
 
   color-scheme: dark;
 }
@@ -128,6 +138,7 @@
   --grad-a: var(--purple-600);
   --grad-b: var(--peach-700); /* 4.5 : 1 on lilac */
   --overlay: color-mix(in oklab, var(--purple-50) 96%, transparent);
+  --line: color-mix(in oklab, var(--purple-600) 14%, transparent);
 
   color-scheme: light;
 }

@@ -1,0 +1,72 @@
+---
+/**
+ * A flat planet: one soft two-tone gradient, a clean edge, no 3D shading.
+ * Renders an SVG <g> centred on (0,0); place it with a parent transform.
+ */
+export type Tone = 'orchid' | 'peach' | 'purple' | 'deep' | 'lilac';
+
+interface Props {
+  id: string;
+  r: number;
+  tone: Tone;
+  ring?: boolean;
+  /** a flat crescent of shade, still 2D: a second circle clipped to the planet */
+  shade?: boolean;
+}
+
+const TONES: Record<Tone, [string, string, string]> = {
+  //            light       base        ring
+  orchid: ['#F6C8FB', '#D46FE6', '#EE8299'],
+  peach: ['#FBC6D1', '#E8728E', '#F6C8FB'],
+  purple: ['#D88BE6', '#9A0CAC', '#EE8299'],
+  deep: ['#B744C5', '#520660', '#E492F5'],
+  lilac: ['#FFF6FF', '#E8C3EF', '#E492F5'],
+};
+
+const { id, r, tone, ring = false, shade = true } = Astro.props;
+const [light, base, ringCol] = TONES[tone];
+const rx = r * 1.75;
+const ry = r * 0.42;
+const rw = Math.max(1.5, r * 0.11);
+---
+
+<g class="planet">
+  <defs>
+    <linearGradient id={`${id}-g`} x1="0.15" y1="0.1" x2="0.85" y2="0.95">
+      <stop offset="0" stop-color={light}></stop>
+      <stop offset="1" stop-color={base}></stop>
+    </linearGradient>
+    <clipPath id={`${id}-c`}><circle r={r}></circle></clipPath>
+  </defs>
+
+  {ring && (
+    <g transform="rotate(-18)">
+      <ellipse rx={rx} ry={ry} fill="none" stroke={ringCol} stroke-width={rw} opacity="0.9" />
+    </g>
+  )}
+
+  <circle r={r} fill={`url(#${id}-g)`}></circle>
+  {
+    shade && (
+      <circle
+        cx={r * 0.55}
+        cy={r * 0.5}
+        r={r * 1.05}
+        fill={base}
+        opacity="0.35"
+        clip-path={`url(#${id}-c)`}
+      />
+    )
+  }
+
+  {ring && (
+    <g transform="rotate(-18)">
+      <path
+        d={`M ${-rx} 0 A ${rx} ${ry} 0 0 0 ${rx} 0`}
+        fill="none"
+        stroke={ringCol}
+        stroke-width={rw}
+      />
+    </g>
+  )}
+</g>

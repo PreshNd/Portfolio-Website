@@ -12,8 +12,8 @@
  * - one static frame for prefers-reduced-motion (no parallax, no twinkle)
  */
 
-export type Variant = 'whisper' | 'milkyway' | 'bloom' | 'spiral';
-export const VARIANTS: Variant[] = ['whisper', 'milkyway', 'bloom', 'spiral'];
+export type Variant = 'space' | 'whisper' | 'milkyway' | 'bloom' | 'spiral';
+export const VARIANTS: Variant[] = ['space', 'whisper', 'milkyway', 'bloom', 'spiral'];
 
 type Opts = { variant: Variant; parallax?: boolean; seed?: number };
 
@@ -213,8 +213,8 @@ type Arm = { r: number; th: number; a: number; s: number; col: string };
 
 const LAYER_SPEED = [0.03, 0.08, 0.16];
 
-const FIELD_DENSITY: Record<Variant, number> = { whisper: 1.4, milkyway: 0.6, bloom: 0.9, spiral: 0.8 };
-const FLARES: Record<Variant, number> = { whisper: 0, milkyway: 7, bloom: 6, spiral: 5 };
+const FIELD_DENSITY: Record<Variant, number> = { space: 1.1, whisper: 1.4, milkyway: 0.6, bloom: 0.9, spiral: 0.8 };
+const FLARES: Record<Variant, number> = { space: 5, whisper: 0, milkyway: 7, bloom: 6, spiral: 5 };
 
 export function initSky(host: HTMLElement, opts: Opts) {
   const backdrop = host.querySelector<HTMLCanvasElement>('.backdrop');

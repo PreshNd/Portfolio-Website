@@ -1,4 +1,4 @@
-@import '@fontsource-variable/bricolage-grotesque/wght.css';
+@import '@fontsource-variable/outfit/wght.css';
 @import '@fontsource-variable/figtree/wght.css';
 @import '@fontsource-variable/jetbrains-mono/wght.css';
 @import './tokens.css';
@@ -58,9 +58,9 @@ h3,
 h4 {
   font-family: var(--font-display);
   color: var(--heading);
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: 600;
   text-wrap: balance;
 }
 h1 {

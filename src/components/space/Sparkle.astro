@@ -1,0 +1,16 @@
+---
+/** A four-point sparkle, centred on (0,0). Twinkles gently (CSS). */
+interface Props {
+  size?: number;
+  delay?: number;
+}
+const { size = 10, delay = 0 } = Astro.props;
+const s = size;
+const k = s * 0.18;
+---
+
+<g class="sparkle" style={`--delay:${delay}s`}>
+  <path
+    d={`M0 ${-s} C${k} ${-k} ${k} ${-k} ${s} 0 C${k} ${k} ${k} ${k} 0 ${s} C${-k} ${k} ${-k} ${k} ${-s} 0 C${-k} ${-k} ${-k} ${-k} 0 ${-s}Z`}
+    fill="#FFF6FF"></path>
+</g>

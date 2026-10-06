@@ -1,0 +1,243 @@
+---
+/**
+ * Home teaser for the Journey: stage 01 as a planet with its skills in orbit,
+ * and the next planet waiting further down the path.
+ * Facts are from BRIEF.md section 3 only.
+ */
+import Planet from './Planet.astro';
+import Sparkle from './Sparkle.astro';
+
+const skills = [
+  { label: 'WordPress', angle: -40 },
+  { label: 'SEO', angle: 70 },
+  { label: 'GIS tools', angle: 185 },
+];
+const rad = (d: number) => (d * Math.PI) / 180;
+const C = 200; // centre of the 400×400 drawing
+const ORBIT = 150;
+---
+
+<section class="peek wrap" aria-labelledby="peek-title">
+  <div class="head" data-reveal>
+    <p class="kicker mono">the journey</p>
+    <h2 id="peek-title">Walk it with me, one planet at a time.</h2>
+  </div>
+
+  <div class="stage">
+    <figure class="art" data-reveal aria-hidden="true">
+      <svg viewBox="0 0 400 400">
+        <circle class="ring" cx={C} cy={C} r="110"></circle>
+        <circle class="ring dashed spin" cx={C} cy={C} r={ORBIT}></circle>
+        <circle class="ring" cx={C} cy={C} r="190"></circle>
+        <g>
+          <g transform={`translate(${C} ${C})`}>
+            <Planet id="peek-web" r={78} tone="orchid" />
+          </g>
+          {
+            skills.map((s, i) => {
+              const x = C + Math.cos(rad(s.angle)) * ORBIT;
+              const y = C + Math.sin(rad(s.angle)) * ORBIT;
+              return (
+                <g transform={`translate(${x} ${y})`}>
+                  <circle r="7" class:list={['moon', `m${i}`]} />
+                  {/* labels on the left side of the orbit read outward, away from the planet */}
+                  {Math.cos(rad(s.angle)) < 0 ? (
+                    <text x="-14" y="4" text-anchor="end">{s.label}</text>
+                  ) : (
+                    <text x="14" y="4">{s.label}</text>
+                  )}
+                </g>
+              );
+            })
+          }
+        </g>
+        <g transform="translate(330 60)"><Sparkle size={8} delay={1} /></g>
+        <g transform="translate(60 330)"><Sparkle size={6} delay={2.5} /></g>
+      </svg>
+    </figure>
+
+    <div class="copy" data-reveal style="--reveal-i:1">
+      <p class="mono when"><span class="idx">01</span> Nov 2020 → Feb 2022</p>
+      <h3>Web builder</h3>
+      <p>
+        Remote web developer at Light House Multimedia. I redesigned the company site, did SEO
+        that lifted daily traffic by 30%, and built WordPress sites for clients. Then Head of IT at
+        Great Source Investment, building tools for a street naming, house numbering and GIS
+        mapping project covering 4,000+ buildings.
+      </p>
+      <p class="annotation">what I see now</p>
+      <p class="see">
+        I know what is actually buildable, so I scope honestly.<span class="draft mono">draft</span>
+      </p>
+    </div>
+  </div>
+
+  <a class="next" href="/journey" data-reveal>
+    <svg viewBox="0 0 60 60" aria-hidden="true" class="next-planet">
+      <g transform="translate(30 30)"><Planet id="peek-next" r={18} tone="peach" /></g>
+    </svg>
+    <span>
+      <span class="mono">02 · next stop</span>
+      <span class="next-title">CRM <span class="arrow" aria-hidden="true">→</span></span>
+    </span>
+  </a>
+</section>
+
+<style>
+  .peek {
+    padding-block: var(--space-9) var(--space-7);
+  }
+  .head {
+    text-align: center;
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--accent);
+    font-size: 0.75rem;
+  }
+  .head h2 {
+    margin-top: var(--space-3);
+    font-size: var(--step-3);
+    font-weight: 500;
+  }
+
+  .stage {
+    margin-top: var(--space-8);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: var(--space-7);
+    align-items: center;
+  }
+  .art svg {
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+    overflow: visible;
+  }
+  .ring {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+  .dashed {
+    stroke: color-mix(in oklab, var(--purple-300) 35%, transparent);
+    stroke-dasharray: 2 6;
+  }
+  .spin {
+    transform-box: view-box;
+    transform-origin: 200px 200px;
+    animation: spin 120s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .moon {
+    fill: var(--peach-500);
+  }
+  .m1 {
+    fill: var(--purple-100);
+  }
+  .m2 {
+    fill: var(--purple-500);
+  }
+  text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    fill: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .when {
+    color: var(--text-muted);
+  }
+  .idx {
+    color: var(--accent-warm);
+    margin-right: 0.5em;
+  }
+  .copy h3 {
+    margin-top: var(--space-2);
+    font-size: var(--step-3);
+    font-weight: 500;
+  }
+  .copy p:not(.when):not(.annotation) {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+    color: var(--text-muted);
+  }
+  .copy .annotation {
+    margin-top: var(--space-6);
+  }
+  .copy .see {
+    margin-top: var(--space-2) !important;
+    color: var(--text) !important;
+    font-size: var(--step-1);
+  }
+  .draft {
+    margin-left: 0.6em;
+    padding: 0.1em 0.5em;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-pill);
+    font-size: 0.65rem;
+    vertical-align: middle;
+    color: var(--text-muted);
+  }
+
+  .next {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: fit-content;
+    margin: var(--space-8) 0 0 auto;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .next-planet {
+    width: 52px;
+    height: 52px;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .next:hover .next-planet {
+    transform: translateX(-4px) scale(1.08);
+  }
+  .next > span {
+    display: grid;
+  }
+  .next .mono {
+    color: var(--text-muted);
+  }
+  .next-title {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 500;
+  }
+  .next .arrow {
+    display: inline-block;
+    color: var(--accent);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .next:hover .arrow {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 52rem) {
+    .stage {
+      grid-template-columns: 1fr;
+    }
+    .art svg {
+      max-width: 300px;
+    }
+    .next {
+      margin-inline: auto;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spin {
+      animation: none;
+    }
+  }
+</style>

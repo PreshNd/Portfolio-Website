@@ -52,10 +52,12 @@ const { variant, fixed = true } = Astro.props;
     inset: 0;
     transition: opacity var(--dur-slow) var(--ease-drift);
   }
+  /* warm near-black, with a faint plum-and-peach horizon glow for warmth */
   .night {
     background:
-      radial-gradient(120% 80% at 50% 0%, var(--purple-875) 0%, transparent 60%),
-      var(--purple-900);
+      radial-gradient(90% 55% at 50% 108%, color-mix(in oklab, var(--purple-900) 85%, var(--peach-500)) 0%, transparent 70%),
+      radial-gradient(70% 50% at 85% -10%, color-mix(in oklab, var(--purple-800) 45%, transparent) 0%, transparent 70%),
+      var(--space-900);
   }
   .daylight {
     opacity: 0;
@@ -125,6 +127,11 @@ const { variant, fixed = true } = Astro.props;
   /* painted skies carry their own colour; keep the CSS glow as a gentle drift */
   .sky[data-variant]:not([data-variant='whisper']) .nebula {
     opacity: 0.2;
+  }
+  /* the space sky is clean: no haze at all, with or without JS */
+  .sky:not([data-variant]) .nebula,
+  .sky[data-variant='space'] .nebula {
+    display: none;
   }
   @keyframes drift-a {
     to {
