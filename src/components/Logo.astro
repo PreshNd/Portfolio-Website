@@ -1,0 +1,100 @@
+---
+/**
+ * The PCN ribbon logo, from Chi's brand board (Figma, Oct 2026).
+ * Both renditions are inlined and CSS shows the one that suits the surface:
+ * - "on dark" (luminous orchid) in Dream mode
+ * - "on light" (deep plum folds) in Read mode and on daylight pages
+ * The "buddies dot" takes a small orbit on hover.
+ */
+import onDark from '../assets/brand/pcn-wordmark-on-dark.svg?raw';
+import onLight from '../assets/brand/pcn-wordmark-on-light.svg?raw';
+import tagline from '../assets/brand/pcn-tagline.svg?raw';
+
+interface Props {
+  /** unique per page instance, keeps gradient ids from clashing */
+  id: string;
+  /** "wordmark" for the header, "lockup" adds the tagline underneath */
+  variant?: 'wordmark' | 'lockup';
+}
+const { id, variant = 'wordmark' } = Astro.props;
+
+const prep = (svg: string, suffix: string) =>
+  svg
+    .replace(/(paint\d+_linear_|clip\d+_)\d+_\d+/g, `$1${id}-${suffix}`)
+    .replace(/ width="\d+" height="\d+"/, ' aria-hidden="true" focusable="false"');
+---
+
+<span class:list={['logo', variant]}>
+  <span class="mark on-dark" set:html={prep(onDark, 'd')} />
+  <span class="mark on-light" set:html={prep(onLight, 'l')} />
+  {variant === 'lockup' && <span class="tagline" set:html={prep(tagline, 't')} />}
+  <span class="visually-hidden">PCN, Building Everyday Buddies</span>
+</span>
+
+<style>
+  .logo {
+    display: inline-grid;
+    justify-items: center;
+    gap: 0.55rem;
+    line-height: 0;
+  }
+  .mark {
+    grid-area: 1 / 1;
+    display: block;
+  }
+  .mark :global(svg) {
+    display: block;
+    height: 30px;
+    width: auto;
+    overflow: visible;
+  }
+  .lockup .mark :global(svg) {
+    height: 52px;
+  }
+  .tagline {
+    color: var(--purple-200);
+  }
+  .tagline :global(svg) {
+    display: block;
+    height: 11px;
+    width: auto;
+  }
+
+  /* pick the rendition for the surface */
+  .on-light {
+    visibility: hidden;
+  }
+  :global(:root[data-mode='read']) .on-dark,
+  :global(:root[data-surface='day']) .on-dark {
+    visibility: hidden;
+  }
+  :global(:root[data-mode='read']) .on-light,
+  :global(:root[data-surface='day']) .on-light {
+    visibility: visible;
+  }
+  :global(:root[data-mode='read']) .tagline,
+  :global(:root[data-surface='day']) .tagline {
+    color: var(--purple-900);
+  }
+
+  /* the buddies dot takes a little orbit on hover */
+  .mark :global(.dot) {
+    transform-box: fill-box;
+    transform-origin: 50% 170%;
+  }
+  :global(a:hover) > .logo .mark :global(.dot),
+  :global(a:focus-visible) > .logo .mark :global(.dot) {
+    animation: dot-orbit 1.1s cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  @keyframes dot-orbit {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(a:hover) > .logo .mark :global(.dot),
+    :global(a:focus-visible) > .logo .mark :global(.dot) {
+      animation: none;
+    }
+  }
+</style>

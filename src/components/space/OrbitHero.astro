@@ -1,0 +1,231 @@
+---
+/**
+ * The Home hero's sky: thin concentric orbits with flat planets that travel
+ * along them very slowly. Two compositions:
+ * - wide: orbits centred on the headline, planets always outside the text
+ * - narrow: a corner solar system at the top right, text sits below it
+ * Pure SVG + CSS animation (compositor-friendly). Stops for reduced motion.
+ */
+import Planet, { type Tone } from './Planet.astro';
+import Sparkle from './Sparkle.astro';
+
+type Body = { ring: number; angle: number; r: number; tone: Tone; ringed?: boolean; dur: number };
+type Layout = {
+  w: number;
+  h: number;
+  cx: number;
+  cy: number;
+  rings: number[];
+  bodies: Body[];
+  sparkles: [number, number, number, number][];
+  shapes: [number, number][][];
+};
+
+const wide: Layout = {
+  w: 1440,
+  h: 900,
+  cx: 720,
+  cy: 470,
+  // the text block is ~700×460 around the centre, so every ring from 470 out
+  // clears it: planets can travel all the way round without crossing the copy
+  rings: [300, 470, 560, 650, 760],
+  bodies: [
+    { ring: 560, angle: -28, r: 34, tone: 'peach', dur: 300 },
+    { ring: 650, angle: 168, r: 46, tone: 'deep', ringed: true, dur: 380 },
+    { ring: 470, angle: 212, r: 18, tone: 'orchid', dur: 240 },
+    { ring: 650, angle: 32, r: 24, tone: 'purple', dur: 380 },
+    { ring: 560, angle: 140, r: 11, tone: 'lilac', dur: 300 },
+  ],
+  sparkles: [
+    [250, 640, 9, 0],
+    [1180, 210, 7, 1.4],
+    [1290, 690, 11, 2.6],
+    [420, 180, 6, 3.3],
+    [980, 820, 8, 0.8],
+  ],
+  // one small "geometry" mark each side, very faint
+  shapes: [
+    [
+      [140, 250],
+      [215, 205],
+      [200, 320],
+    ],
+    [
+      [1230, 470],
+      [1310, 515],
+      [1245, 560],
+    ],
+  ],
+};
+
+const narrow: Layout = {
+  w: 390,
+  h: 844,
+  cx: 410,
+  cy: 60,
+  rings: [90, 170, 250, 330, 420],
+  bodies: [
+    { ring: 170, angle: 150, r: 16, tone: 'peach', dur: 200 },
+    { ring: 250, angle: 118, r: 22, tone: 'deep', ringed: true, dur: 280 },
+    { ring: 330, angle: 165, r: 11, tone: 'orchid', dur: 340 },
+    { ring: 420, angle: 140, r: 7, tone: 'lilac', dur: 400 },
+  ],
+  sparkles: [
+    [60, 120, 7, 0.5],
+    [190, 70, 5, 2],
+    [340, 380, 6, 1.2],
+  ],
+  shapes: [
+    [
+      [150, 262],
+      [214, 236],
+      [198, 318],
+    ],
+  ],
+};
+
+const rad = (d: number) => (d * Math.PI) / 180;
+---
+
+{
+  [
+    { L: wide, key: 'wide' },
+    { L: narrow, key: 'narrow' },
+  ].map(({ L, key }) => (
+    <svg
+      class:list={['orbits', key]}
+      viewBox={`0 0 ${L.w} ${L.h}`}
+      preserveAspectRatio={key === 'wide' ? 'xMidYMid slice' : 'xMaxYMin slice'}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g class="rings" fill="none">
+        {L.rings.map((r) => (
+          <circle cx={L.cx} cy={L.cy} r={r} />
+        ))}
+      </g>
+
+      <g class="shapes">
+        {L.shapes.map((pts) => (
+          <g>
+            <polygon points={pts.map((p) => p.join(',')).join(' ')} />
+            {pts.map(([x, y]) => (
+              <circle cx={x} cy={y} r="3" />
+            ))}
+          </g>
+        ))}
+      </g>
+
+      {L.sparkles.map(([x, y, s, d]) => (
+        <g transform={`translate(${x} ${y})`}>
+          <Sparkle size={s} delay={d} />
+        </g>
+      ))}
+
+      {L.bodies.map((b, i) => (
+        <g
+          class="orbit"
+          style={`--dur:${b.dur}s; transform-origin:${L.cx}px ${L.cy}px`}
+        >
+          <g
+            transform={`translate(${L.cx + Math.cos(rad(b.angle)) * b.ring} ${L.cy + Math.sin(rad(b.angle)) * b.ring})`}
+          >
+            <g class="upright" style={`--dur:${b.dur}s`}>
+              <Planet id={`${key}-p${i}`} r={b.r} tone={b.tone} ring={b.ringed} />
+            </g>
+          </g>
+        </g>
+      ))}
+    </svg>
+  ))
+}
+
+<style>
+  .orbits {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .narrow {
+    display: none;
+  }
+  @media (max-width: 52rem) {
+    .wide {
+      display: none;
+    }
+    .narrow {
+      display: block;
+    }
+  }
+
+  .rings circle {
+    stroke: var(--line);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .shapes polygon {
+    fill: none;
+    stroke: color-mix(in oklab, var(--purple-200) 55%, transparent);
+    stroke-width: 1.25;
+    vector-effect: non-scaling-stroke;
+  }
+  .shapes circle {
+    fill: var(--purple-50);
+  }
+
+  /* planets travel along their orbit; the inner group counter-rotates so
+     rings and shading stay upright */
+  .orbit {
+    transform-box: view-box;
+    animation: orbit var(--dur) linear infinite;
+  }
+  .upright {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: orbit var(--dur) linear infinite reverse;
+  }
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  :global(.sparkle) {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: twinkle 5s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.7);
+    }
+  }
+
+  /* Read mode: same composition, inked in deep purple on lilac */
+  :global(:root[data-mode='read']) :global(.sparkle path) {
+    fill: var(--purple-500);
+  }
+  :global(:root[data-mode='read']) .shapes circle {
+    fill: var(--purple-600);
+  }
+  :global(:root[data-mode='read']) .shapes polygon {
+    stroke: color-mix(in oklab, var(--purple-600) 55%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orbit,
+    .upright,
+    :global(.sparkle) {
+      animation: none;
+    }
+  }
+</style>

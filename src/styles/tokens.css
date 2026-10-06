@@ -1,0 +1,144 @@
+/*
+ * pcndigwe.site design tokens
+ *
+ * Brand colours are fixed (sampled from Chi's logo and portfolio).
+ * The ramps are built around them. Brand anchors are marked ★.
+ *
+ * Contrast notes (WCAG 2.x, measured):
+ *   lilac  #FEE6FE on night #22022B  16.2 : 1   body text OK
+ *   orchid #E492F5 on night          8.8 : 1    body text OK
+ *   peach  #EE8299 on night          7.5 : 1    accent only (brief rule)
+ *   deep   #9A0CAC on lilac          5.9 : 1    body text OK
+ *   primary #B744C5 on night / lilac ~4 : 1     large text and UI only, never body
+ *
+ * TODO(chi): confirm final purples. #9A0CAC is used as "deep" for now
+ * (#9E06B2 is nearly identical: 5.75 : 1 on lilac).
+ */
+:root {
+  /* ── Purple ramp ─────────────────────────── */
+  --purple-50: #fff6ff;
+  --purple-100: #fee6fe; /* ★ light lilac, daylight surface */
+  --purple-200: #f6c8fb;
+  --purple-300: #e492f5; /* ★ orchid, glow and highlights */
+  --purple-400: #cc6add;
+  --purple-500: #b744c5; /* ★ primary purple */
+  --purple-600: #9a0cac; /* ★ deep purple */
+  --purple-700: #7a0889;
+  --purple-800: #520660;
+  --purple-850: #3a0a47;
+  --purple-875: #2e0839;
+  --purple-900: #22022b; /* ★ deepest plum, night */
+  --purple-950: #16011c;
+
+  /* ── Space (warm near-black night canvas) ─
+   * Neutral dark so the brand colours can glow on top of it.
+   * lilac 16 : 1, orchid 8.7 : 1, peach 7.4 : 1 on --space-900. */
+  --space-950: #0f0a12;
+  --space-900: #16101a;
+  --space-850: #1d1622;
+  --space-800: #261d2d;
+  --space-700: #3a2e42;
+
+  /* ── Peach ramp (accent, used sparingly) ── */
+  --peach-100: #fde4ea;
+  --peach-300: #f6b3c2;
+  --peach-500: #ee8299; /* ★ peach */
+  --peach-700: #b8425d;
+
+  /* ── Type ─────────────────────────────────── */
+  --font-display: 'Outfit Variable', 'Avenir Next', system-ui, sans-serif;
+  --font-body: 'Figtree Variable', 'Avenir Next', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* fluid scale, 360px → 1440px */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.45vw, 1.45rem);
+  --step-2: clamp(1.45rem, 1.25rem + 0.9vw, 1.95rem);
+  --step-3: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  --step-4: clamp(2.1rem, 1.5rem + 2.8vw, 3.9rem);
+  --step-5: clamp(2.6rem, 1.6rem + 4.6vw, 5.6rem);
+
+  --measure: 68ch;
+
+  /* ── Space (4px base) ─────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 9rem;
+
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --max-width: 76rem;
+
+  /* ── Shape and motion ─────────────────────── */
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 22px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drift: cubic-bezier(0.45, 0, 0.2, 1);
+  --dur-fast: 160ms;
+  --dur-med: 420ms;
+  --dur-slow: 900ms;
+
+  /* ── Semantic: night (default) ────────────── */
+  --bg: var(--space-900);
+  --bg-deep: var(--space-950);
+  --surface: color-mix(in oklab, var(--space-850) 80%, transparent);
+  --surface-solid: var(--space-850);
+  --border: color-mix(in oklab, var(--purple-100) 12%, transparent);
+  --border-strong: color-mix(in oklab, var(--purple-100) 26%, transparent);
+  --line: color-mix(in oklab, var(--purple-100) 9%, transparent); /* orbit lines */
+  --text: var(--purple-100);
+  --text-muted: #c9b6cf; /* 9.9 : 1 on night */
+  --heading: var(--purple-50);
+  --accent: var(--purple-300);
+  --accent-strong: var(--purple-500);
+  --accent-warm: var(--peach-500);
+  --on-accent: var(--purple-900);
+  --link: var(--purple-300);
+  --focus: var(--peach-500);
+  --glow: color-mix(in oklab, var(--purple-300) 45%, transparent);
+  --grad-a: var(--purple-300);
+  --grad-b: var(--peach-500);
+  --overlay: color-mix(in oklab, var(--space-950) 95%, transparent);
+
+  color-scheme: dark;
+}
+
+/* ── Semantic: daylight (reading surface) ──────
+ * Used two ways: Read mode for the whole site (the visitor's choice,
+ * html[data-mode='read']), and long-read sections that "land" in daylight.
+ */
+:root[data-mode='read'],
+[data-surface='day'] {
+  --bg: var(--purple-100);
+  --bg-deep: var(--purple-50);
+  --surface: var(--purple-50);
+  --surface-solid: var(--purple-50);
+  --border: color-mix(in oklab, var(--purple-600) 16%, transparent);
+  --border-strong: color-mix(in oklab, var(--purple-600) 36%, transparent);
+  --text: #2a0634; /* 15.3 : 1 on lilac */
+  --text-muted: #5e3a68; /* 7.9 : 1 on lilac */
+  --heading: var(--purple-600);
+  --accent: var(--purple-600);
+  --accent-strong: var(--purple-600);
+  --accent-warm: var(--peach-700);
+  --on-accent: var(--purple-50);
+  --link: var(--purple-600);
+  --focus: var(--purple-600);
+  --glow: color-mix(in oklab, var(--purple-500) 25%, transparent);
+  --grad-a: var(--purple-600);
+  --grad-b: var(--peach-700); /* 4.5 : 1 on lilac */
+  --overlay: color-mix(in oklab, var(--purple-50) 96%, transparent);
+  --line: color-mix(in oklab, var(--purple-600) 14%, transparent);
+
+  color-scheme: light;
+}

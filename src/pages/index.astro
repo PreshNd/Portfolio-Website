@@ -1,0 +1,240 @@
+---
+import Base from '../layouts/Base.astro';
+import OrbitHero from '../components/space/OrbitHero.astro';
+import JourneyPeek from '../components/space/JourneyPeek.astro';
+import HowIBuild from '../components/space/HowIBuild.astro';
+
+const doors = [
+  {
+    href: '/journey',
+    kicker: 'hiring a PM',
+    title: 'Walk my journey',
+    body: 'From web builder to product. What each stage taught me, and how I use it now.',
+  },
+  {
+    href: '/web',
+    kicker: 'need a website',
+    title: 'See sites I built',
+    body: 'WordPress builds, some on custom themes. Can I build yours? Probably.',
+  },
+  {
+    href: '/about',
+    kicker: 'just curious',
+    title: 'Meet Chi',
+    body: 'Who I am outside the roadmap, and the work I do beyond work.',
+  },
+];
+---
+
+<Base>
+  <section class="hero" aria-labelledby="hero-title">
+    <OrbitHero />
+    <div class="wrap hero-inner">
+      <p class="kicker mono" data-reveal>
+        <span>Chinenye Ndigwe</span><span class="sep" aria-hidden="true"> · </span><span
+          >Product Manager · Lagos</span
+        >
+      </p>
+      <h1 id="hero-title" data-reveal style="--reveal-i:1">
+        Building everyday <span class="warm">buddies</span>.
+      </h1>
+      <p class="lede" data-reveal style="--reveal-i:2">
+        Products that work for the customer, and for the teams who run them. I see the whole
+        system around a product, technical and human.
+      </p>
+      <p class="actions" data-reveal style="--reveal-i:3">
+        <a class="btn" href="/journey">Walk my journey <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="/work">See my work</a>
+      </p>
+    </div>
+  </section>
+
+  <JourneyPeek />
+
+  <HowIBuild />
+
+  <section class="fork wrap" aria-labelledby="fork-title">
+    <h2 id="fork-title" class="fork-title" data-reveal>What brings you here?</h2>
+    <ul class="doors" role="list">
+      {
+        doors.map((d, i) => (
+          <li data-reveal style={`--reveal-i:${i + 1}`}>
+            <a class="door" href={d.href}>
+              <span class="mono kicker">{d.kicker}</span>
+              <span class="door-title">
+                {d.title} <span class="arrow" aria-hidden="true">→</span>
+              </span>
+              <span class="door-body">{d.body}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100svh - 76px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero-inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding-block: var(--space-8);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .hero h1 {
+    margin-top: var(--space-4);
+    max-width: 12ch;
+    font-size: clamp(2.7rem, 1.4rem + 5.2vw, 6rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+  }
+  /* the one warm word: A's warmth in B's calm */
+  .warm {
+    background: linear-gradient(95deg, var(--grad-a), var(--grad-b) 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lede {
+    margin-top: var(--space-5);
+    max-width: 44ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  @media (max-width: 52rem) {
+    .kicker .sep {
+      display: none;
+    }
+    .kicker span:not(.sep) {
+      display: block;
+    }
+    .kicker span + span + span {
+      margin-top: 0.4em;
+    }
+    .hero {
+      place-items: end start;
+      text-align: left;
+    }
+    .hero-inner {
+      justify-items: start;
+      padding-block: 0 var(--space-8);
+    }
+    .actions {
+      justify-content: flex-start;
+    }
+  }
+
+  .fork {
+    padding-block: var(--space-7);
+  }
+  .fork-title {
+    font-size: var(--step-3);
+  }
+  .doors {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-6);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+  .door {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-6) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--text);
+    text-decoration: none;
+    overflow: hidden;
+    transition:
+      border-color var(--dur-med) ease,
+      transform var(--dur-med) var(--ease-out);
+  }
+  /* soft glow follows the pointer (set in script below) */
+  .door::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 120%),
+      color-mix(in oklab, var(--purple-300) 16%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-med) ease;
+  }
+  .door:hover,
+  .door:focus-visible {
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+  }
+  .door:hover::before,
+  .door:focus-visible::before {
+    opacity: 1;
+  }
+  .kicker {
+    color: var(--accent-warm);
+  }
+  .door-title {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+  .door .arrow {
+    display: inline-block;
+    color: var(--accent);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .door:hover .arrow {
+    transform: translateX(6px);
+  }
+  .door-body {
+    color: var(--text-muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .door:hover,
+    .door:focus-visible {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.door').forEach((el) => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+</script>

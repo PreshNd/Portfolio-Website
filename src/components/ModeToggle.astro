@@ -1,0 +1,154 @@
+---
+/**
+ * Dream / Read mode switch.
+ * Dream: the immersive night sky. Read: calm lilac daylight, no motion-heavy sky.
+ * The choice is remembered per visitor (localStorage) and applied before
+ * first paint by the inline script in Base.astro, so there is no flash.
+ */
+---
+
+<div class="mode" role="group" aria-label="Display mode">
+  <button type="button" data-mode-set="dream" aria-pressed="true" title="Dream mode: the immersive sky">
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M10 2.5l1.6 4.6 4.9.1-3.9 3 1.4 4.7L10 12.1 6 14.9l1.4-4.7-3.9-3 4.9-.1z"></path>
+    </svg>
+    <span class="label">Dream</span>
+  </button>
+  <button type="button" data-mode-set="read" aria-pressed="false" title="Read mode: calm and light">
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <circle cx="10" cy="10" r="3.6"></circle>
+      <path
+        d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7"
+      ></path>
+    </svg>
+    <span class="label">Read</span>
+  </button>
+  <span class="thumb" aria-hidden="true"></span>
+</div>
+
+<style>
+  .mode {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 3px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: color-mix(in oklab, var(--bg) 55%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  button {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 36px;
+    padding: 0 0.75rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color var(--dur-med) ease;
+  }
+  button[aria-pressed='true'] {
+    color: var(--on-accent);
+  }
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  [data-mode-set='dream'] svg path {
+    fill: currentColor;
+    stroke: none;
+  }
+  .thumb {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  :global(:root[data-mode='read']) .thumb {
+    transform: translateX(100%);
+  }
+
+  @media (max-width: 52rem) {
+    .label {
+      display: none;
+    }
+    button {
+      min-width: 40px;
+      min-height: 36px;
+      padding: 0;
+    }
+  }
+</style>
+
+<script>
+  type Mode = 'dream' | 'read';
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-mode-set]');
+
+  const sync = () => {
+    const mode = (root.dataset.mode as Mode) || 'dream';
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modeSet === mode)));
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', mode === 'read' ? '#FEE6FE' : '#22022B');
+  };
+
+  const apply = (mode: Mode) => {
+    root.dataset.mode = mode;
+    try {
+      localStorage.setItem('pcn-mode', mode);
+    } catch {
+      /* private mode: the choice just won't be remembered */
+    }
+    sync();
+    window.dispatchEvent(new CustomEvent('modechange', { detail: mode }));
+  };
+
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const next = btn.dataset.modeSet as Mode;
+      if (next === root.dataset.mode) return;
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced || !('startViewTransition' in document)) {
+        apply(next);
+        return;
+      }
+
+      // Dawn / nightfall: the new mode spreads out from the button as a circle.
+      const r = btn.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+      root.classList.add('mode-switching');
+      const vt = document.startViewTransition(() => apply(next));
+      vt.ready.then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 750, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' },
+        );
+      });
+      vt.finished.finally(() => root.classList.remove('mode-switching'));
+    }),
+  );
+
+  sync();
+</script>
