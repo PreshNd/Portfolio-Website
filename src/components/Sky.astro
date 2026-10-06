@@ -1,33 +1,92 @@
 ---
 /**
- * The night sky behind every "night" page.
- * Layer 1: CSS nebula glows (always there, the no-JS / no-canvas fallback).
- * Layer 2: a light 2D-canvas star field with three parallax depths.
- * Kept quiet on purpose: atmosphere, not a theme.
+ * The sky behind every page.
+ * Dream mode: CSS nebula glows (the no-JS / no-canvas fallback) + canvas sky.
+ * Read mode: the night fades out and a soft daylight wash fades in.
+ *
+ * `variant` pins a specific sky (used on /skies). Without it, the site
+ * default applies, overridable for review with ?sky=milkyway|bloom|spiral|whisper.
  */
+import type { Variant } from '../scripts/sky';
+
+interface Props {
+  variant?: Variant;
+  /** fixed = full-viewport page background; false = fills its parent */
+  fixed?: boolean;
+}
+const { variant, fixed = true } = Astro.props;
 ---
 
-<div class="sky" aria-hidden="true">
-  <div class="nebula nebula--a"></div>
-  <div class="nebula nebula--b"></div>
-  <div class="nebula nebula--c"></div>
-  <canvas class="stars"></canvas>
-  <div class="grain"></div>
+<div class:list={['sky', { fixed }]} data-pin={variant} aria-hidden="true">
+  <div class="night">
+    <div class="nebula nebula--a"></div>
+    <div class="nebula nebula--b"></div>
+    <div class="nebula nebula--c"></div>
+    <canvas class="backdrop"></canvas>
+    <canvas class="stars"></canvas>
+    <div class="grain"></div>
+  </div>
+  {
+    fixed && (
+      <div class="daylight">
+        <div class="sun sun--a" />
+        <div class="sun sun--b" />
+      </div>
+    )
+  }
 </div>
 
 <style>
   .sky {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: -1;
     overflow: hidden;
+  }
+  .sky.fixed {
+    position: fixed;
+    z-index: -1;
+  }
+  .night,
+  .daylight {
+    position: absolute;
+    inset: 0;
+    transition: opacity var(--dur-slow) var(--ease-drift);
+  }
+  .night {
     background:
       radial-gradient(120% 80% at 50% 0%, var(--purple-875) 0%, transparent 60%),
       var(--purple-900);
-    transition: opacity var(--dur-slow) var(--ease-drift);
   }
-  :global([data-surface='day']) .sky {
+  .daylight {
     opacity: 0;
+    background: linear-gradient(180deg, var(--purple-50) 0%, var(--purple-100) 55%);
+  }
+  :global(:root[data-mode='read']) .fixed .night,
+  :global(:root[data-surface='day']) .fixed .night {
+    opacity: 0;
+  }
+  :global(:root[data-mode='read']) .daylight,
+  :global(:root[data-surface='day']) .daylight {
+    opacity: 1;
+  }
+
+  /* soft warm light in Read mode, so it is calm but not flat */
+  .sun {
+    position: absolute;
+  }
+  .sun--a {
+    width: 55vmax;
+    height: 40vmax;
+    right: -15vmax;
+    top: -18vmax;
+    background: radial-gradient(closest-side, var(--peach-100) 0%, color-mix(in oklab, var(--peach-100) 50%, transparent) 45%, transparent 100%);
+  }
+  .sun--b {
+    width: 50vmax;
+    height: 40vmax;
+    left: -20vmax;
+    top: 40vh;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--purple-200) 60%, transparent) 0%, color-mix(in oklab, var(--purple-200) 25%, transparent) 50%, transparent 100%);
   }
 
   .nebula {
@@ -49,7 +108,7 @@
     width: 50vmax;
     height: 40vmax;
     right: -16vmax;
-    top: 30vh;
+    top: 30%;
     background: radial-gradient(closest-side, var(--purple-500), transparent);
     opacity: 0.26;
     animation: drift-b 60s var(--ease-drift) infinite alternate;
@@ -57,11 +116,15 @@
   .nebula--c {
     width: 34vmax;
     height: 26vmax;
-    left: 30vw;
+    left: 30%;
     bottom: -14vmax;
     background: radial-gradient(closest-side, var(--peach-500), transparent);
     opacity: 0.14;
     animation: drift-a 72s var(--ease-drift) infinite alternate-reverse;
+  }
+  /* painted skies carry their own colour; keep the CSS glow as a gentle drift */
+  .sky[data-variant]:not([data-variant='whisper']) .nebula {
+    opacity: 0.2;
   }
   @keyframes drift-a {
     to {
@@ -74,6 +137,13 @@
     }
   }
 
+  .backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    will-change: transform;
+  }
   .stars {
     position: absolute;
     inset: 0;
@@ -97,7 +167,15 @@
 </style>
 
 <script>
-  import { initStars } from '../scripts/stars';
-  const canvas = document.querySelector<HTMLCanvasElement>('.sky .stars');
-  if (canvas) initStars(canvas);
+  import { initSky, VARIANTS, type Variant } from '../scripts/sky';
+  import { DEFAULT_SKY } from '../scripts/sky-default';
+
+  const pick = (v: string | undefined): Variant | undefined =>
+    VARIANTS.includes(v as Variant) ? (v as Variant) : undefined;
+
+  document.querySelectorAll<HTMLElement>('.sky').forEach((host, i) => {
+    const variant =
+      pick(host.dataset.pin) ?? pick(document.documentElement.dataset.sky) ?? DEFAULT_SKY;
+    initSky(host, { variant, parallax: host.classList.contains('fixed'), seed: 7 + i });
+  });
 </script>

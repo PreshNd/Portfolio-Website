@@ -1,0 +1,122 @@
+---
+/**
+ * Sky comparison for Chi. Not in the nav, not indexed.
+ */
+import Base from '../layouts/Base.astro';
+import Sky from '../components/Sky.astro';
+import type { Variant } from '../scripts/sky';
+
+const skies: { id: Variant; name: string; feel: string }[] = [
+  {
+    id: 'whisper',
+    name: 'Whisper',
+    feel: 'What you saw first. Sparse stars, soft glow. Calm, maybe too quiet.',
+  },
+  {
+    id: 'milkyway',
+    name: 'Milky Way',
+    feel: 'A glowing band of stars and dust across the sky, like a clear night far from the city. Deep, still, a bit of awe.',
+  },
+  {
+    id: 'bloom',
+    name: 'Nebula Bloom',
+    feel: 'Big soft clouds of your purples and peach. The brightest and warmest of the four. Dreamy rather than dark.',
+  },
+  {
+    id: 'spiral',
+    name: 'Spiral',
+    feel: 'A galaxy turning very slowly beside the headline. One clear hero object, the most "wow", and the most movement.',
+  },
+];
+---
+
+<Base title="Pick a sky" noindex>
+  <section class="wrap intro">
+    <p class="eyebrow">// for chi · pick a sky</p>
+    <h1>Which one feels like the dream?</h1>
+    <p class="lede">
+      Four skies, no constellation lines. Each preview is live. Open one full page to feel it with
+      the real content and the Dream / Read switch.
+    </p>
+  </section>
+
+  <section class="wrap panels">
+    {
+      skies.map((s, i) => (
+        <article class="panel">
+          <div class="view">
+            <Sky variant={s.id} fixed={false} />
+            <span class="tag mono">0{i + 1}</span>
+          </div>
+          <div class="meta">
+            <h2>{s.name}</h2>
+            <p>{s.feel}</p>
+            <a class="btn btn--ghost" href={`/?sky=${s.id}`}>
+              Try it full page <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-9) var(--space-6);
+  }
+  .intro h1 {
+    font-size: var(--step-4);
+    margin-top: var(--space-3);
+    max-width: 18ch;
+  }
+  .lede {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+    color: var(--text-muted);
+    font-size: var(--step-1);
+  }
+  .panels {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .panel {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+    align-items: center;
+  }
+  .view {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    isolation: isolate;
+  }
+  .tag {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-4);
+    color: var(--purple-200);
+  }
+  .meta {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+  .meta h2 {
+    font-size: var(--step-3);
+  }
+  .meta p {
+    color: var(--text-muted);
+  }
+  @media (max-width: 52rem) {
+    .panel {
+      grid-template-columns: 1fr;
+    }
+    .view {
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>

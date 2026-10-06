@@ -54,11 +54,17 @@ const { compact = false } = Astro.props;
     letter-spacing: 0.02em;
   }
   .tag {
+    white-space: nowrap;
     font-family: var(--font-mono);
     font-size: 0.62rem;
     letter-spacing: 0.06em;
     color: var(--text-muted);
     margin-top: 0.3rem;
+  }
+  @media (max-width: 26rem) {
+    .tag {
+      display: none;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .moon {

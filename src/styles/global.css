@@ -184,6 +184,19 @@ a:hover {
   transform: translateX(3px);
 }
 
+/* Mode switch: freeze transitions so the view-transition snapshot is final */
+.mode-switching,
+.mode-switching *,
+.mode-switching *::before,
+.mode-switching *::after {
+  transition: none !important;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 /* ── Utilities ───────────────────────────────── */
 .visually-hidden {
   position: absolute !important;

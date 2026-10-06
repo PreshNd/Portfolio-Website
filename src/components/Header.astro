@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import ModeToggle from './ModeToggle.astro';
 
 const links = [
   { href: '/journey', label: 'Journey' },
@@ -16,6 +17,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
   <div class="wrap bar">
     <a href="/" class="home" aria-label="Chinenye Ndigwe, home"><Logo /></a>
 
+    <div class="right">
     <nav aria-label="Main">
       <button
         class="menu-toggle"
@@ -45,6 +47,8 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
         </li>
       </ul>
     </nav>
+    <div class="mode-slot"><ModeToggle /></div>
+    </div>
   </div>
 </header>
 
@@ -81,6 +85,11 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
     align-items: center;
     justify-content: space-between;
     gap: var(--space-5);
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
   }
   .home {
     text-decoration: none;
@@ -167,6 +176,12 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
   }
 
   @media (max-width: 52rem) {
+    .right {
+      gap: var(--space-2);
+    }
+    .mode-slot {
+      order: -1;
+    }
     .menu-toggle {
       display: grid;
       position: relative;
@@ -180,7 +195,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
       justify-content: center;
       gap: var(--space-2);
       padding: var(--space-9) var(--gutter) var(--space-7);
-      background: color-mix(in oklab, var(--purple-950) 94%, transparent);
+      background: var(--overlay);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       opacity: 0;
@@ -211,7 +226,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
       font-size: var(--step-3);
       font-weight: 700;
       padding-inline: 0;
-      color: var(--purple-100);
+      color: var(--heading);
     }
     .menu a:not(.btn)::after {
       left: 0;
