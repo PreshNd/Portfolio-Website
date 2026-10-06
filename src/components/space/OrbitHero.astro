@@ -75,7 +75,13 @@ const narrow: Layout = {
     [190, 70, 5, 2],
     [340, 380, 6, 1.2],
   ],
-  shapes: [],
+  shapes: [
+    [
+      [150, 262],
+      [214, 236],
+      [198, 318],
+    ],
+  ],
 };
 
 const rad = (d: number) => (d * Math.PI) / 180;
@@ -104,7 +110,7 @@ const rad = (d: number) => (d * Math.PI) / 180;
           <g>
             <polygon points={pts.map((p) => p.join(',')).join(' ')} />
             {pts.map(([x, y]) => (
-              <circle cx={x} cy={y} r="2.4" />
+              <circle cx={x} cy={y} r="3" />
             ))}
           </g>
         ))}
@@ -161,13 +167,12 @@ const rad = (d: number) => (d * Math.PI) / 180;
   }
   .shapes polygon {
     fill: none;
-    stroke: color-mix(in oklab, var(--purple-100) 22%, transparent);
-    stroke-width: 1;
+    stroke: color-mix(in oklab, var(--purple-200) 55%, transparent);
+    stroke-width: 1.25;
     vector-effect: non-scaling-stroke;
   }
   .shapes circle {
-    fill: var(--purple-100);
-    opacity: 0.6;
+    fill: var(--purple-50);
   }
 
   /* planets travel along their orbit; the inner group counter-rotates so
@@ -213,7 +218,7 @@ const rad = (d: number) => (d * Math.PI) / 180;
     fill: var(--purple-600);
   }
   :global(:root[data-mode='read']) .shapes polygon {
-    stroke: color-mix(in oklab, var(--purple-600) 30%, transparent);
+    stroke: color-mix(in oklab, var(--purple-600) 55%, transparent);
   }
 
   @media (prefers-reduced-motion: reduce) {
