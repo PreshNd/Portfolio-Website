@@ -3,6 +3,10 @@
  * Design system specimen. A review page for Chi, not part of the public nav.
  */
 import Base from '../layouts/Base.astro';
+import wordOnDark from '../assets/brand/pcn-wordmark-on-dark.svg';
+import wordOnLight from '../assets/brand/pcn-wordmark-on-light.svg';
+import symOnDark from '../assets/brand/pcn-symbol-on-dark.svg';
+import symOnLight from '../assets/brand/pcn-symbol-on-light.svg';
 
 const brand = [
   { name: 'Space black', token: '--space-900', hex: '#16101A', role: 'night canvas (warm near-black)' },
@@ -26,11 +30,34 @@ const pairs = [
 
 <Base title="Design system" noindex>
   <section class="wrap intro">
-    <p class="eyebrow">// phase 0 · foundation</p>
+    <p class="eyebrow">// brand guide</p>
     <h1>The system.</h1>
     <p class="lede">
       Colours, type and the small pieces everything else is built from. Night is for the story.
       Daylight is for reading.
+    </p>
+  </section>
+
+  <section class="wrap block">
+    <h2 class="h">Logo</h2>
+    <div class="logos">
+      <figure class="logo-tile night-tile">
+        <img src={wordOnDark.src} alt="PCN logo, luminous rendition" width="250" height="90" />
+        <figcaption class="mono">on night · Dream mode</figcaption>
+      </figure>
+      <figure class="logo-tile day-tile">
+        <img src={wordOnLight.src} alt="PCN logo, deep rendition" width="250" height="90" />
+        <figcaption class="mono">on lilac · Read mode</figcaption>
+      </figure>
+      <figure class="logo-tile night-tile small">
+        <img src={symOnDark.src} alt="PCN symbol, luminous" width="64" height="63" />
+        <img src={symOnLight.src} alt="PCN symbol, deep" width="64" height="63" class="on-lilac" />
+        <figcaption class="mono">symbol · favicon and small spaces</figcaption>
+      </figure>
+    </div>
+    <p class="muted small rules">
+      Every logo colour comes from the palette below. The buddies dot is peach, the one warm spot.
+      Keep one dot-width of clear space around the mark.
     </p>
   </section>
 
@@ -160,6 +187,53 @@ const pairs = [
   }
   .small {
     font-size: var(--step--1);
+  }
+
+  .logos {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+  .logo-tile {
+    display: grid;
+    place-items: center;
+    gap: var(--space-4);
+    padding: var(--space-7) var(--space-5) var(--space-5);
+    border-radius: var(--radius-l);
+    border: 1px solid var(--border);
+  }
+  .logo-tile img {
+    width: min(100%, 250px);
+    height: auto;
+  }
+  .night-tile {
+    background: var(--space-900);
+    color: #c9b6cf;
+  }
+  .day-tile {
+    background: var(--purple-100);
+    color: #5e3a68;
+  }
+  .small {
+    grid-auto-flow: column;
+    grid-template-rows: auto auto;
+  }
+  .small img {
+    width: 64px;
+  }
+  .small .on-lilac {
+    padding: 10px;
+    border-radius: 14px;
+    background: var(--purple-100);
+    box-sizing: content-box;
+  }
+  .small figcaption {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+  }
+  .rules {
+    margin-top: var(--space-4);
+    max-width: 60ch;
   }
 
   .swatches {
