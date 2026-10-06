@@ -1,0 +1,252 @@
+---
+import Logo from './Logo.astro';
+
+const links = [
+  { href: '/journey', label: 'Journey' },
+  { href: '/work', label: 'Work' },
+  { href: '/web', label: 'Web' },
+  { href: '/beyond', label: 'Beyond' },
+  { href: '/about', label: 'About' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="/" class="home" aria-label="Chinenye Ndigwe, home"><Logo /></a>
+
+    <nav aria-label="Main">
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="main-menu"
+      >
+        <span class="visually-hidden">Menu</span>
+        <span class="bars" aria-hidden="true"><span></span><span></span></span>
+      </button>
+
+      <ul id="main-menu" class="menu" role="list">
+        {
+          links.map((l, i) => (
+            <li style={`--i:${i}`}>
+              <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+                <span class="idx mono" aria-hidden="true">0{i + 1}</span>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="cta-item" style={`--i:${links.length}`}>
+          <a href="/contact" class="btn" aria-current={isCurrent('/contact') ? 'page' : undefined}>
+            Say hello
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding-block: var(--space-4);
+    transition: padding var(--dur-med) var(--ease-out);
+  }
+  /* Glass lives on a pseudo-element: backdrop-filter on the header itself
+     would become the containing block for the fixed mobile menu. */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    background: color-mix(in oklab, var(--bg) 70%, transparent);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--border);
+    transition: opacity var(--dur-med) ease;
+  }
+  .site-header.is-scrolled {
+    padding-block: var(--space-3);
+  }
+  .site-header.is-scrolled::before {
+    opacity: 1;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+  .home {
+    text-decoration: none;
+    border-radius: var(--radius-s);
+  }
+
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    list-style: none;
+    padding: 0;
+  }
+  .menu a:not(.btn) {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+    padding: 0.5em 0.8em;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: var(--radius-pill);
+  }
+  .idx {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    transition: color var(--dur-fast) ease;
+  }
+  .menu a:not(.btn):hover .idx,
+  .menu a[aria-current='page'] .idx {
+    color: var(--accent-warm);
+  }
+  .menu a:not(.btn)::after {
+    content: '';
+    position: absolute;
+    left: 0.8em;
+    right: 0.8em;
+    bottom: 0.25em;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .menu a:not(.btn):hover::after,
+  .menu a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+  .cta-item {
+    margin-left: var(--space-3);
+  }
+  .cta-item .btn {
+    padding: 0.65em 1.1em;
+    font-size: 0.95rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--bg) 60%, transparent);
+    place-items: center;
+  }
+  .bars {
+    display: grid;
+    gap: 6px;
+    width: 18px;
+  }
+  .bars span {
+    display: block;
+    height: 1.5px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .menu-toggle[aria-expanded='true'] .bars span:first-child {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] .bars span:last-child {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+
+  @media (max-width: 52rem) {
+    .menu-toggle {
+      display: grid;
+      position: relative;
+      z-index: 2;
+    }
+    .menu {
+      position: fixed;
+      inset: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-9) var(--gutter) var(--space-7);
+      background: color-mix(in oklab, var(--purple-950) 94%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity var(--dur-med) var(--ease-out),
+        visibility 0s linear var(--dur-med);
+    }
+    .menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--dur-med) var(--ease-out);
+    }
+    .menu li {
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity var(--dur-med) var(--ease-out),
+        transform var(--dur-med) var(--ease-out);
+      transition-delay: calc(var(--i) * 50ms);
+    }
+    .menu.is-open li {
+      opacity: 1;
+      transform: none;
+    }
+    .menu a:not(.btn) {
+      font-family: var(--font-display);
+      font-size: var(--step-3);
+      font-weight: 700;
+      padding-inline: 0;
+      color: var(--purple-100);
+    }
+    .menu a:not(.btn)::after {
+      left: 0;
+      right: 0;
+    }
+    .idx {
+      font-size: 0.8rem;
+    }
+    .cta-item {
+      margin: var(--space-5) 0 0;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.site-header')!;
+  const toggle = header.querySelector<HTMLButtonElement>('.menu-toggle')!;
+  const menu = header.querySelector<HTMLElement>('#main-menu')!;
+
+  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.classList.toggle('is-open', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    if (open) menu.querySelector<HTMLAnchorElement>('a')?.focus();
+  };
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  window.matchMedia('(max-width: 52rem)').addEventListener('change', () => setOpen(false));
+</script>

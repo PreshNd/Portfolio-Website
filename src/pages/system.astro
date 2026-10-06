@@ -1,0 +1,263 @@
+---
+/**
+ * Design system specimen. A review page for Chi, not part of the public nav.
+ */
+import Base from '../layouts/Base.astro';
+
+const brand = [
+  { name: 'Deepest plum', token: '--purple-900', hex: '#22022B', role: 'night background' },
+  { name: 'Deep purple', token: '--purple-600', hex: '#9A0CAC', role: 'headlines on lilac' },
+  { name: 'Primary purple', token: '--purple-500', hex: '#B744C5', role: 'large text and UI only' },
+  { name: 'Orchid', token: '--purple-300', hex: '#E492F5', role: 'glow, highlights, links' },
+  { name: 'Light lilac', token: '--purple-100', hex: '#FEE6FE', role: 'daylight surface' },
+  { name: 'Peach', token: '--peach-500', hex: '#EE8299', role: 'warm accent, sparingly' },
+];
+const ramp = [50, 100, 200, 300, 400, 500, 600, 700, 800, 850, 875, 900, 950];
+const pairs = [
+  { fg: '#FEE6FE', bg: '#22022B', label: 'Lilac on plum', ratio: '16.2', ok: 'Body text' },
+  { fg: '#E492F5', bg: '#22022B', label: 'Orchid on plum', ratio: '8.8', ok: 'Body text' },
+  { fg: '#EE8299', bg: '#22022B', label: 'Peach on plum', ratio: '7.5', ok: 'Accent only' },
+  { fg: '#9A0CAC', bg: '#FEE6FE', label: 'Deep purple on lilac', ratio: '5.9', ok: 'Body text' },
+  { fg: '#2A0634', bg: '#FEE6FE', label: 'Ink on lilac', ratio: '15.3', ok: 'Body text' },
+  { fg: '#B744C5', bg: '#22022B', label: 'Primary on plum', ratio: '4.2', ok: 'Large text only' },
+];
+---
+
+<Base title="Design system" noindex>
+  <section class="wrap intro">
+    <p class="eyebrow">// phase 0 · foundation</p>
+    <h1>The system.</h1>
+    <p class="lede">
+      Colours, type and the small pieces everything else is built from. Night is for the story.
+      Daylight is for reading.
+    </p>
+  </section>
+
+  <section class="wrap block">
+    <h2 class="h">Brand colours</h2>
+    <ul class="swatches" role="list">
+      {
+        brand.map((c) => (
+          <li class="swatch">
+            <span class="chip" style={`background:${c.hex}`} />
+            <span class="sw-name">{c.name}</span>
+            <span class="mono">{c.hex}</span>
+            <span class="mono muted">{c.token}</span>
+            <span class="muted small">{c.role}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h3 class="h3">Purple ramp</h3>
+    <ol class="ramp" role="list">
+      {
+        ramp.map((n) => (
+          <li style={`background:var(--purple-${n})`}>
+            <span class="mono" style={`color:${n < 400 ? 'var(--purple-900)' : 'var(--purple-100)'}`}>
+              {n}
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <h3 class="h3">Contrast checks</h3>
+    <ul class="pairs" role="list">
+      {
+        pairs.map((p) => (
+          <li style={`background:${p.bg};color:${p.fg}`}>
+            <span class="pair-big">Aa</span>
+            <span>{p.label}</span>
+            <span class="mono">
+              {p.ratio} : 1 · {p.ok}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap block">
+    <h2 class="h">Type</h2>
+    <div class="type">
+      <div>
+        <p class="eyebrow">display · bricolage grotesque</p>
+        <p class="spec-display">Building Everyday Buddies.</p>
+      </div>
+      <div>
+        <p class="eyebrow">body · figtree</p>
+        <p class="spec-body">
+          I ask what happens after the sale before I ask about the feature. A buddy product works
+          for the customer and for the people who operate it.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">labels · jetbrains mono</p>
+        <p class="mono">NOV 2020 → AUG 2021 · WEB DEVELOPER</p>
+        <p class="annotation">what I see now</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <h2 class="h">Pieces</h2>
+    <div class="row">
+      <a class="btn" href="#">Primary action <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="#">Secondary</a>
+      <a href="#">A text link</a>
+    </div>
+  </section>
+
+  <section class="day" data-surface="day" aria-labelledby="day-title">
+    <div class="wrap block">
+      <p class="eyebrow">// daylight surface</p>
+      <h2 id="day-title" class="h">Where the reading happens.</h2>
+      <div class="prose">
+        <p>
+          Case studies and long reads land here. Deep purple headings, near-black plum body text on
+          light lilac, and a line length that stays under about 75 characters so it is easy on the
+          eyes.
+        </p>
+        <p class="annotation">what I see now</p>
+        <p>
+          The switch from night to day should feel like landing. On real pages it happens as you
+          scroll into a case study.
+        </p>
+        <p class="row">
+          <a class="btn" href="#">Primary on daylight <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="#">Secondary</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-9) var(--space-6);
+  }
+  .lede {
+    margin-top: var(--space-4);
+    max-width: 48ch;
+    color: var(--text-muted);
+    font-size: var(--step-1);
+  }
+  .block {
+    padding-block: var(--space-7);
+  }
+  .h {
+    font-size: var(--step-3);
+    margin-bottom: var(--space-5);
+  }
+  .h3 {
+    margin: var(--space-7) 0 var(--space-4);
+    font-size: var(--step-1);
+  }
+  .muted {
+    color: var(--text-muted);
+  }
+  .small {
+    font-size: var(--step--1);
+  }
+
+  .swatches {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr));
+  }
+  .swatch {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .chip {
+    height: 5.5rem;
+    border-radius: var(--radius-m);
+    border: 1px solid var(--border);
+    margin-bottom: var(--space-2);
+  }
+  .sw-name {
+    font-weight: 600;
+  }
+
+  .ramp {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .ramp li {
+    height: 4.5rem;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.35rem;
+  }
+  .ramp .mono {
+    font-size: 0.6rem;
+  }
+  @media (max-width: 40rem) {
+    .ramp {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+  }
+
+  .pairs {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  }
+  .pairs li {
+    display: grid;
+    gap: 0.2rem;
+    padding: var(--space-4);
+    border-radius: var(--radius-m);
+    border: 1px solid var(--border);
+  }
+  .pair-big {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .type {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .type .eyebrow {
+    margin-bottom: var(--space-2);
+  }
+  .spec-display {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: var(--heading);
+  }
+  .spec-body {
+    max-width: var(--measure);
+    font-size: var(--step-1);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .day {
+    margin-top: var(--space-8);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: var(--radius-l) var(--radius-l) 0 0;
+  }
+</style>

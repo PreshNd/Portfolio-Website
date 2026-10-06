@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Lost in space" noindex>
+  <section class="wrap lost">
+    <p class="eyebrow">// 404</p>
+    <h1>This star hasn't formed yet.</h1>
+    <p class="lede">
+      The page you're looking for isn't here. It may still be on its way, or the link drifted.
+    </p>
+    <p class="actions">
+      <a class="btn" href="/">Back to home <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="/journey">Walk the journey</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    min-height: 70svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+  h1 {
+    font-size: var(--step-4);
+    max-width: 16ch;
+  }
+  .lede {
+    max-width: 46ch;
+    color: var(--text-muted);
+    font-size: var(--step-1);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+</style>
