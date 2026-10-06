@@ -21,8 +21,13 @@ npm run preview
 - `src/components/Sky.astro` + `src/scripts/stars.ts`: the night sky
 - `src/pages/system.astro`: design system specimen at `/system` (not indexed)
 
-## Cloudflare Pages settings
+## Hosting (Cloudflare Workers, static assets)
+
+`wrangler.jsonc` serves the built site from `dist/`. In the Cloudflare dashboard
+(Workers & Pages > pcn-portfolio > Settings > Build):
 
 - Build command: `npm run build`
-- Output directory: `dist`
-- Node version: 22 (set `NODE_VERSION=22`)
+- Deploy command: `npx wrangler deploy`
+- Non-production branch deploy command: `npx wrangler versions upload`
+- Root directory: `/`
+- Node version comes from `.node-version` (22)
