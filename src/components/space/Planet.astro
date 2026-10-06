@@ -3,7 +3,7 @@
  * A flat planet: one soft two-tone gradient, a clean edge, no 3D shading.
  * Renders an SVG <g> centred on (0,0); place it with a parent transform.
  */
-export type Tone = 'orchid' | 'peach' | 'purple' | 'deep' | 'lilac';
+export type Tone = 'orchid' | 'peach' | 'purple' | 'deep' | 'lilac' | 'merge';
 
 interface Props {
   id: string;
@@ -21,6 +21,8 @@ const TONES: Record<Tone, [string, string, string]> = {
   purple: ['#D88BE6', '#9A0CAC', '#EE8299'],
   deep: ['#B744C5', '#520660', '#E492F5'],
   lilac: ['#FFF6FF', '#E8C3EF', '#E492F5'],
+  // every lens together: warm peach light into deep purple
+  merge: ['#FBC6D1', '#9A0CAC', '#F6C8FB'],
 };
 
 const { id, r, tone, ring = false, shade = true } = Astro.props;
