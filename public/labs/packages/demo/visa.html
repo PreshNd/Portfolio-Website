@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visa Assistance – Packages demo</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/labs/packages/demo/vendor/fa/css/all.min.css" />
+  <meta name="robots" content="noindex" />
+  <script src="/labs/packages/demo/demo.js"></script>
+</head>
+
+<body>
+
+  <!-- ─── NAV ─────────────────────────────────────────── -->
+  <nav class="nav" style="z-index:100!important">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Packages</a></li>
+      </ul>
+      <a href="https://wa.me/2349000000000" class="nav-cta" target="_blank">Get Visa Help</a>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile-menu" id="navMobileMenu">
+      <a href="index.html">Packages</a>
+      <a href="visa.html" class="active">Visa Information</a>
+    </div>
+  </nav>
+  <div class="nav-mobile-backdrop" id="navMobileBackdrop"></div>
+
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <div class="visa-hero">
+    <div class="visa-hero-inner">
+      <div class="visa-hero-copy">
+        <div class="visa-hero-eyebrow">
+          <i class="fa-solid fa-passport"></i> Visa Assistance
+        </div>
+        <h1 class="visa-hero-title">
+          Your visa,<br>sorted by<br><em>experts.</em>
+        </h1>
+        <p class="visa-hero-sub">Whether you're travelling for leisure, business or family — our team handles your visa
+          application from start to finish. No stress, no guesswork.</p>
+        <div class="visa-hero-actions">
+          <a href="https://wa.me/2349000000000" class="btn btn-whatsapp" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+          </a>
+          <a href="tel:+2349000000000" class="btn btn-secondary">
+            <i class="fa-solid fa-phone"></i> Call Us
+          </a>
+        </div>
+        <div class="visa-hero-stats-row">
+          <div class="visa-hero-stat">
+            <div class="visa-hero-stat-num" id="heroStatTotal">—</div>
+            <div class="visa-hero-stat-label">Destinations covered</div>
+          </div>
+          <div class="visa-hero-stat">
+            <div class="visa-hero-stat-num">24hr</div>
+            <div class="visa-hero-stat-label">Checklist turnaround</div>
+          </div>
+          <div class="visa-hero-stat">
+            <div class="visa-hero-stat-num">100%</div>
+            <div class="visa-hero-stat-label">Nigerian passport focus</div>
+          </div>
+        </div>
+      </div>
+      <div class="visa-hero-visual">
+        <img class="visa-hero-img" src="/labs/packages/demo/img/flight.svg"
+          alt="Travel passport and boarding pass" />
+        <div class="visa-hero-badge badge-top-left">
+          <div class="visa-hero-badge-icon blue">
+            <i class="fa-solid fa-passport"></i>
+          </div>
+          <div>
+            <div class="visa-hero-badge-num">End-to-end</div>
+            <div class="visa-hero-badge-label">Visa support service</div>
+          </div>
+        </div>
+        <div class="visa-hero-badge badge-bottom-right">
+          <div class="visa-hero-badge-icon green">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <div class="visa-hero-badge-num" id="heroFreeCount">—</div>
+            <div class="visa-hero-badge-label">Visa-free for Nigerians</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── HOW IT WORKS ─────────────────────────────────── -->
+  <div class="visa-process">
+    <div class="visa-process-inner">
+      <div class="visa-process-header">
+        <div class="visa-process-eyebrow">The Process</div>
+        <div class="visa-process-title">How our visa assistance works</div>
+      </div>
+      <div class="visa-process-grid">
+        <div class="visa-process-card">
+          <div class="visa-process-num">01</div>
+          <div class="visa-process-icon-wrap"><i class="fa-solid fa-file-pen"></i></div>
+          <div class="visa-process-step-title">Request assistance</div>
+          <div class="visa-process-step-desc">Contact us via WhatsApp or call. Tell us your destination and travel dates
+            — we'll take it from there.</div>
+        </div>
+        <div class="visa-process-card">
+          <div class="visa-process-num">02</div>
+          <div class="visa-process-icon-wrap"><i class="fa-solid fa-list-check"></i></div>
+          <div class="visa-process-step-title">Get your checklist</div>
+          <div class="visa-process-step-desc">We send a personalised document checklist within 24 hours — specific to
+            your passport, destination and travel dates.</div>
+        </div>
+        <div class="visa-process-card">
+          <div class="visa-process-num">03</div>
+          <div class="visa-process-icon-wrap"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <div class="visa-process-step-title">We review and submit</div>
+          <div class="visa-process-step-desc">Our team checks everything before it goes to the embassy — reducing the
+            chance of rejection.</div>
+        </div>
+        <div class="visa-process-card">
+          <div class="visa-process-num">04</div>
+          <div class="visa-process-icon-wrap"><i class="fa-solid fa-satellite-dish"></i></div>
+          <div class="visa-process-step-title">Track and travel</div>
+          <div class="visa-process-step-desc">We monitor your application and notify you the moment a decision is
+            received. Then you pack.</div>
+        </div>
+      </div>
+      <div class="visa-process-cta">
+        <a href="https://wa.me/2349000000000" class="btn btn-primary" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i> Start your visa process
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SEARCH + FILTER ───────────────────────────────── -->
+  <div class="visa-filter-bar">
+    <div class="visa-filter-bar-inner">
+      <div class="visa-search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="visa-search-input" type="text" id="visaSearchInput"
+          placeholder="Search by country e.g. France, UAE, Maldives…" />
+      </div>
+      <div class="visa-filter-chips">
+        <div class="visa-filter-chip active" onclick="setFilter(this,'all')">
+          <i class="fa-solid fa-globe"></i> All
+        </div>
+        <div class="visa-filter-chip" onclick="setFilter(this,'required')">
+          <i class="fa-solid fa-stamp"></i> Visa Required
+        </div>
+        <div class="visa-filter-chip" onclick="setFilter(this,'free')">
+          <i class="fa-solid fa-circle-check"></i> Visa Free
+        </div>
+        <div class="visa-filter-chip" onclick="setFilter(this,'arrival')">
+          <i class="fa-solid fa-plane-arrival"></i> On Arrival
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DESTINATION CARDS ─────────────────────────────── -->
+  <div class="visa-cards-section">
+    <div class="visa-cards-section-inner">
+      <div class="visa-cards-header">
+        <div>
+          <div class="visa-cards-title">Browse by country</div>
+          <div class="visa-cards-sub">Visa requirements for Nigerian passport holders</div>
+        </div>
+        <div class="visa-cards-count" id="visaCardsCount">Loading…</div>
+      </div>
+      <div class="visa-cards-grid" id="visaCardsGrid">
+        <div class="visa-empty">
+          <i class="fa-solid fa-earth-africa"></i>
+          <h3>Loading destinations…</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DISCLAIMER ────────────────────────────────────── -->
+  <div class="visa-disclaimer">
+    <div class="visa-disclaimer-inner">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p>Visa information on this page is a general guide for Nigerian passport holders, accurate as of June 2026.
+        Immigration rules change frequently — always verify current requirements with the official embassy or consulate
+        before travel. We take no responsibility for inaccuracies.</p>
+    </div>
+  </div>
+
+  <!-- ─── OUR SERVICE — FLOATING BUBBLES ───────────────── -->
+  <div class="visa-service">
+    <div class="visa-service-inner">
+      <div class="visa-service-eyebrow">Our Service</div>
+      <div class="visa-service-title">We handle the paperwork.<br>You pack.</div>
+      <div class="visa-service-sub">Our team works alongside you through every step of the visa process — from documents
+        to submission to tracking. We know what embassies look for.</div>
+
+      <div class="visa-bubbles">
+
+        <div class="bub-float xl fl-1">
+          <div class="bub c-blue">
+            <div class="bub-icon" style="color:#1BB3F5"><i class="fa-solid fa-file-lines"></i></div>
+            <div class="bub-label">Personalised<br>checklist</div>
+          </div>
+        </div>
+
+        <div class="bub-float lg fl-2">
+          <div class="bub c-green">
+            <div class="bub-icon" style="color:#59AA47"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <div class="bub-label">Application<br>review</div>
+          </div>
+        </div>
+
+        <div class="bub-float md fl-3">
+          <div class="bub c-purple">
+            <div class="bub-icon" style="color:#793CAA"><i class="fa-solid fa-satellite-dish"></i></div>
+            <div class="bub-label">Status<br>tracking</div>
+          </div>
+        </div>
+
+        <div class="bub-float lg fl-4">
+          <div class="bub c-orange">
+            <div class="bub-icon" style="color:#F47B20"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="bub-label">Embassy<br>fees</div>
+          </div>
+        </div>
+
+        <div class="bub-float sm fl-5">
+          <div class="bub c-blue">
+            <div class="bub-icon" style="color:#1BB3F5"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="bub-label">Embassy<br>liaison</div>
+          </div>
+        </div>
+
+        <div class="bub-float xl fl-6">
+          <div class="bub c-green">
+            <div class="bub-icon" style="color:#59AA47"><i class="fa-solid fa-passport"></i></div>
+            <div class="bub-label">Passport<br>guidance</div>
+          </div>
+        </div>
+
+        <div class="bub-float md fl-7">
+          <div class="bub c-pink">
+            <div class="bub-icon" style="color:#D651D7"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="bub-label">Insurance<br>guidance</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── BOTTOM CTA — WHITE ────────────────────────────── -->
+  <div class="visa-cta">
+    <div class="visa-cta-inner">
+      <div class="visa-cta-label">Ready to travel?</div>
+      <div class="visa-cta-title">Get your visa sorted today.</div>
+      <div class="visa-cta-sub">Reach out to our visa team — we'll guide you through every step from document checklist
+        to decision day.</div>
+      <div class="visa-cta-actions">
+        <a href="https://wa.me/2349000000000" class="btn btn-primary" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+        <a href="tel:+2349000000000" class="btn btn-outline">
+          <i class="fa-solid fa-phone"></i> Call Us
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+            </span>
+          </a>
+          <p>Bundled travel packages for Nigerian travellers. Working prototype. Sample data. Not a live product.</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Services</div>
+          <ul class="footer-links">
+            <li><a href="visa.html">Visa Assistance</a></li>
+            <li><a href="index.html#packages">Travel Packages</a></li>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Contact Us</div>
+          <ul class="footer-links">
+            <li><a href="https://wa.me/2349000000000" target="_blank"><i class="fa-brands fa-whatsapp"
+                  style="font-size:11px;margin-right:5px"></i>WhatsApp</a></li>
+            <li><a href="tel:+2349000000000"><i class="fa-solid fa-phone"
+                  style="font-size:11px;margin-right:5px"></i>Call Us</a></li>
+            <li><a href="index.html#faqGrid">FAQs</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      <div class="footer-bottom">
+        <p>Packages demo · Working prototype. Sample data. Not a live product.</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:13px;">Visa info is a general guide. Always verify with the
+          official embassy.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── DARK MODE TOGGLE ──────────────────────────────── -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <span class="icon-light"><i class="fa-solid fa-moon"></i></span>
+    <span class="toggle-label label-dark">Dark mode</span>
+    <span class="icon-dark"><i class="fa-solid fa-sun"></i></span>
+    <span class="toggle-label label-light">Light mode</span>
+  </button>
+
+  <script>
+    /* ── Dark mode ── */
+    function initDarkMode() {
+      const btn = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('ts-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      btn.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('ts-theme', next);
+      });
+    }
+
+    /* ── Hamburger ── */
+    function initHamburger() {
+      const hamburger = document.getElementById('navHamburger');
+      const mobileMenu = document.getElementById('navMobileMenu');
+      const backdrop = document.getElementById('navMobileBackdrop');
+      if (!hamburger || !mobileMenu) return;
+      function closeMenu() {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        if (backdrop) backdrop.classList.remove('open');
+      }
+      hamburger.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('open', open);
+        hamburger.setAttribute('aria-expanded', String(open));
+        if (backdrop) backdrop.classList.toggle('open', open);
+      });
+      if (backdrop) backdrop.addEventListener('click', closeMenu);
+      document.addEventListener('click', e => {
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMenu();
+      });
+    }
+
+    /* ── State ── */
+    let allEntries = [];
+    let activeFilter = 'all';
+
+    /* ── Load from localStorage ── */
+    function loadVisaData() {
+      const stored = localStorage.getItem('ts-visa');
+      if (!stored) { renderCards([]); return; }
+      const raw = JSON.parse(stored);
+      allEntries = (Array.isArray(raw) ? raw : Object.values(raw))
+        .filter(v => v.status === 'published');
+      updateHeroStats();
+      renderCards(allEntries);
+    }
+
+    function updateHeroStats() {
+      const totalEl = document.getElementById('heroStatTotal');
+      if (totalEl) totalEl.textContent = allEntries.length + '+';
+      const freeEl = document.getElementById('heroFreeCount');
+      if (freeEl) {
+        const freeCount = allEntries.filter(v =>
+          (v.visa_tags || []).some(t => t.cls === 'visa-tag-free')
+        ).length;
+        freeEl.textContent = freeCount + ' destinations';
+      }
+    }
+
+    /* ── Filter ── */
+    function setFilter(el, filter) {
+      activeFilter = filter;
+      document.querySelectorAll('.visa-filter-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('visaSearchInput')?.value?.toLowerCase() || '';
+      const filtered = allEntries.filter(v => {
+        const matchQ = !q
+          || v.destination.toLowerCase().includes(q)
+          || (v.country || '').toLowerCase().includes(q);
+        const tags = v.visa_tags || [];
+        const matchF =
+          activeFilter === 'all'
+          || (activeFilter === 'required' && tags.some(t => t.cls === 'visa-tag-required'))
+          || (activeFilter === 'free' && tags.some(t => t.cls === 'visa-tag-free'))
+          || (activeFilter === 'arrival' && tags.some(t => t.cls === 'visa-tag-arrival'));
+        return matchQ && matchF;
+      });
+      renderCards(filtered);
+    }
+
+    /* ── Status bar colour ── */
+    function getStatusBar(tags) {
+      if (!tags || !tags.length) return 'bar-blue';
+      const cls = tags[0].cls;
+      if (cls === 'visa-tag-free') return 'bar-green';
+      if (cls === 'visa-tag-arrival') return 'bar-orange';
+      if (cls === 'visa-tag-required') return 'bar-red';
+      if (cls === 'visa-tag-evisa') return 'bar-purple';
+      return 'bar-blue';
+    }
+
+    /* ── Render portrait cards ── */
+    function renderCards(entries) {
+      const grid = document.getElementById('visaCardsGrid');
+      const counter = document.getElementById('visaCardsCount');
+      if (counter) {
+        counter.textContent = entries.length + ' countr' + (entries.length !== 1 ? 'ies' : 'y');
+      }
+      if (!entries.length) {
+        grid.innerHTML = `
+          <div class="visa-empty">
+            <i class="fa-solid fa-earth-africa"></i>
+            <h3>No destinations match your search</h3>
+            <p>Try adjusting your filter or search term.</p>
+          </div>`;
+        return;
+      }
+      grid.innerHTML = entries.map(v => {
+        const tags = (v.visa_tags || []).map(t => `<span class="visa-tag ${t.cls}">${t.text}</span>`).join('');
+        const barCls = getStatusBar(v.visa_tags);
+        const flagCode = (v.country_code || '').toLowerCase();
+        const flagHtml = flagCode ? `<div class="visa-card-flag"><span class="fi fi-${flagCode}"></span></div>` : '';
+        const costFact = v.visa_cost
+          ? `<div class="visa-card-fact"><i class="fa-solid fa-credit-card"></i><strong>${v.visa_cost}</strong></div>` : '';
+        const timeFact = v.processing_time
+          ? `<div class="visa-card-fact"><i class="fa-regular fa-clock"></i>${v.processing_time}</div>` : '';
+        const seasFact = v.best_season
+          ? `<div class="visa-card-fact"><i class="fa-solid fa-sun"></i>${v.best_season}</div>` : '';
+        return `
+          <div class="visa-card"
+               onclick="window.location='visa-detail.html?id=${v.id}'"
+               role="link" tabindex="0"
+               onkeypress="if(event.key==='Enter') window.location='visa-detail.html?id=${v.id}'">
+            <div class="visa-card-img">
+              <div class="visa-card-status-bar ${barCls}"></div>
+              <img src="${v.hero || ''}" alt="${v.country || v.destination}"
+                   onerror="this.parentElement.style.background='#0D1C28'" />
+              <div class="visa-card-img-overlay"></div>
+              <div class="visa-card-flag-overlay">
+                ${flagHtml}
+                <div class="visa-card-country-overlay">${v.country || v.destination}</div>
+              </div>
+            </div>
+            <div class="visa-card-body">
+              <div class="visa-card-tags">${tags}</div>
+              <div class="visa-card-facts">${costFact}${timeFact}${seasFact}</div>
+              <div class="visa-card-footer">
+                <div class="visa-card-cta">
+                  View requirements <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    /* ── Init ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      initDarkMode();
+      initHamburger();
+      loadVisaData();
+      document.getElementById('visaSearchInput')
+        ?.addEventListener('input', applyFilters);
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Package Manager – Packages demo</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/labs/packages/demo/vendor/tabler/tabler-icons.css" />
+  <link rel="stylesheet" href="/labs/packages/demo/vendor/fa/css/all.min.css" />
+  <style>
+    /* Visa chip FA icon alignment */
+    .chip i { font-size: 11px; margin-right: 4px; vertical-align: middle; }
+  </style>
+  <meta name="robots" content="noindex" />
+  <script src="/labs/packages/demo/demo.js"></script>
+</head>
+<body>
+
+<!-- ─── LOGIN SCREEN ─────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1 class="login-title">Package Manager</h1>
+    <p class="login-sub">Demo CMS · Working prototype. Sample data. Not a live product.</p>
+    <form id="login-form">
+        <label class="login-label" for="login-username">Username</label>
+        <input class="login-input" type="text" id="login-username" placeholder="Enter your username" autocomplete="username"
+            required />
+        <label class="login-label" for="login-pw" style="margin-top:12px">Password</label>
+        <input class="login-input" type="password" id="login-pw" placeholder="Enter your password"
+            autocomplete="current-password" required />
+        <button class="login-btn" type="submit">Sign in</button>
+        <div class="login-err" id="login-err">Incorrect username or password.</div>
+        </form>
+  </div>
+</div>
+
+<!-- ─── APP SHELL ─────────────────────────────────────── -->
+<div id="app-shell">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sb-brand">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#fff">Package Manager</div>
+        <div class="sb-brand-tag">Admin</div>
+      </div>
+    </div>
+
+    <div class="sb-nav">
+      <div class="sb-section">Content</div>
+      <div class="sb-link active" data-view="packages" onclick="showView('packages')">
+        <i class="ti ti-package" aria-hidden="true"></i>
+        Packages
+        <span class="sb-badge" id="sb-badge">0</span>
+      </div>
+      <div class="sb-link" data-view="visa" onclick="showView('visa')">
+        <i class="ti ti-id-badge" aria-hidden="true"></i>
+        Visa Info
+        <span class="sb-badge" id="visa-sb-badge">0</span>
+      </div>
+      <div class="sb-link" data-view="destinations" onclick="showView('destinations')">
+        <i class="ti ti-map-pin" aria-hidden="true"></i>
+        Destinations
+      </div>
+      <div class="sb-link" data-view="media" onclick="showView('media')">
+        <i class="ti ti-photo" aria-hidden="true"></i>
+        Media
+      </div>
+
+    <div class="sb-section" style="margin-top:12px">Management</div>
+    <div class="sb-link" id="sb-link-users" data-view="users" onclick="showView('users')">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        Users
+        <span class="sb-badge" id="users-sb-badge">0</span>
+    </div>
+    <div class="sb-link" id="sb-link-categories" data-view="categories" onclick="showView('categories')">
+        <i class="ti ti-tags" aria-hidden="true"></i>
+        Categories
+    </div>
+
+      <div class="sb-section" style="margin-top:12px">Tools</div>
+      <div class="sb-link" onclick="exportData()">
+        <i class="ti ti-download" aria-hidden="true"></i>
+        Export packages-data.js
+      </div>
+      <div class="sb-link" onclick="window.open('../index.html')">
+        <i class="ti ti-external-link" aria-hidden="true"></i>
+        View live page
+      </div>
+    </div>
+
+    <div class="sb-footer">
+        <div class="sb-user">
+            <div class="sb-avatar role-admin" id="sb-avatar">T</div>
+            <div>
+                <div class="sb-user-name" id="sb-user-name">Loading…</div>
+                <div class="sb-user-role" id="sb-user-role">—</div>
+            </div>
+            <div class="sb-logout" onclick="logout()" title="Sign out" aria-label="Sign out">
+                <i class="ti ti-logout" aria-hidden="true"></i>
+            </div>    </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- ── PACKAGES LIST VIEW ── -->
+    <div class="view active" id="view-packages" style="flex-direction:column">
+      <div class="topbar">
+        <div class="topbar-left">
+          <span class="topbar-title">Packages</span>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openAdd()">
+            <i class="ti ti-plus" aria-hidden="true"></i> Add Package
+          </button>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total packages</div>
+            <div class="stat-value" id="stat-total">0</div>
+            <div class="stat-sub">All destinations</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Published</div>
+            <div class="stat-value green" id="stat-live">0</div>
+            <div class="stat-sub">Live on site</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Drafts</div>
+            <div class="stat-value blue" id="stat-draft">0</div>
+            <div class="stat-sub">Not yet published</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Categories</div>
+            <div class="stat-value">7</div>
+            <div class="stat-sub">Budget to Business</div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <i class="ti ti-search" aria-hidden="true"></i>
+              <input type="text" id="search-input" placeholder="Search packages…" />
+            </div>
+            <select class="filter-select" id="filter-status">
+              <option value="all">All statuses</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pkg-table-wrap">
+          <table class="pkg-table">
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Categories</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Tier</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pkg-tbody">
+              <tr class="empty-row">
+                <td colspan="7"><i class="ti ti-loader"></i><p>Loading…</p></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-footer">
+            <div id="pagination-bar" class="pagination-bar"></div>
+            <button class="btn btn-sm" onclick="exportData()">
+              <i class="ti ti-download" aria-hidden="true"></i> Export packages-data.js
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EDIT / ADD VIEW ── -->
+    <div class="view" id="view-edit" style="flex-direction:column">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-ghost btn-sm" onclick="cancelEdit()">
+            <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+          </button>
+          <span class="topbar-title" id="edit-title">Add Package</span>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-danger btn-sm" id="delete-btn"
+            onclick="deletePackage(editingId)" style="display:none">
+            <i class="ti ti-trash" aria-hidden="true"></i> Delete
+          </button>
+          <button class="btn btn-sm" onclick="savePackage('draft')">
+            <i class="ti ti-file" aria-hidden="true"></i> Save draft
+          </button>
+          <button class="btn btn-success btn-sm" onclick="savePackage('published')">
+            <i class="ti ti-check" aria-hidden="true"></i> Save &amp; publish
+          </button>
+        </div>
+      </div>
+
+      <div class="page-body">
+        <div class="edit-layout">
+          <div class="edit-main">
+            <div class="tab-bar">
+              <button class="tab-btn active" data-tab="tab-basics" onclick="activateTab('tab-basics')">
+                <i class="ti ti-forms" aria-hidden="true"></i> Basics
+              </button>
+              <button class="tab-btn" data-tab="tab-media" onclick="activateTab('tab-media')">
+                <i class="ti ti-photo" aria-hidden="true"></i> Images
+              </button>
+              <button class="tab-btn" data-tab="tab-includes" onclick="activateTab('tab-includes')">
+                <i class="ti ti-list-check" aria-hidden="true"></i> Includes
+              </button>
+              <button class="tab-btn" data-tab="tab-itinerary" onclick="activateTab('tab-itinerary')">
+                <i class="ti ti-calendar" aria-hidden="true"></i> Itinerary
+              </button>
+              <button class="tab-btn" data-tab="tab-facts" onclick="activateTab('tab-facts')">
+                <i class="ti ti-info-circle" aria-hidden="true"></i> Dest. Facts
+              </button>
+              <button class="tab-btn" data-tab="tab-todo" onclick="activateTab('tab-todo')">
+                <i class="ti ti-map-pin" aria-hidden="true"></i> Things to Do
+              </button>
+              <button class="tab-btn" data-tab="tab-cats" onclick="activateTab('tab-cats')">
+                <i class="ti ti-tag" aria-hidden="true"></i> Categories &amp; Visa
+              </button>
+            </div>
+
+            <!-- Basics -->
+            <div class="tab-panel active" id="tab-basics">
+              <div class="form-section">
+                <div class="form-section-title">Package details</div>
+                <div class="form-grid" style="margin-bottom:14px">
+                  <div class="form-col">
+                    <label class="form-label" for="f-name">Package name <span class="req">*</span></label>
+                    <input class="form-input" type="text" id="f-name" placeholder="e.g. Dubai Desert Escape" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-destination">Destination <span class="req">*</span></label>
+                    <input class="form-input" type="text" id="f-destination" placeholder="e.g. Dubai, UAE" />
+                  </div>
+                  <div class="form-col full">
+                    <label class="form-label" for="f-overview">Overview / description</label>
+                    <textarea class="form-textarea" id="f-overview"
+                      placeholder="Short description shown on the package detail page…"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="form-section">
+                <div class="form-section-title">Pricing &amp; duration</div>
+                <div class="form-grid-4">
+                  <div class="form-col">
+                    <label class="form-label" for="f-price">Starting price</label>
+                    <input class="form-input" type="text" id="f-price" placeholder="₦1,150,000" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-days">Days</label>
+                    <input class="form-input" type="number" id="f-days" min="1" max="30" placeholder="5" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-nights">Nights</label>
+                    <input class="form-input" type="number" id="f-nights" min="1" max="30" placeholder="4" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-tier">Price tier</label>
+                    <select class="form-select" id="f-tier">
+                      <option value="budget">Budget</option>
+                      <option value="mid" selected>Mid-range</option>
+                      <option value="premium">Premium</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-section">
+                <div class="form-section-title">Card highlights &amp; badge</div>
+                <div class="form-col full" style="margin-bottom:14px">
+                  <label class="form-label" for="f-highlights">Highlights (comma separated — shown on package card)</label>
+                  <input class="form-input" type="text" id="f-highlights"
+                    placeholder="4-Star Hotel, Desert Safari, City Tour" />
+                </div>
+                <div class="form-grid">
+                  <div class="form-col">
+                    <label class="form-label" for="f-badge-text">Badge text (optional)</label>
+                    <input class="form-input" type="text" id="f-badge-text"
+                      placeholder="e.g. Popular / Best Value / Luxury" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-badge-cls">Badge colour</label>
+                    <select class="form-select" id="f-badge-cls">
+                      <option value="">Default orange</option>
+                      <option value="green">Green</option>
+                      <option value="purple">Purple</option>
+                      <option value="pink">Pink</option>
+                      <option value="brown">Brown</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-section">
+                <div class="form-section-title">Package validity</div>
+                <div class="form-grid">
+                  <div class="form-col">
+                    <label class="form-label" for="f-valid-from">Valid from</label>
+                    <input class="form-input" type="text" id="f-valid-from" placeholder="e.g. Oct 2026" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-valid-to">Valid to</label>
+                    <input class="form-input" type="text" id="f-valid-to" placeholder="e.g. Apr 2027" />
+                  </div>
+                </div>
+                <p class="form-hint" style="margin-top:8px;font-size:12px;color:var(--muted)">
+                  Shown on the package card as "Valid: Oct 2026 – Apr 2027". Leave blank to hide the validity line.
+                </p>
+              </div>
+            </div>
+
+            <!-- Images -->
+            <div class="tab-panel" id="tab-media">
+              <div class="form-section">
+                <div class="form-section-title">Package images</div>
+                <p class="form-hint" style="margin-bottom:18px">
+                  Paste image URLs. Sample illustrations live in /labs/packages/demo/img/.
+                </p>
+                <div class="form-grid">
+                  <div class="form-col">
+                    <label class="form-label" for="f-hero">Hero image (detail page banner)</label>
+                    <input class="form-input" type="text" id="f-hero" placeholder="https://…"
+                      oninput="previewImg('f-hero','prev-hero')" />
+                    <div class="img-preview-box" id="prev-hero">
+                      <span><i class="ti ti-photo" style="font-size:24px;display:block;margin-bottom:4px;opacity:.3"></i>Preview</span>
+                    </div>
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-card-img">Card image (landing page)</label>
+                    <input class="form-input" type="text" id="f-card-img" placeholder="https://…"
+                      oninput="previewImg('f-card-img','prev-card')" />
+                    <div class="img-preview-box" id="prev-card">
+                      <span><i class="ti ti-photo" style="font-size:24px;display:block;margin-bottom:4px;opacity:.3"></i>Preview</span>
+                    </div>
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="f-dest-img">Destination tile image</label>
+                    <input class="form-input" type="text" id="f-dest-img" placeholder="https://…"
+                      oninput="previewImg('f-dest-img','prev-dest')" />
+                    <div class="img-preview-box" id="prev-dest">
+                      <span><i class="ti ti-photo" style="font-size:24px;display:block;margin-bottom:4px;opacity:.3"></i>Preview</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Includes / Excludes -->
+            <div class="tab-panel" id="tab-includes">
+              <div class="form-grid">
+                <div class="form-col">
+                  <div class="form-section-title">What's included</div>
+                  <p class="form-hint" style="margin-bottom:12px">
+                    Icon + description. These appear on the detail page.
+                  </p>
+                  <div id="includes-list"></div>
+                  <button class="btn btn-sm" onclick="addIncludeRow()" style="margin-top:8px">
+                    <i class="ti ti-plus" aria-hidden="true"></i> Add item
+                  </button>
+                </div>
+                <div class="form-col">
+                  <div class="form-section-title">What's not included</div>
+                  <p class="form-hint" style="margin-bottom:12px">
+                    These appear under "Good to know" on the detail page.
+                  </p>
+                  <div id="excludes-list"></div>
+                  <button class="btn btn-sm" onclick="addExcludeRow()" style="margin-top:8px">
+                    <i class="ti ti-plus" aria-hidden="true"></i> Add item
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Itinerary -->
+            <div class="tab-panel" id="tab-itinerary">
+              <div class="form-section-title">Day-by-day itinerary</div>
+              <p class="form-hint" style="margin-bottom:16px">Add one card per day. Days are numbered automatically.</p>
+              <div id="itinerary-list"></div>
+              <button class="btn btn-sm" onclick="addItinRow()">
+                <i class="ti ti-plus" aria-hidden="true"></i> Add day
+              </button>
+            </div>
+
+            <!-- Destination facts -->
+            <div class="tab-panel" id="tab-facts">
+              <div class="form-section-title">Destination quick facts</div>
+              <p class="form-hint" style="margin-bottom:16px">
+                These appear as the facts strip on the detail page (visa, best season, currency, weather).
+                Icon + label + value.
+              </p>
+              <div id="facts-list"></div>
+              <button class="btn btn-sm" onclick="addFactRow()">
+                <i class="ti ti-plus" aria-hidden="true"></i> Add fact
+              </button>
+            </div>
+
+            <!-- Things to Do -->
+            <div class="tab-panel" id="tab-todo">
+              <div class="form-section-title">Things to do</div>
+              <p class="form-hint" style="margin-bottom:16px">
+                List top attractions and activities. Shown as tiles on the detail page.
+              </p>
+              <div id="todo-list"></div>
+              <button class="btn btn-sm" onclick="addTodoRow()">
+                <i class="ti ti-plus" aria-hidden="true"></i> Add activity
+              </button>
+            </div>
+
+            <!-- Categories & Visa -->
+            <div class="tab-panel" id="tab-cats">
+              <div class="form-grid">
+                <div class="form-col">
+                  <div class="form-section-title">Category tabs</div>
+                  <p class="form-hint" style="margin-bottom:12px">
+                    Package always appears in "All Packages". Select additional tabs below.
+                  </p>
+                  <div class="chip-wrap" id="cat-chips">
+                    <div class="chip" data-val="budget" onclick="toggleChip(this)">Budget Getaways</div>
+                    <div class="chip" data-val="luxury" onclick="toggleChip(this)">Luxury Escapes</div>
+                    <div class="chip" data-val="family" onclick="toggleChip(this)">Family Trips</div>
+                    <div class="chip" data-val="romantic" onclick="toggleChip(this)">Romantic Vacations</div>
+                    <div class="chip" data-val="adventure" onclick="toggleChip(this)">Adventure Tours</div>
+                    <div class="chip" data-val="business" onclick="toggleChip(this)">Business</div>
+                  </div>
+                  <div class="form-col" style="margin-top:20px">
+                    <label class="form-label" for="f-cat-label">Category label (shown on detail page)</label>
+                    <input class="form-input" type="text" id="f-cat-label" placeholder="e.g. Adventure &amp; City" />
+                  </div>
+                </div>
+                <div class="form-col">
+                  <div class="form-section-title">Visa &amp; entry requirements</div>
+                  <p class="form-hint" style="margin-bottom:12px">
+                    Select all that apply. Tags appear on the package card and detail page.
+                  </p>
+                  <div class="chip-wrap" id="visa-chips">
+                    <div class="chip" data-cls="visa-tag-required" data-text="Visa Required" onclick="toggleChip(this)">
+                      <i class="fa-solid fa-stamp"></i> Visa Required
+                    </div>
+                    <div class="chip" data-cls="visa-tag-free" data-text="Visa Free" onclick="toggleChip(this)">
+                      <i class="fa-solid fa-circle-check"></i> Visa Free
+                    </div>
+                    <div class="chip" data-cls="visa-tag-arrival" data-text="Visa on Arrival" onclick="toggleChip(this)">
+                      <i class="fa-solid fa-plane-arrival"></i> Visa on Arrival
+                    </div>
+                    <div class="chip" data-cls="visa-tag-evisa" data-text="eVisa Required" onclick="toggleChip(this)">
+                      <i class="fa-solid fa-globe"></i> eVisa Required
+                    </div>
+                    <div class="chip" data-cls="visa-tag-included" data-text="Visa Included" onclick="toggleChip(this)">
+                      <i class="fa-solid fa-circle-check"></i> Visa Included
+                    </div>
+                    <div class="chip" data-cls="visa-tag-insurance" data-text="Insurance Compulsory" onclick="toggleChip(this)">
+                      <i class="fa-solid fa-shield-halved"></i> Insurance Compulsory
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /edit-main -->
+
+          <!-- Right sidebar -->
+          <div class="edit-sidebar-panel">
+            <div class="side-card">
+              <div class="side-card-title">Publish status</div>
+              <div class="status-options">
+                <div class="status-opt active" data-status="published" onclick="setStatusUI('published')">
+                  <div class="status-dot live"></div>
+                  <div>
+                    <div class="status-opt-label">Published</div>
+                    <div class="status-opt-desc">Visible on live page</div>
+                  </div>
+                </div>
+                <div class="status-opt" data-status="draft" onclick="setStatusUI('draft')">
+                  <div class="status-dot draft"></div>
+                  <div>
+                    <div class="status-opt-label">Draft</div>
+                    <div class="status-opt-desc">Hidden from live page</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+                <button class="btn btn-success" onclick="savePackage('published')">
+                  <i class="ti ti-check" aria-hidden="true"></i> Save &amp; publish
+                </button>
+                <button class="btn" onclick="savePackage('draft')">
+                  <i class="ti ti-file" aria-hidden="true"></i> Save as draft
+                </button>
+              </div>
+            </div>
+            <div class="side-card" id="entry-info-card">
+                <div class="side-card-title">Entry info</div>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+                    <div class="visa-info-row" style="padding:5px 0">
+                        <span style="color:var(--muted)">Created by</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-created-by">—</span>
+                    </div>
+                    <div class="visa-info-row" style="padding:5px 0">
+                        <span style="color:var(--muted)">Created</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-created-at">—</span>
+                    </div>
+                    <div class="visa-info-row" style="padding:5px 0;border:none">
+                        <span style="color:var(--muted)">Last updated by</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-updated-by">—</span>
+                    </div>
+                    <div class="visa-info-row" style="padding:5px 0;border:none">
+                        <span style="color:var(--muted)">Updated</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-updated-at">—</span>
+                    </div>
+                </div>        
+            </div>
+            <div class="side-card">
+              <div class="side-card-title">Quick tips</div>
+              <ul style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--muted);line-height:1.55">
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px" aria-hidden="true"></i> Name is used to generate the package URL ID.</li>
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px" aria-hidden="true"></i> Price tier controls the budget feasibility filter on the request form.</li>
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px" aria-hidden="true"></i> Export packages-data.js after publishing to deploy changes to the server.</li>
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px" aria-hidden="true"></i> Images load live — paste a URL to preview instantly.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div><!-- /edit-layout -->
+      </div>
+    </div><!-- /view-edit -->
+
+    <!-- ── VISA LIST VIEW ── -->
+    <div class="view" id="view-visa" style="flex-direction:column">
+      <div class="topbar">
+        <div class="topbar-left"><span class="topbar-title">Visa Information</span></div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openVisaAdd()">
+            <i class="ti ti-plus" aria-hidden="true"></i> Add Destination
+          </button>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total destinations</div>
+            <div class="stat-value" id="visa-stat-total">0</div>
+            <div class="stat-sub">All visa entries</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Published</div>
+            <div class="stat-value green" id="visa-stat-live">0</div>
+            <div class="stat-sub">Live on visa page</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Drafts</div>
+            <div class="stat-value blue" id="visa-stat-draft">0</div>
+            <div class="stat-sub">Not published</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Coverage</div>
+            <div class="stat-value" style="font-size:18px">
+              <i class="fa-solid fa-passport" style="color:var(--green)"></i>
+            </div>
+            <div class="stat-sub">Nigerian passport holders</div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <i class="ti ti-search" aria-hidden="true"></i>
+              <input type="text" id="visa-search-input" placeholder="Search destinations…" />
+            </div>
+            <select class="filter-select" id="visa-filter-status">
+              <option value="all">All statuses</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pkg-table-wrap">
+          <table class="pkg-table">
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Visa Status</th>
+                <th>Visa Type</th>
+                <th>Cost</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="visa-tbody">
+              <tr class="empty-row">
+                <td colspan="6"><i class="ti ti-loader"></i><p>Loading…</p></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-footer">
+            <div id="visa-pagination-bar" class="pagination-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VISA EDIT VIEW ── -->
+    <div class="view" id="view-visa-edit" style="flex-direction:column">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-ghost btn-sm" onclick="cancelVisaEdit()">
+            <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+          </button>
+          <span class="topbar-title" id="visa-edit-title">Add Visa Destination</span>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-danger btn-sm" id="visa-delete-btn"
+            onclick="deleteVisa(visaEditingId)" style="display:none">
+            <i class="ti ti-trash" aria-hidden="true"></i> Delete
+          </button>
+          <button class="btn btn-sm" onclick="saveVisaEntry('draft')">
+            <i class="ti ti-file" aria-hidden="true"></i> Save draft
+          </button>
+          <button class="btn btn-success btn-sm" onclick="saveVisaEntry('published')">
+            <i class="ti ti-check" aria-hidden="true"></i> Save &amp; publish
+          </button>
+        </div>
+      </div>
+
+      <div class="page-body">
+        <div class="edit-layout">
+          <div class="edit-main">
+            <div class="tab-bar">
+              <button class="visa-tab-btn tab-btn active" data-tab="vtab-basics" onclick="activateVisaTab('vtab-basics')">
+                <i class="ti ti-forms"></i> Basics
+              </button>
+              <button class="visa-tab-btn tab-btn" data-tab="vtab-image" onclick="activateVisaTab('vtab-image')">
+                <i class="ti ti-photo"></i> Image
+              </button>
+              <button class="visa-tab-btn tab-btn" data-tab="vtab-docs" onclick="activateVisaTab('vtab-docs')">
+                <i class="ti ti-list-check"></i> Documents
+              </button>
+              <button class="visa-tab-btn tab-btn" data-tab="vtab-tags" onclick="activateVisaTab('vtab-tags')">
+                <i class="ti ti-tag"></i> Visa Tags
+              </button>
+              <button class="visa-tab-btn tab-btn" data-tab="vtab-notes" onclick="activateVisaTab('vtab-notes')">
+                <i class="ti ti-notes"></i> Notes
+              </button>
+            </div>
+
+            <!-- Basics -->
+            <div class="visa-tab-panel tab-panel active" id="vtab-basics">
+              <div class="form-section">
+                <div class="form-section-title">Destination details</div>
+                <div class="form-grid" style="margin-bottom:16px">
+                  <div class="form-col">
+                    <label class="form-label" for="vf-destination">Destination name <span class="req">*</span></label>
+                    <input class="form-input" type="text" id="vf-destination" placeholder="e.g. Dubai" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="vf-country">Country</label>
+                    <input class="form-input" type="text" id="vf-country" placeholder="e.g. United Arab Emirates" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="vf-country-code">Country flag</label>
+                    <select class="form-select" id="vf-country-code">
+                      <option value="">Select country</option>
+                      <option value="dz">Algeria</option>
+                      <option value="ao">Angola</option>
+                      <option value="au">Australia</option>
+                      <option value="at">Austria</option>
+                      <option value="bh">Bahrain</option>
+                      <option value="be">Belgium</option>
+                      <option value="bj">Benin</option>
+                      <option value="br">Brazil</option>
+                      <option value="cm">Cameroon</option>
+                      <option value="ca">Canada</option>
+                      <option value="cf">Central African Republic</option>
+                      <option value="cn">China</option>
+                      <option value="cd">Congo (DRC)</option>
+                      <option value="cg">Congo (Republic)</option>
+                      <option value="ci">Côte d'Ivoire</option>
+                      <option value="hr">Croatia</option>
+                      <option value="cy">Cyprus</option>
+                      <option value="cz">Czech Republic</option>
+                      <option value="dk">Denmark</option>
+                      <option value="eg">Egypt</option>
+                      <option value="et">Ethiopia</option>
+                      <option value="fi">Finland</option>
+                      <option value="fr">France</option>
+                      <option value="de">Germany</option>
+                      <option value="gh">Ghana</option>
+                      <option value="gr">Greece</option>
+                      <option value="hk">Hong Kong</option>
+                      <option value="in">India</option>
+                      <option value="id">Indonesia</option>
+                      <option value="ie">Ireland</option>
+                      <option value="il">Israel</option>
+                      <option value="it">Italy</option>
+                      <option value="jm">Jamaica</option>
+                      <option value="jp">Japan</option>
+                      <option value="jo">Jordan</option>
+                      <option value="ke">Kenya</option>
+                      <option value="kw">Kuwait</option>
+                      <option value="lb">Lebanon</option>
+                      <option value="my">Malaysia</option>
+                      <option value="mv">Maldives</option>
+                      <option value="mu">Mauritius</option>
+                      <option value="mx">Mexico</option>
+                      <option value="ma">Morocco</option>
+                      <option value="mz">Mozambique</option>
+                      <option value="na">Namibia</option>
+                      <option value="nl">Netherlands</option>
+                      <option value="nz">New Zealand</option>
+                      <option value="ng">Nigeria</option>
+                      <option value="no">Norway</option>
+                      <option value="om">Oman</option>
+                      <option value="pk">Pakistan</option>
+                      <option value="pt">Portugal</option>
+                      <option value="qa">Qatar</option>
+                      <option value="rw">Rwanda</option>
+                      <option value="sa">Saudi Arabia</option>
+                      <option value="sn">Senegal</option>
+                      <option value="sc">Seychelles</option>
+                      <option value="sg">Singapore</option>
+                      <option value="za">South Africa</option>
+                      <option value="es">Spain</option>
+                      <option value="se">Sweden</option>
+                      <option value="ch">Switzerland</option>
+                      <option value="tz">Tanzania</option>
+                      <option value="th">Thailand</option>
+                      <option value="tr">Turkey</option>
+                      <option value="ug">Uganda</option>
+                      <option value="ae">United Arab Emirates</option>
+                      <option value="gb">United Kingdom</option>
+                      <option value="us">United States</option>
+                      <option value="vn">Vietnam</option>
+                      <option value="zm">Zambia</option>
+                      <option value="zw">Zimbabwe</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-section-title">Visa details</div>
+                <div class="form-grid" style="margin-bottom:16px">
+                  <div class="form-col">
+                    <label class="form-label" for="vf-visa-type">Visa type</label>
+                    <input class="form-input" type="text" id="vf-visa-type"
+                      placeholder="e.g. Tourist Visa / Visa on Arrival" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="vf-visa-cost">Visa cost</label>
+                    <input class="form-input" type="text" id="vf-visa-cost"
+                      placeholder="e.g. $90 USD (approx. ₦140,000)" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="vf-processing">Processing time</label>
+                    <input class="form-input" type="text" id="vf-processing"
+                      placeholder="e.g. 3–5 business days" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="vf-where">Where to apply</label>
+                    <input class="form-input" type="text" id="vf-where"
+                      placeholder="e.g. Online via UAE ICA portal" />
+                  </div>
+                </div>
+
+                <div class="form-section-title">Destination info</div>
+                <div class="form-grid">
+                  <div class="form-col">
+                    <label class="form-label" for="vf-season">Best travel season</label>
+                    <input class="form-input" type="text" id="vf-season" placeholder="e.g. October – April" />
+                  </div>
+                  <div class="form-col">
+                    <label class="form-label" for="vf-currency">Currency</label>
+                    <input class="form-input" type="text" id="vf-currency"
+                      placeholder="e.g. UAE Dirham (AED) · 1 AED ≈ ₦430" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image -->
+            <div class="visa-tab-panel tab-panel" id="vtab-image">
+              <div class="form-section">
+                <div class="form-section-title">Destination image</div>
+                <p class="form-hint" style="margin-bottom:16px">
+                  Used as the hero image on the visa detail page and listing card.
+                </p>
+                <div class="form-col">
+                  <label class="form-label" for="vf-hero">Image URL</label>
+                  <input class="form-input" type="text" id="vf-hero" placeholder="https://…"
+                    oninput="visaPreviewImg('vf-hero','vprev-hero')" />
+                  <div class="img-preview-box" id="vprev-hero" style="margin-top:10px">
+                    <span><i class="ti ti-photo" style="font-size:24px;display:block;margin-bottom:4px;opacity:.3"></i>Preview</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documents -->
+            <div class="visa-tab-panel tab-panel" id="vtab-docs">
+              <div class="form-section">
+                <div class="form-section-title">Required documents</div>
+                <p class="form-hint" style="margin-bottom:16px">
+                  List every document Nigerian travellers need for this visa application. Add one per line.
+                </p>
+                <div id="vf-docs-list"></div>
+                <button class="btn btn-sm" onclick="addVisaDocRow()" style="margin-top:8px">
+                  <i class="ti ti-plus" aria-hidden="true"></i> Add document
+                </button>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="visa-tab-panel tab-panel" id="vtab-tags">
+              <div class="form-section">
+                <div class="form-section-title">Visa status tags</div>
+                <p class="form-hint" style="margin-bottom:14px">
+                  Select all that apply. These appear on the visa listing card and detail page.
+                </p>
+                <div class="chip-wrap" id="visa-status-chips">
+                  <div class="chip" data-cls="visa-tag-required" data-text="Visa Required" onclick="toggleVisaChip(this)">
+                    <i class="fa-solid fa-stamp"></i> Visa Required
+                  </div>
+                  <div class="chip" data-cls="visa-tag-free" data-text="Visa Free" onclick="toggleVisaChip(this)">
+                    <i class="fa-solid fa-circle-check"></i> Visa Free
+                  </div>
+                  <div class="chip" data-cls="visa-tag-arrival" data-text="Visa on Arrival" onclick="toggleVisaChip(this)">
+                    <i class="fa-solid fa-plane-arrival"></i> Visa on Arrival
+                  </div>
+                  <div class="chip" data-cls="visa-tag-evisa" data-text="eVisa Required" onclick="toggleVisaChip(this)">
+                    <i class="fa-solid fa-globe"></i> eVisa Required
+                  </div>
+                  <div class="chip" data-cls="visa-tag-included" data-text="Visa Included" onclick="toggleVisaChip(this)">
+                    <i class="fa-solid fa-circle-check"></i> Visa Included
+                  </div>
+                  <div class="chip" data-cls="visa-tag-insurance" data-text="Insurance Compulsory" onclick="toggleVisaChip(this)">
+                    <i class="fa-solid fa-shield-halved"></i> Insurance Compulsory
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="visa-tab-panel tab-panel" id="vtab-notes">
+              <div class="form-section">
+                <div class="form-section-title">Visa notes &amp; special instructions</div>
+                <p class="form-hint" style="margin-bottom:14px">
+                  Additional guidance shown on the visa detail page. Tips, warnings, embassy locations, appointment requirements etc.
+                </p>
+                <div class="form-col">
+                  <label class="form-label" for="vf-notes">Notes</label>
+                  <textarea class="form-textarea" id="vf-notes" style="min-height:160px"
+                    placeholder="e.g. UAE tourist visas for Nigerians are processed online. Approval is usually fast but not guaranteed…"></textarea>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /edit-main -->
+
+          <!-- Visa sidebar -->
+          <div class="edit-sidebar-panel">
+            <div class="side-card">
+              <div class="side-card-title">Publish status</div>
+              <div class="status-options" id="visa-status-opts">
+                <div class="status-opt active" data-status="published" onclick="setVisaStatusUI('published')">
+                  <div class="status-dot live"></div>
+                  <div>
+                    <div class="status-opt-label">Published</div>
+                    <div class="status-opt-desc">Visible on visa page</div>
+                  </div>
+                </div>
+                <div class="status-opt" data-status="draft" onclick="setVisaStatusUI('draft')">
+                  <div class="status-dot draft"></div>
+                  <div>
+                    <div class="status-opt-label">Draft</div>
+                    <div class="status-opt-desc">Hidden from visa page</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+                <button class="btn btn-success" onclick="saveVisaEntry('published')">
+                  <i class="ti ti-check"></i> Save &amp; publish
+                </button>
+                <button class="btn" onclick="saveVisaEntry('draft')">
+                  <i class="ti ti-file"></i> Save as draft
+                </button>
+              </div>
+            </div>
+            <div class="side-card" id="entry-info-card">
+                <div class="side-card-title">Entry info</div>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+                    <div class="visa-info-row" style="padding:5px 0">
+                        <span style="color:var(--muted)">Created by</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-created-by">—</span>
+                    </div>
+                    <div class="visa-info-row" style="padding:5px 0">
+                        <span style="color:var(--muted)">Created</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-created-at">—</span>
+                    </div>
+                    <div class="visa-info-row" style="padding:5px 0;border:none">
+                        <span style="color:var(--muted)">Last updated by</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-updated-by">—</span>
+                    </div>
+                    <div class="visa-info-row" style="padding:5px 0;border:none">
+                        <span style="color:var(--muted)">Updated</span>
+                        <span style="font-weight:600;color:var(--text)" id="info-updated-at">—</span>
+                    </div>
+                </div>        </div>
+            <div class="side-card">
+              <div class="side-card-title">Quick tips</div>
+              <ul style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--muted);line-height:1.55">
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> Destination name is used to match with packages automatically.</li>
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> If a matching package exists, a link appears on the visa detail page.</li>
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> All info is for Nigerian passport holders.</li>
+                <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> Keep processing times and costs updated — visa rules change.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /view-visa-edit -->
+
+    <!-- ── USERS LIST VIEW ── -->
+    <div class="view" id="view-users" style="flex-direction:column">
+        <div class="topbar">
+            <div class="topbar-left"><span class="topbar-title">Users</span></div>
+            <div class="topbar-right">
+                <button class="btn btn-primary" onclick="openUserAdd()">
+                    <i class="ti ti-plus" aria-hidden="true"></i> Add User
+                </button>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total users</div>
+                    <div class="stat-value" id="users-stat-total">0</div>
+                    <div class="stat-sub">All accounts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Administrators</div>
+                    <div class="stat-value" style="color:var(--red)" id="users-stat-admins">0</div>
+                    <div class="stat-sub">Full access</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Editors</div>
+                    <div class="stat-value" style="color:var(--orange)" id="users-stat-editors">0</div>
+                    <div class="stat-sub">Can publish</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Contributors</div>
+                    <div class="stat-value blue" id="users-stat-contributors">0</div>
+                    <div class="stat-sub">Draft only</div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <div class="search-box">
+                        <i class="ti ti-search" aria-hidden="true"></i>
+                        <input type="text" id="users-search-input" placeholder="Search users…" />
+                    </div>
+                </div>
+            </div>
+            <div class="pkg-table-wrap">
+                <table class="pkg-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                            <th>Last login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr class="empty-row">
+                            <td colspan="5"><i class="ti ti-loader"></i>
+                                <p>Loading…</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    <div id="users-pagination-bar" class="pagination-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ── USER EDIT VIEW ── -->
+    <div class="view" id="view-users-edit" style="flex-direction:column">
+        <div class="topbar">
+            <div class="topbar-left">
+                <button class="btn btn-ghost btn-sm" onclick="cancelUserEdit()">
+                    <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+                </button>
+                <span class="topbar-title" id="user-edit-title">Add User</span>
+            </div>
+            <div class="topbar-right">
+                <button class="btn btn-danger btn-sm" id="user-delete-btn" onclick="confirmDeleteUser(usersEditingId)"
+                    style="display:none">
+                    <i class="ti ti-trash" aria-hidden="true"></i> Delete
+                </button>
+                <button class="btn btn-success btn-sm" onclick="saveUser()">
+                    <i class="ti ti-check" aria-hidden="true"></i> Save User
+                </button>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="edit-layout">
+                <div class="edit-main">
+                    <div class="tab-bar">
+                        <button class="tab-btn active">
+                            <i class="ti ti-user" aria-hidden="true"></i> User Details
+                        </button>
+                    </div>
+                    <div class="tab-panel active" style="padding:22px">
+                        <div class="form-section">
+                            <div class="form-section-title">Account details</div>
+                            <div class="form-grid">
+                                <div class="form-col">
+                                    <label class="form-label" for="uf-name">Full name <span class="req">*</span></label>
+                                    <input class="form-input" type="text" id="uf-name" placeholder="e.g. Ada Obi" />
+                                </div>
+                                <div class="form-col">
+                                    <label class="form-label" for="uf-username">Username <span class="req">*</span></label>
+                                    <input class="form-input" type="text" id="uf-username" placeholder="e.g. chinedigwe" />
+                                </div>
+                                <div class="form-col">
+                                    <label class="form-label" for="uf-role">Role <span class="req">*</span></label>
+                                    <select class="form-select" id="uf-role">
+                                        <option value="contributor">Contributor</option>
+                                        <option value="editor">Editor</option>
+                                        <option value="admin">Administrator</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div class="form-section-title">Password</div>
+                            <div id="user-form-password-note" style="display:none;margin-bottom:12px">
+                                <p class="form-hint">Leave password blank to keep existing password.
+                                    <button class="btn btn-sm btn-ghost" onclick="showPasswordChange()"
+                                        style="margin-left:8px">
+                                        Change password
+                                    </button>
+                                </p>
+                            </div>
+                            <div id="user-form-password-wrap">
+                                <div class="form-col" style="max-width:320px">
+                                    <label class="form-label" for="uf-password">Password <span class="req">*</span></label>
+                                    <input class="form-input" type="password" id="uf-password"
+                                        placeholder="Min. 8 characters" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-sidebar-panel">
+                    <div class="side-card">
+                        <div class="side-card-title">Role permissions</div>
+                        <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--muted)">
+                            <div>
+                                <div style="font-weight:700;color:var(--red);margin-bottom:3px">Administrator</div>
+                                Full access. Manage users, categories, packages and visa. Can delete and publish anything.
+                            </div>
+                            <div>
+                                <div style="font-weight:700;color:var(--orange);margin-bottom:3px">Editor</div>
+                                Can create, edit, publish and unpublish. Can manage categories. Cannot manage users or
+                                delete entries.
+                            </div>
+                            <div>
+                                <div style="font-weight:700;color:var(--blue);margin-bottom:3px">Contributor</div>
+                                Can create and edit. Cannot publish — entries go to Pending Review for an Editor to approve.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CATEGORIES LIST VIEW ── -->
+    <div class="view" id="view-categories" style="flex-direction:column">
+        <div class="topbar">
+            <div class="topbar-left"><span class="topbar-title">Categories</span></div>
+            <div class="topbar-right">
+                <button class="btn btn-primary" onclick="openCatAdd()">
+                    <i class="ti ti-plus" aria-hidden="true"></i> Add Category
+                </button>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total categories</div>
+                    <div class="stat-value" id="cats-stat-total">0</div>
+                    <div class="stat-sub">All package categories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Default</div>
+                    <div class="stat-value green">6</div>
+                    <div class="stat-sub">Cannot be deleted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Custom</div>
+                    <div class="stat-value blue" id="cats-sb-count">0</div>
+                    <div class="stat-sub">Team-created</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Usage</div>
+                    <div class="stat-value">Auto</div>
+                    <div class="stat-sub">Updates package filters</div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <div class="search-box">
+                        <i class="ti ti-search" aria-hidden="true"></i>
+                        <input type="text" id="cats-search-input" placeholder="Search categories…" />
+                    </div>
+                </div>
+            </div>
+            <div class="pkg-table-wrap">
+                <table class="pkg-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Usage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cats-tbody">
+                        <tr class="empty-row">
+                            <td colspan="4"><i class="ti ti-loader"></i>
+                                <p>Loading…</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    <div id="cats-pagination-bar" class="pagination-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ── CATEGORY EDIT VIEW ── -->
+    <div class="view" id="view-categories-edit" style="flex-direction:column">
+        <div class="topbar">
+            <div class="topbar-left">
+                <button class="btn btn-ghost btn-sm" onclick="cancelCatEdit()">
+                    <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+                </button>
+                <span class="topbar-title" id="cat-edit-title">Add Category</span>
+            </div>
+            <div class="topbar-right">
+                <button class="btn btn-danger btn-sm" id="cat-delete-btn" onclick="confirmDeleteCat(catsEditingId)"
+                    style="display:none">
+                    <i class="ti ti-trash" aria-hidden="true"></i> Delete
+                </button>
+                <button class="btn btn-success btn-sm" onclick="saveCat()">
+                    <i class="ti ti-check" aria-hidden="true"></i> Save Category
+                </button>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="edit-layout">
+                <div class="edit-main">
+                    <div class="tab-bar">
+                        <button class="tab-btn active">
+                            <i class="ti ti-tag" aria-hidden="true"></i> Category Details
+                        </button>
+                    </div>
+                    <div class="tab-panel active" style="padding:22px">
+                        <div class="form-section">
+                            <div class="form-section-title">Category details</div>
+                            <div class="form-grid">
+                                <div class="form-col">
+                                    <label class="form-label" for="cf-label">
+                                        Category name <span class="req">*</span>
+                                    </label>
+                                    <input class="form-input" type="text" id="cf-label" placeholder="e.g. Weekend Getaways"
+                                        oninput="autoSlug()" />
+                                </div>
+                                <div class="form-col">
+                                    <label class="form-label" for="cf-slug">
+                                        Slug <span class="req">*</span>
+                                    </label>
+                                    <input class="form-input" type="text" id="cf-slug"
+                                        placeholder="e.g. weekend-getaways" />
+                                    <p class="form-hint">Auto-generated from name. Used internally to tag packages.</p>
+                                </div>
+                                <div class="form-col full">
+                                    <label class="form-label" for="cf-description">Description</label>
+                                    <textarea class="form-textarea" id="cf-description"
+                                        placeholder="Short description of this category shown to the team…"
+                                        style="min-height:80px"></textarea>
+                                </div>
+                                <div class="form-col">
+                                    <label class="form-label" for="cf-color">Category colour</label>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <input type="color" id="cf-color" value="#1BB3F5"
+                                            style="width:48px;height:38px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;padding:2px" />
+                                        <span class="form-hint" style="margin:0">Used as accent colour on category
+                                            chip</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-sidebar-panel">
+                    <div class="side-card">
+                        <div class="side-card-title">How categories work</div>
+                        <ul
+                            style="display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--muted);line-height:1.6">
+                            <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> Categories appear
+                                as filter tabs on the packages landing page.</li>
+                            <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> Assign categories
+                                to packages in the Categories &amp; Visa tab when editing a package.</li>
+                            <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> Default
+                                categories cannot be deleted — only renamed.</li>
+                            <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> Deleting a custom
+                                category removes it from any packages it was assigned to.</li>
+                            <li><i class="ti ti-bulb" style="color:var(--orange);vertical-align:-2px"></i> The slug must
+                                match exactly what the frontend tab uses.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placeholder views -->
+    <div class="view" id="view-destinations" style="flex-direction:column">
+      <div class="topbar"><span class="topbar-title">Destinations</span></div>
+      <div class="placeholder-view">
+        <i class="ti ti-map-pin" aria-hidden="true"></i>
+        <p>Destination management — coming in next version.</p>
+      </div>
+    </div>
+    <div class="view" id="view-media" style="flex-direction:column">
+      <div class="topbar"><span class="topbar-title">Media library</span></div>
+      <div class="placeholder-view">
+        <i class="ti ti-photo" aria-hidden="true"></i>
+        <p>Media library — coming in next version.</p>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app-shell -->
+
+<!-- ─── DELETE CONFIRMATION MODAL ─────────────────── -->
+<div class="delete-confirm-overlay" id="delete-confirm-modal">
+    <div class="delete-confirm-box">
+        <div class="delete-confirm-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="delete-confirm-title" id="delete-modal-title">Delete item</h3>
+        <p class="delete-confirm-message" id="delete-modal-message">Are you sure?</p>
+        <div class="delete-confirm-actions">
+            <button class="btn" onclick="closeDeleteConfirm()">Cancel</button>
+            <button class="btn btn-danger" onclick="confirmDeleteAction()">
+                <i class="fa-solid fa-trash"></i> Yes, delete
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="auth.js"></script>
+<script src="app.js"></script>
+<script src="visa-app.js"></script>
+<script src="users-app.js"></script>
+<script src="categories-app.js"></script>
+</body>
+</html>

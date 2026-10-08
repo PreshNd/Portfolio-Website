@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loading Package – Packages demo</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/labs/packages/demo/vendor/fa/css/all.min.css" />
+  <meta name="robots" content="noindex" />
+  <script src="/labs/packages/demo/demo.js"></script>
+</head>
+
+<body>
+
+  <canvas id="starCanvas"></canvas>
+
+  <!-- ─── NAV ──────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Packages</a></li>
+      </ul>
+      <a href="index.html#packages" class="nav-cta">Browse Packages</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <section class="hero-detail" id="detailHero">
+    <img id="detailHeroImg" src="/labs/packages/demo/img/dubai.svg"
+      alt="Package" />
+    <div class="hero-detail-overlay"></div>
+    <div style="padding:0 5%;max-width:1400px;margin:0 auto;position:relative;">
+      <div class="hero-detail-content">
+        <div class="breadcrumb" id="detailBreadcrumb">
+          <a href="index.html">Packages</a> &rsaquo; Loading…
+        </div>
+        <h1 class="pkg-title" id="detailTitle">Loading…</h1>
+        <div class="hero-detail-meta" id="detailMeta"></div>
+        <div class="hero-detail-actions">
+          <button class="btn btn-primary" data-open-modal>
+            <i class="fa-solid fa-paper-plane"></i> Request This Package
+          </button>
+          <a href="#itinerary" class="btn btn-secondary">
+            <i class="fa-solid fa-calendar-days"></i> View Itinerary
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MAIN CONTENT ──────────────────────────────────── -->
+  <section class="section">
+    <div class="detail-layout">
+
+      <!-- Left column -->
+      <div class="detail-main">
+
+        <!-- Overview -->
+        <div style="margin-bottom:48px">
+          <span class="section-label">Package Overview</span>
+          <h2 class="section-title" id="detailOverviewTitle">Experience the best</h2>
+          <p id="detailOverview" style="font-size:16px;color:#4a6070;line-height:1.75;max-width:680px">Loading…</p>
+        </div>
+
+        <!-- What's Included -->
+        <div style="margin-bottom:48px">
+          <span class="section-label">What's Included</span>
+          <h2 class="section-title" style="margin-bottom:24px">Everything you need</h2>
+          <div class="includes-grid" id="detailIncludes"></div>
+          <p
+            style="margin-top:16px;font-size:13px;color:#8a9caa;padding:12px 16px;background:var(--grey);border-radius:8px;border-left:3px solid var(--blue)">
+            <strong>Note:</strong> Hotel is allocated based on the star rating specified, subject to availability at
+            time of booking confirmation. Property name confirmed in your quote.
+          </p>
+        </div>
+
+        <!-- What's NOT Included -->
+        <div style="margin-bottom:48px">
+          <span class="section-label">What's Not Included</span>
+          <h2 class="section-title" style="margin-bottom:20px">Good to know</h2>
+          <div class="excludes-list" id="detailExcludes"></div>
+        </div>
+
+        <!-- Destination Quick Facts -->
+        <div style="margin-bottom:48px">
+          <span class="section-label">Destination Facts</span>
+          <h2 class="section-title" style="margin-bottom:20px">Before you go</h2>
+          <div class="dest-facts" id="detailFacts"></div>
+        </div>
+
+        <!-- Itinerary -->
+        <div style="margin-bottom:48px" id="itinerary">
+          <span class="section-label">Day by Day</span>
+          <h2 class="section-title" style="margin-bottom:32px">Your itinerary</h2>
+          <div class="itinerary-list" id="detailItinerary"></div>
+        </div>
+
+        <!-- Things to Do -->
+        <div style="margin-bottom:48px">
+          <span class="section-label">Destination Highlights</span>
+          <h2 class="section-title" style="margin-bottom:24px">Things to do</h2>
+          <div class="todo-grid" id="detailTodo"></div>
+        </div>
+
+        <!-- Pricing -->
+        <div id="request" style="margin-bottom:16px">
+          <span class="section-label">Pricing</span>
+          <h2 class="section-title">Indicative pricing</h2>
+          <p style="font-size:16px;color:#4a6070;line-height:1.7;margin-bottom:24px">
+            This package starts from
+            <strong id="detailPriceText" style="color:var(--navy);font-size:20px">—</strong>
+            per person. Final price is confirmed in your personalised quote based on your travel dates,
+            number of travellers and flight availability at time of booking.
+          </p>
+          <div
+            style="background:var(--grey);border-radius:var(--radius-md);padding:18px 22px;margin-bottom:28px;font-size:14px;color:#5a7080;line-height:1.8">
+            Price depends on: <strong>travel dates</strong> · <strong>number of travellers</strong> ·
+            <strong>flight &amp; hotel availability</strong><br>
+            <span style="font-size:12px;color:#8a9caa">Prices subject to availability at time of ticket issuance.</span>
+          </div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <button class="btn btn-primary" style="font-size:16px;padding:16px 36px" data-open-modal>
+              <i class="fa-solid fa-calendar-check"></i> Request This Package
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /detail-main -->
+
+      <!-- Right sticky price card -->
+      <aside class="detail-sticky">
+        <div class="price-card">
+          <div class="price-card-label">Starting from</div>
+          <div class="price-card-amount" id="detailPrice">—</div>
+          <div class="price-card-note">
+            per person · indicative price<br>Final confirmed at quote stage
+          </div>
+          <div class="price-card-includes">
+            <div class="price-card-includes-title">Package includes</div>
+            <ul id="detailPriceIncludes"></ul>
+          </div>
+          <button class="btn btn-primary" data-open-modal style="width:100%;justify-content:center;margin-bottom:10px;">
+            <i class="fa-solid fa-paper-plane"></i> Request This Package
+          </button>
+          <p style="text-align:center;font-size:12px;color:#8a9caa;margin-top:14px">
+            <i class="fa-solid fa-phone" style="color:var(--blue)"></i>
+            Questions? <a href="tel:+2349000000000" style="color:var(--blue)">Call our team</a>
+          </p>
+        </div>
+
+        <!-- Trust signals -->
+        <div style="margin-top:20px;padding:20px;background:var(--grey);border-radius:var(--radius-md)">
+          <div
+            style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a9caa;margin-bottom:14px">
+            Why book with us
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#4a6070">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <i class="fa-solid fa-circle-check" style="color:var(--green);margin-top:2px;flex-shrink:0"></i>
+              Flights booked for you
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <i class="fa-solid fa-circle-check" style="color:var(--green);margin-top:2px;flex-shrink:0"></i>
+              Personalised quote in 24 hrs
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <i class="fa-solid fa-circle-check" style="color:var(--green);margin-top:2px;flex-shrink:0"></i>
+              Flexible payment options
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <i class="fa-solid fa-circle-check" style="color:var(--green);margin-top:2px;flex-shrink:0"></i>
+              Dedicated travel manager
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <i class="fa-solid fa-circle-check" style="color:var(--green);margin-top:2px;flex-shrink:0"></i>
+              No payment to request a quote
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+            </span>
+          </a>
+          <p>Bundled travel packages for Nigerian travellers. Working prototype. Sample data. Not a live product.</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Packages</div>
+          <ul class="footer-links">
+            <li><a href="index.html#packages">All Packages</a></li>
+            <li><a href="index.html#packages">Budget Getaways</a></li>
+            <li><a href="index.html#packages">Luxury Escapes</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Destinations</div>
+          <ul class="footer-links">
+            <li><a href="package-detail.html?id=dubai">Dubai</a></li>
+            <li><a href="package-detail.html?id=zanzibar">Zanzibar</a></li>
+            <li><a href="package-detail.html?id=maldives">Maldives</a></li>
+            <li><a href="package-detail.html?id=capetown">Cape Town</a></li>
+            <li><a href="package-detail.html?id=paris">Paris</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Support</div>
+          <ul class="footer-links">
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="tel:+2349000000000">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Packages demo · Working prototype. Sample data. Not a live product.</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:13px;">
+          Packages are indicatively priced. Final price confirmed at quote stage.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ MULTI-STEP MODAL ══════════════════════════════ -->
+  <div class="modal-overlay" id="requestModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modalTitle">Request this Package</div>
+          <div class="modal-subtitle" id="modalSubtitle">
+            Fill in your details — we'll send a quote within 24 hours.
+          </div>
+        </div>
+        <button class="modal-close" id="modalClose">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-progress">
+        <div class="modal-progress-bar" id="modalProgressBar" style="width:0%"></div>
+      </div>
+      <div class="modal-steps">
+        <div class="modal-step-item active">
+          <div class="modal-step-dot">1</div>
+          <div class="modal-step-label">Travellers</div>
+        </div>
+        <div class="modal-step-connector"></div>
+        <div class="modal-step-item">
+          <div class="modal-step-dot">2</div>
+          <div class="modal-step-label">Trip Details</div>
+        </div>
+        <div class="modal-step-connector"></div>
+        <div class="modal-step-item">
+          <div class="modal-step-dot">3</div>
+          <div class="modal-step-label">Visa</div>
+        </div>
+        <div class="modal-step-connector"></div>
+        <div class="modal-step-item">
+          <div class="modal-step-dot">4</div>
+          <div class="modal-step-label">Review</div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- STEP 1: Travellers & Budget -->
+        <div class="modal-step active" id="step1">
+          <div class="group-block" id="groupBlock">
+            <div class="group-block-icon">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <h4>This looks like a group booking</h4>
+            <p>For 9 or more travellers, please contact us directly for special group rates and dedicated support.</p>
+            <div class="group-block-ctas">
+              <a href="tel:+2349000000000" class="btn group-cta-call">
+                <i class="fa-solid fa-phone"></i> Call Us
+              </a>
+              <a href="https://wa.me/2349000000000" class="btn group-cta-wa" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              </a>
+            </div>
+          </div>
+          <div id="step1Fields">
+            <div class="form-group">
+              <label class="form-label" for="modalMonth">
+                Preferred travel month <span class="req">*</span>
+              </label>
+              <select class="form-control" id="modalMonth">
+                <option value="">Select a month</option>
+                <option>July 2026</option>
+                <option>August 2026</option>
+                <option>September 2026</option>
+                <option>October 2026</option>
+                <option>November 2026</option>
+                <option>December 2026</option>
+                <option>January 2027</option>
+                <option>February 2027</option>
+                <option>March 2027</option>
+                <option>April 2027</option>
+                <option>May 2027</option>
+                <option>June 2027</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Number of travellers <span class="req">*</span></label>
+              <div class="pax-row">
+                <div>
+                  <div class="pax-label">Adults</div>
+                  <select class="form-control" id="modalAdults">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="pax-label">Children</div>
+                  <select class="form-control" id="modalChildren">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="pax-label">Infants</div>
+                  <select class="form-control" id="modalInfants">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+              <p class="form-hint">
+                9 or more travellers?
+                <a href="tel:+2349000000000" style="color:var(--blue)">Call us</a> for a group booking.
+              </p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalBudget">
+                Your total estimated budget <span class="req">*</span>
+              </label>
+              <select class="form-control" id="modalBudget">
+                <option value="">Select a range</option>
+                <option>&#x20A6;900,000 – &#x20A6;1,500,000</option>
+                <option>&#x20A6;1,500,000 – &#x20A6;2,500,000</option>
+                <option>&#x20A6;2,500,000 – &#x20A6;4,000,000</option>
+                <option>&#x20A6;4,000,000 – &#x20A6;6,000,000</option>
+                <option>&#x20A6;6,000,000 – &#x20A6;10,000,000</option>
+                <option>&#x20A6;10,000,000+</option>
+              </select>
+              <div class="budget-warning" id="budgetWarning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <strong>Your budget may not cover this trip</strong>
+                Based on your destination and group size, the estimated minimum is
+                <strong class="budget-warn-min">₦0</strong>. You can adjust or contact us.
+                <div class="budget-warn-contacts">
+                  <a href="tel:+2349000000000">
+                    <i class="fa-solid fa-phone"></i> Call
+                  </a>
+                  <a href="https://wa.me/2349000000000" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Trip Details -->
+        <div class="modal-step" id="step2">
+          <input type="hidden" id="modalPkg" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalName">Full name <span class="req">*</span></label>
+              <input type="text" class="form-control" id="modalName" placeholder="Your full name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalEmail">Email address <span class="req">*</span></label>
+              <input type="email" class="form-control" id="modalEmail" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalPhone">Phone number <span class="req">*</span></label>
+              <input type="tel" class="form-control" id="modalPhone" placeholder="+234 800 000 0000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalCity">Departure city</label>
+              <select class="form-control" id="modalCity">
+                <option value="">Select city</option>
+                <option>Lagos</option>
+                <option>Abuja</option>
+                <option>Port Harcourt</option>
+                <option>Kano</option>
+                <option>Enugu</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalDest">Destination <span class="req">*</span></label>
+              <select class="form-control" id="modalDest">
+                <option value="">Select destination</option>
+                <option>Dubai, UAE</option>
+                <option>Zanzibar, Tanzania</option>
+                <option>Maldives</option>
+                <option>Cape Town, South Africa</option>
+                <option>Bangkok, Thailand</option>
+                <option>Mauritius</option>
+                <option>Paris, France</option>
+                <option>Istanbul, Turkey</option>
+                <option>Kigali, Rwanda</option>
+                <option>Guangzhou, China</option>
+                <option>Doha, Qatar</option>
+                <option>Other / Not sure yet</option>
+              </select>
+              <input type="text" class="form-control" id="modalDestCustom"
+                placeholder="Type your destination e.g. Nairobi, Kenya" style="display:none;margin-top:8px" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalNights">Number of nights</label>
+              <input type="number" class="form-control" id="modalNights" placeholder="e.g. 5" min="1" max="30" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modalSpecial">Special requests or notes</label>
+            <textarea class="form-control" id="modalSpecial"
+              placeholder="Any preferences, dietary requirements, or special occasions..."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 3: Visa -->
+        <div class="modal-step" id="step3">
+          <p style="font-size:14px;color:#6b8090;margin-bottom:18px;line-height:1.65;">
+            Some destinations require a visa. We can arrange this alongside your package.
+            Visa fees are not included in the package price.
+          </p>
+          <div class="visa-section">
+            <div class="visa-section-label">Do you need visa assistance?</div>
+            <div class="visa-options">
+              <button class="visa-opt-btn" data-val="no">No, visa sorted</button>
+              <button class="visa-opt-btn" data-val="no2">Visa-free / on arrival</button>
+              <button class="visa-opt-btn" data-val="yes">Yes, I need visa help</button>
+            </div>
+            <p class="form-hint" style="margin-top:8px;">
+              We'll confirm visa requirements in your quote.
+            </p>
+          </div>
+          <div class="visa-extra-fields" id="visaExtraFields">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="modalVisaNat">Passport nationality</label>
+                <input type="text" class="form-control" id="modalVisaNat" placeholder="e.g. Nigerian" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="modalVisaExpiry">Approx. passport expiry</label>
+                <input type="month" class="form-control" id="modalVisaExpiry" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Review & Submit -->
+        <div class="modal-step" id="step4">
+          <div class="review-section">
+            <div class="review-section-title">Trip Summary</div>
+            <div class="review-row"><span class="review-row-label">Package</span><span class="review-row-value"
+                id="rv-package">—</span></div>
+            <div class="review-row"><span class="review-row-label">Destination</span><span class="review-row-value"
+                id="rv-dest">—</span></div>
+            <div class="review-row"><span class="review-row-label">Travel month</span><span class="review-row-value"
+                id="rv-month">—</span></div>
+            <div class="review-row"><span class="review-row-label">Duration</span><span class="review-row-value"
+                id="rv-nights">—</span></div>
+            <div class="review-row"><span class="review-row-label">Travellers</span><span class="review-row-value"
+                id="rv-pax">—</span></div>
+            <div class="review-row"><span class="review-row-label">Budget</span><span class="review-row-value"
+                id="rv-budget">—</span></div>
+          </div>
+          <div class="review-section">
+            <div class="review-section-title">Your Details</div>
+            <div class="review-row"><span class="review-row-label">Name</span><span class="review-row-value"
+                id="rv-name">—</span></div>
+            <div class="review-row"><span class="review-row-label">Email</span><span class="review-row-value"
+                id="rv-email">—</span></div>
+            <div class="review-row"><span class="review-row-label">Phone</span><span class="review-row-value"
+                id="rv-phone">—</span></div>
+            <div class="review-row"><span class="review-row-label">Departure city</span><span class="review-row-value"
+                id="rv-city">—</span></div>
+            <div class="review-row"><span class="review-row-label">Visa assistance</span><span class="review-row-value"
+                id="rv-visa">No</span></div>
+            <div class="review-row"><span class="review-row-label">Special requests</span><span class="review-row-value"
+                id="rv-special">None</span></div>
+          </div>
+          <div class="tnc-wrap">
+            <input type="checkbox" id="tncCheck" />
+            <label for="tncCheck">
+              I have read and agree to the
+              <a href="terms.html" target="_blank">Packages demo terms</a>,
+              including the cancellation and refund policy.
+            </label>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+
+      <div class="modal-footer">
+        <div class="modal-footer-note">
+          <i class="fa-solid fa-lock"></i> Secure &middot; Free quote &middot; No payment required now
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-outline" id="modalBack" style="display:none;">
+            <i class="fa-solid fa-arrow-left"></i> Back
+          </button>
+          <button class="btn btn-primary" id="modalNext">
+            Continue <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button class="btn btn-primary" id="modalSubmit" style="display:none;" disabled>
+            Submit Request <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── DARK MODE TOGGLE ──────────────────────────────── -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <span class="icon-light"><i class="fa-solid fa-moon"></i></span>
+    <span class="toggle-label label-dark">Dark mode</span>
+    <span class="icon-dark"><i class="fa-solid fa-sun"></i></span>
+    <span class="toggle-label label-light">Light mode</span>
+  </button>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

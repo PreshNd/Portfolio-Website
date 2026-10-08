@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Received – Packages demo</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ─── 2-COLUMN CONFIRMATION LAYOUT ─────────────────── */
+    .confirm-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 5%;
+      background: var(--grey);
+    }
+
+    .confirm-shell {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    /* Header block — full width above columns */
+    .confirm-header {
+      background: var(--white);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: 44px 48px 32px;
+      text-align: center;
+      border-bottom: 1px solid var(--grey);
+    }
+    .confirm-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(89,170,71,0.12);
+      border: 2px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+    .confirm-title {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 32px;
+      color: var(--navy); margin-bottom: 10px;
+    }
+    .confirm-sub {
+      font-size: 15px; color: #6b8090;
+      line-height: 1.65; max-width: 540px; margin: 0 auto;
+    }
+
+    /* 2-column body */
+    .confirm-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--white);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      overflow: hidden;
+    }
+
+    /* Left column — request summary */
+    .confirm-left {
+      padding: 36px 40px;
+      border-right: 1px solid var(--grey);
+    }
+    .confirm-col-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: #8a9caa; margin-bottom: 20px;
+    }
+    .confirm-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      font-size: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--grey);
+    }
+    .confirm-detail-row:last-child { border: none; }
+    .confirm-detail-row strong {
+      color: #8a9caa; font-weight: 600;
+      font-size: 13px; white-space: nowrap; flex-shrink: 0;
+    }
+    .confirm-detail-row span {
+      color: var(--navy); font-weight: 500;
+      text-align: right;
+    }
+
+    .confirm-actions {
+      margin-top: 28px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .confirm-actions .btn {
+      width: 100%; justify-content: center;
+    }
+    .confirm-note {
+      margin-top: 16px; font-size: 12px; color: #8a9caa;
+      line-height: 1.6; text-align: center;
+    }
+    .confirm-note a { color: var(--blue); }
+
+    /* Right column — what happens next */
+    .confirm-right {
+      padding: 36px 40px;
+      background: #fafbfc;
+    }
+    .next-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .next-step:last-child { margin-bottom: 0; }
+    .next-step-num {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: var(--blue-10); border: 2px solid var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--blue);
+    }
+    .next-step-text-title {
+      font-size: 14px; font-weight: 600;
+      color: var(--navy); margin-bottom: 3px;
+    }
+    .next-step-text-sub {
+      font-size: 13px; color: #6b8090; line-height: 1.55;
+    }
+
+    .trust-bar {
+      margin-top: 32px; padding: 20px;
+      background: rgba(27,179,245,0.06);
+      border: 1px solid rgba(27,179,245,0.2);
+      border-radius: var(--radius-md);
+    }
+    .trust-bar-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 12px;
+    }
+    .trust-bar-items {
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 13px; color: #4a6070;
+    }
+    .trust-bar-items div { display: flex; gap: 8px; align-items: flex-start; }
+    .trust-bar-items span { color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .confirm-body { grid-template-columns: 1fr; }
+      .confirm-left { border-right: none; border-bottom: 1px solid var(--grey); padding: 28px 24px; }
+      .confirm-right { padding: 28px 24px; }
+      .confirm-header { padding: 32px 24px 24px; }
+    }
+  </style>
+  <meta name="robots" content="noindex" />
+  <script src="/labs/packages/demo/demo.js"></script>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+
+
+  <!-- ─── NAV ─────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Packages</a></li>
+      </ul>
+      <a href="#packages" class="nav-cta">Browse Packages</a>
+    </div>
+    </nav>
+
+<!-- ─── CONFIRMATION ──────────────────────────────────── -->
+<div class="confirm-wrap">
+  <div class="confirm-shell">
+
+    <!-- Full-width header -->
+    <div class="confirm-header">
+      <div class="confirm-icon">✅</div>
+      <h1 class="confirm-title">Request received!</h1>
+      <p class="confirm-sub">
+        In the real flow, your request goes to the travel team, who reply with a personalised quote. In this demo, nothing is sent.
+      </p>
+    </div>
+
+    <!-- 2-column body -->
+    <div class="confirm-body">
+
+      <!-- LEFT: Summary + actions -->
+      <div class="confirm-left">
+        <div class="confirm-col-label">Your request summary</div>
+
+        <div class="confirm-detail-row">
+          <strong>Package</strong>
+          <span id="conf-package">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Destination</strong>
+          <span id="conf-destination">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Travel month</strong>
+          <span id="conf-month">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Travellers</strong>
+          <span id="conf-travelers">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Budget range</strong>
+          <span id="conf-budget">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Name</strong>
+          <span id="conf-name">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Email</strong>
+          <span id="conf-email">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Departure city</strong>
+          <span id="conf-city">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Visa assistance</strong>
+          <span id="conf-visa">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Submitted</strong>
+          <span id="conf-time">—</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Response time</strong>
+          <span>Within 24 hours</span>
+        </div>
+        <div class="confirm-detail-row">
+          <strong>Questions?</strong>
+          <span><a href="tel:+2349099999999" style="color:var(--blue)">Call our travel team</a></span>
+        </div>
+
+        <div class="confirm-actions">
+          <a href="index.html" class="btn btn-primary">Browse More Packages</a>
+          <a href="index.html" class="btn btn-outline">Back to Home</a>
+        </div>
+
+        <p class="confirm-note">
+          Demo only, nothing is sent. No email leaves this prototype.
+        </p>
+      </div>
+
+      <!-- RIGHT: What happens next -->
+      <div class="confirm-right">
+        <div class="confirm-col-label">What happens next</div>
+
+        <div class="next-step">
+          <div class="next-step-num">1</div>
+          <div>
+            <div class="next-step-text-title">Our team reviews your request</div>
+            <div class="next-step-text-sub">We check flight and hotel availability for your travel dates and group size.</div>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="next-step-num">2</div>
+          <div>
+            <div class="next-step-text-title">You receive your personalised quote</div>
+            <div class="next-step-text-sub">A full price breakdown — flights, hotel, transfers and activities — lands in your inbox within 24–48 hours.</div>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="next-step-num">3</div>
+          <div>
+            <div class="next-step-text-title">Confirm & pay your deposit</div>
+            <div class="next-step-text-sub">Accept the quote and pay your deposit. Flights are ticketed immediately to lock in pricing.</div>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="next-step-num">4</div>
+          <div>
+            <div class="next-step-text-title">Receive your travel itinerary</div>
+            <div class="next-step-text-sub">Once everything is confirmed, we send your e-tickets, hotel vouchers, transfer details and activity bookings.</div>
+          </div>
+        </div>
+
+        <div class="trust-bar">
+          <div class="trust-bar-title">Why you're in good hands</div>
+          <div class="trust-bar-items">
+            <div><span>✓</span> Flights booked & ticketed for you</div>
+            <div><span>✓</span> Personalised quote — no generic pricing</div>
+            <div><span>✓</span> Flexible split-payment options available</div>
+            <div><span>✓</span> Dedicated travel manager assigned to you</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /confirm-body -->
+  </div><!-- /confirm-shell -->
+</div>
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+          </span>
+        </a>
+        <p>Bundled travel packages for Nigerian travellers. Working prototype. Sample data. Not a live product.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Packages</div>
+        <ul class="footer-links">
+          <li><a href="#">All Packages</a></li>
+          <li><a href="#">Budget Getaways</a></li>
+          <li><a href="#">Luxury Escapes</a></li>
+          <li><a href="#">Family Trips</a></li>
+          <li><a href="#">Romantic Vacations</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Destinations</div>
+        <ul class="footer-links">
+          <li><a href="#">Dubai</a></li>
+          <li><a href="#">Zanzibar</a></li>
+          <li><a href="#">Maldives</a></li>
+          <li><a href="#">Cape Town</a></li>
+          <li><a href="#">Paris</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Cancellation Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Packages demo · Working prototype. Sample data. Not a live product.</p>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;">Packages are indicatively priced. Final price confirmed at
+        quote stage.</p>
+    </div>
+  </div><!-- /footer-inner -->
+</footer>
+
+
+<!-- Dark mode toggle -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <span class="icon-light">🌙</span>
+  <span class="toggle-label label-dark">Dark mode</span>
+  <span class="icon-dark">☀️</span>
+  <span class="toggle-label label-light">Light mode</span>
+</button>
+
+<script src="main.js"></script>
+</body>
+
+</html>
