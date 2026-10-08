@@ -1,0 +1,290 @@
+---
+/**
+ * Case study template. The hero sits in the night sky; the article is the
+ * daylight reading surface. Scrolling into the article "lands" the whole
+ * page in daylight (sky fades, header and logo switch), and scrolling back
+ * up returns to night.
+ */
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Planet from '../../components/space/Planet.astro';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('work');
+  return cases.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<Base title={d.title} description={d.summary}>
+  <header class="case-hero wrap">
+    <a class="back mono" href="/work">← All work</a>
+    <div class="hero-grid">
+      <div>
+        <ul class="lenses" role="list" data-reveal>
+          {d.lenses.map((l) => <li class="mono">{l}</li>)}
+        </ul>
+        <h1 data-reveal style="--reveal-i:1">{d.title}</h1>
+        <p class="subtitle" data-reveal style="--reveal-i:2">{d.subtitle}</p>
+        <dl class="meta" data-reveal style="--reveal-i:3">
+          <div>
+            <dt class="mono">Role</dt>
+            <dd>{d.role}</dd>
+          </div>
+          <div>
+            <dt class="mono">Status</dt>
+            <dd>{d.prototype && <span class="proto mono">Working prototype</span>}{d.status}</dd>
+          </div>
+        </dl>
+      </div>
+      <svg class="hero-planet" viewBox="-100 -100 200 200" aria-hidden="true" data-reveal style="--reveal-i:2">
+        <circle class="orbit" r="88"></circle>
+        <circle class="orbit faint" r="70"></circle>
+        <circle class="moon" cx="62" cy="-62" r="5"></circle>
+        <Planet id={`case-${entry.id}`} r={46} tone={d.tone} />
+      </svg>
+    </div>
+
+    {
+      d.facts.length > 0 && (
+        <ul class="facts" role="list" data-reveal style="--reveal-i:4">
+          {d.facts.map((f) => (
+            <li>
+              <span class="value">{f.value}</span>
+              <span class="label mono">{f.label}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </header>
+
+  <article class="case" data-surface="day" data-landing>
+    <div class="wrap">
+      <div class="prose case-body">
+        <Content />
+      </div>
+      <p class="end">
+        <a class="btn" href="/work">More work <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="/contact">Talk to me about this</a>
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  /* ── Hero (night) ──────────────────────── */
+  .case-hero {
+    padding-block: var(--space-6) var(--space-8);
+  }
+  .back {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-7);
+    margin-top: var(--space-7);
+  }
+  .lenses {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .lenses li {
+    padding: 0.3em 0.8em;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+  h1 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 5.4rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .subtitle {
+    margin-top: var(--space-4);
+    max-width: 40ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+  .meta dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .meta dd {
+    margin-top: var(--space-1);
+    color: var(--heading);
+  }
+  .proto {
+    display: inline-block;
+    margin-right: 0.6em;
+    padding: 0.15em 0.6em;
+    border-radius: var(--radius-pill);
+    background: color-mix(in oklab, var(--accent-warm) 20%, transparent);
+    color: var(--accent-warm);
+    font-size: 0.72rem;
+  }
+  .hero-planet {
+    width: 220px;
+    overflow: visible;
+  }
+  .orbit {
+    fill: none;
+    stroke: var(--line);
+  }
+  .orbit.faint {
+    stroke-dasharray: 2 6;
+  }
+  .moon {
+    fill: var(--accent-warm);
+  }
+  .facts {
+    list-style: none;
+    padding: var(--space-6) 0 0;
+    margin-top: var(--space-7);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: var(--space-5);
+  }
+  .facts li {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .value {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--heading);
+  }
+  .label {
+    color: var(--text-muted);
+  }
+
+  /* ── Article (daylight) ────────────────── */
+  .case {
+    position: relative;
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 40px 40px 0 0;
+    padding-block: var(--space-9) var(--space-8);
+    /* a soft horizon where night meets day */
+    box-shadow: 0 -30px 80px -20px color-mix(in oklab, var(--purple-300) 35%, transparent);
+  }
+  .case-body {
+    margin-inline: auto;
+    counter-reset: section;
+  }
+  .case-body :global(h2) {
+    counter-increment: section;
+    margin-top: var(--space-8);
+    font-size: var(--step-3);
+    font-weight: 500;
+  }
+  .case-body :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .case-body :global(h2)::before {
+    content: '0' counter(section);
+    display: block;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--accent-warm);
+  }
+  .case-body :global(p),
+  .case-body :global(li) {
+    font-size: var(--step-0);
+    line-height: 1.7;
+  }
+  .case-body :global(ul) {
+    padding-left: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-4);
+  }
+  .case-body :global(ul li) {
+    position: relative;
+    padding-left: 1.6em;
+  }
+  .case-body :global(ul li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .case-body :global(strong) {
+    color: var(--heading);
+    font-weight: 600;
+  }
+  .end {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    max-width: var(--measure);
+    margin: var(--space-8) auto 0;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 52rem) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-planet {
+      grid-row: 1;
+      width: 140px;
+    }
+    .case {
+      border-radius: 28px 28px 0 0;
+      padding-top: var(--space-8);
+    }
+  }
+</style>
+
+<script>
+  // Landing: once the article reaches the upper part of the screen, the whole
+  // page switches to the daylight surface. Scroll back up and night returns.
+  const article = document.querySelector<HTMLElement>('[data-landing]');
+  const root = document.documentElement;
+  if (article) {
+    let landed = false;
+    const check = () => {
+      const now = article.getBoundingClientRect().top < window.innerHeight * 0.45;
+      if (now !== landed) {
+        landed = now;
+        root.dataset.surface = now ? 'day' : 'night';
+      }
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+  }
+</script>

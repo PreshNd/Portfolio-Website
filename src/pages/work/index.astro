@@ -1,0 +1,142 @@
+---
+/**
+ * Work index. Each case is a card; cards are generated from the
+ * case-study collection, so adding a Markdown file adds a card.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Planet from '../../components/space/Planet.astro';
+
+const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Work"
+  description="Case studies from Chinenye Ndigwe: product, platform and delivery work, told plainly."
+>
+  <section class="wrap intro">
+    <p class="kicker mono" data-reveal>Work</p>
+    <h1 data-reveal style="--reveal-i:1">What I built and owned.</h1>
+    <p class="lede" data-reveal style="--reveal-i:2">
+      Each case covers the situation, my role, the decisions I made, what happened, and what I'd do
+      differently.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <ul class="cases" role="list">
+      {
+        cases.map((c, i) => (
+          <li data-reveal style={`--reveal-i:${i}`}>
+            <a class="case-card" href={`/work/${c.id}`}>
+              <svg class="mini" viewBox="-40 -40 80 80" aria-hidden="true">
+                <circle class="orbit" r="34" />
+                <Planet id={`card-${c.id}`} r={20} tone={c.data.tone} />
+              </svg>
+              <span class="lenses mono">{c.data.lenses.join(' · ')}</span>
+              <span class="title">
+                {c.data.title} <span class="arrow" aria-hidden="true">→</span>
+              </span>
+              <span class="summary">{c.data.summary}</span>
+              <span class="role mono">
+                {c.data.prototype ? 'Working prototype · ' : ''}
+                {c.data.role}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-9) var(--space-7);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  h1 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.6rem, 1.5rem + 4.4vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    max-width: 14ch;
+  }
+  .lede {
+    margin-top: var(--space-5);
+    max-width: 48ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .cases {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  }
+  .case-card {
+    display: grid;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      border-color var(--dur-med) ease,
+      transform var(--dur-med) var(--ease-out);
+  }
+  .case-card:hover,
+  .case-card:focus-visible {
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+  }
+  .mini {
+    width: 64px;
+    height: 64px;
+    overflow: visible;
+  }
+  .orbit {
+    fill: none;
+    stroke: var(--line);
+  }
+  .lenses {
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+  .title {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 500;
+    color: var(--heading);
+  }
+  .arrow {
+    display: inline-block;
+    color: var(--accent);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .case-card:hover .arrow {
+    transform: translateX(5px);
+  }
+  .summary {
+    color: var(--text-muted);
+  }
+  .role {
+    font-size: 0.72rem;
+    color: var(--accent-warm);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case-card:hover,
+    .case-card:focus-visible {
+      transform: none;
+    }
+  }
+</style>
