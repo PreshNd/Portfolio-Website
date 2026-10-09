@@ -346,3 +346,7 @@ a:hover {
   gap: var(--space-3);
   margin-top: var(--space-6);
 }
+.card ul.tags {
+  display: flex;
+  padding-left: 0;
+}
