@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visa Details – Packages demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .visa-detail-hero {
+            position: relative;
+            height: 420px;
+            overflow: hidden;
+        }
+
+        .visa-detail-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .visa-detail-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(6, 34, 49, 0.92) 0%, rgba(6, 34, 49, 0.4) 70%, transparent 100%);
+        }
+
+        [data-theme="dark"] .visa-detail-hero-overlay {
+            background: linear-gradient(to right, rgba(2, 5, 9, 0.95) 0%, rgba(2, 5, 9, 0.55) 65%, transparent 100%);
+        }
+
+        .visa-detail-hero-content {
+            position: absolute;
+            bottom: 48px;
+            left: 5%;
+            max-width: 600px;
+        }
+
+        .visa-detail-breadcrumb {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+        }
+
+        .visa-detail-breadcrumb a {
+            color: var(--blue);
+        }
+
+        .visa-detail-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(26px, 4vw, 44px);
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+
+        .visa-detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .visa-detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 48px 5%;
+            align-items: start;
+        }
+
+        .visa-detail-sticky {
+            position: sticky;
+            top: 88px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .visa-info-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--grey);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        [data-theme="dark"] .visa-info-card {
+            background: rgba(8, 18, 28, 0.80);
+            border-color: rgba(27, 179, 245, 0.12);
+        }
+
+        .visa-info-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 14px;
+        }
+
+        .visa-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-size: 13px;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--grey);
+            gap: 12px;
+        }
+
+        [data-theme="dark"] .visa-info-row {
+            border-bottom-color: rgba(27, 179, 245, 0.08);
+        }
+
+        .visa-info-row:last-child {
+            border: none;
+        }
+
+        .visa-info-label {
+            color: #8a9caa;
+            flex-shrink: 0;
+        }
+
+        .visa-info-val {
+            font-weight: 600;
+            color: var(--navy);
+            text-align: right;
+            line-height: 1.4;
+        }
+
+        [data-theme="dark"] .visa-info-val {
+            color: #E8F4FC;
+        }
+
+        .visa-pkg-link {
+            background: rgba(27, 179, 245, 0.06);
+            border: 1.5px solid rgba(27, 179, 245, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        [data-theme="dark"] .visa-pkg-link {
+            background: rgba(27, 179, 245, 0.08);
+        }
+
+        .visa-pkg-link-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        [data-theme="dark"] .visa-pkg-link-title {
+            color: #E8F4FC;
+        }
+
+        .visa-pkg-link-sub {
+            font-size: 12px;
+            color: #6b8090;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        [data-theme="dark"] .visa-pkg-link-sub {
+            color: #7BAEC7;
+        }
+
+        .visa-section {
+            margin-bottom: 40px;
+        }
+
+        .visa-section-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--grey);
+        }
+
+        [data-theme="dark"] .visa-section-title {
+            color: #E8F4FC;
+            border-bottom-color: rgba(27, 179, 245, 0.08);
+        }
+
+        .visa-doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .visa-doc-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--grey);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--navy);
+            line-height: 1.5;
+        }
+
+        [data-theme="dark"] .visa-doc-item {
+            background: rgba(8, 18, 28, 0.70);
+            color: #E8F4FC;
+        }
+
+        .visa-doc-item::before {
+            content: '📄';
+            flex-shrink: 0;
+        }
+
+        .visa-notes-box {
+            background: rgba(27, 179, 245, 0.06);
+            border: 1.5px solid rgba(27, 179, 245, 0.18);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            font-size: 14px;
+            color: #4a7080;
+            line-height: 1.75;
+        }
+
+        [data-theme="dark"] .visa-notes-box {
+            background: rgba(27, 179, 245, 0.08);
+            color: #7BAEC7;
+        }
+
+        .visa-disclaimer-box {
+            background: rgba(244, 123, 32, 0.07);
+            border: 1.5px solid rgba(244, 123, 32, 0.22);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            font-size: 13px;
+            color: #b85a0a;
+            line-height: 1.65;
+            margin-top: 32px;
+        }
+
+        [data-theme="dark"] .visa-disclaimer-box {
+            background: rgba(244, 123, 32, 0.12);
+            color: #F47B20;
+        }
+
+        @media (max-width: 768px) {
+            .visa-detail-layout {
+                grid-template-columns: 1fr;
+                padding: 32px 5%;
+            }
+
+            .visa-detail-sticky {
+                position: static;
+            }
+
+            .visa-detail-hero {
+                height: 280px;
+            }
+        }
+    </style>
+  <meta name="robots" content="noindex" />
+  <script src="/labs/packages/demo/demo.js"></script>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+                </span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Packages</a></li>
+            </ul>
+            <a href="index.html#packages" class="nav-cta">Browse Packages</a>
+        </div>
+    </nav>
+
+    <!-- Hero — populated by JS -->
+    <div class="visa-detail-hero" id="visaDetailHero">
+        <img id="visaHeroImg" src="" alt="" />
+        <div class="visa-detail-hero-overlay"></div>
+        <div class="visa-detail-hero-content">
+            <div class="visa-detail-breadcrumb" id="visaBreadcrumb">
+                <a href="index.html">Home</a> › <a href="visa.html">Visa Info</a> › Loading…
+            </div>
+            <h1 class="visa-detail-title" id="visaTitle">Loading…</h1>
+            <div class="visa-detail-tags" id="visaTags"></div>
+        </div>
+    </div>
+
+    <!-- Detail layout -->
+    <div class="visa-detail-layout">
+
+        <!-- Left — main content -->
+        <div class="visa-detail-main">
+
+            <div class="visa-section">
+                <h2 class="visa-section-title">Required Documents</h2>
+                <div class="visa-doc-list" id="visaDocList">
+                    <div style="color:#8a9caa;font-size:14px">Loading…</div>
+                </div>
+            </div>
+
+            <div class="visa-section" id="visaNotesSection" style="display:none">
+                <h2 class="visa-section-title">Important Notes</h2>
+                <div class="visa-notes-box" id="visaNotes"></div>
+            </div>
+
+            <div class="visa-disclaimer-box">
+                <strong>⚠️ Disclaimer:</strong> Visa information on this page is a general guide for Nigerian passport
+                holders and is accurate as of June 2026. Immigration rules change frequently. Always verify current
+                requirements with the official embassy or consulate of the destination country before travel.
+                We take no responsibility for inaccuracies.
+            </div>
+        </div>
+
+        <!-- Right — sticky sidebar -->
+        <div class="visa-detail-sticky">
+
+            <div class="visa-info-card">
+                <div class="visa-info-title">Visa at a glance</div>
+                <div class="visa-info-row"><span class="visa-info-label">Type</span><span class="visa-info-val"
+                        id="vs-type">—</span></div>
+                <div class="visa-info-row"><span class="visa-info-label">Cost</span><span class="visa-info-val"
+                        id="vs-cost">—</span></div>
+                <div class="visa-info-row"><span class="visa-info-label">Processing</span><span class="visa-info-val"
+                        id="vs-processing">—</span></div>
+                <div class="visa-info-row"><span class="visa-info-label">Apply at</span><span class="visa-info-val"
+                        id="vs-where">—</span></div>
+                <div class="visa-info-row"><span class="visa-info-label">Best season</span><span class="visa-info-val"
+                        id="vs-season">—</span></div>
+                <div class="visa-info-row"><span class="visa-info-label">Currency</span><span class="visa-info-val"
+                        id="vs-currency">—</span></div>
+            </div>
+
+            <!-- Package link — shown only if matching package found -->
+            <div class="visa-pkg-link" id="visaPkgLink" style="display:none">
+                <div class="visa-pkg-link-title">✈️ We have a package for this destination</div>
+                <div class="visa-pkg-link-sub">View the full package details including flights, hotel, itinerary and
+                    pricing.</div>
+                <a href="#" id="visaPkgBtn" class="btn btn-primary" style="width:100%;justify-content:center">View
+                    Package →</a>
+            </div>
+
+            <div class="visa-info-card">
+                <div class="visa-info-title">Need visa help?</div>
+                <p style="font-size:13px;color:#6b8090;margin-bottom:14px;line-height:1.6">Our visa team assists with
+                    document preparation, application review and embassy liaison.</p>
+                <a href="index.html#packages" class="btn btn-primary"
+                    style="width:100%;justify-content:center;margin-bottom:10px">Browse Packages</a>
+                <a href="tel:+2349000000000" class="btn btn-secondary"
+                    style="width:100%;justify-content:center;border-color:var(--navy);color:var(--navy)">📞 Call Us</a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+                        </span>
+                    </a>
+                    <p>Bundled travel packages for Nigerian travellers. Working prototype. Sample data. Not a live product.</p>
+                </div>
+                <div>
+                    <div class="footer-col-title">Packages</div>
+                    <ul class="footer-links">
+                        <li><a href="index.html#packages">All Packages</a></li>
+                        <li><a href="visa.html">Visa Information</a></li>
+                        <li><a href="terms.html">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-col-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="index.html#faqGrid">FAQs</a></li>
+                        <li><a href="tel:+2349000000000">Call Us</a></li>
+                        <li><a href="https://wa.me/2349000000000">WhatsApp</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="footer-bottom">
+                <p>Packages demo · Working prototype. Sample data. Not a live product.</p>
+                <p style="color:rgba(255,255,255,0.4);font-size:13px;">Visa info is a general guide. Always verify with
+                    the official embassy.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="icon-light">🌙</span>
+        <span class="toggle-label label-dark">Dark mode</span>
+        <span class="icon-dark">☀️</span>
+        <span class="toggle-label label-light">Light mode</span>
+    </button>
+
+    <script>
+        function initDarkMode() {
+            const btn = document.getElementById('themeToggle');
+            const saved = localStorage.getItem('ts-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            btn.addEventListener('click', () => {
+                const cur = document.documentElement.getAttribute('data-theme') || 'light';
+                const next = cur === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('ts-theme', next);
+            });
+        }
+
+        function initVisaDetail() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (!id) { document.title = 'Visa Not Found'; return; }
+
+            const stored = localStorage.getItem('ts-visa');
+            if (!stored) { document.title = 'Visa Not Found'; return; }
+
+            const entries = JSON.parse(stored);
+            const all = Array.isArray(entries) ? entries : Object.values(entries);
+            const entry = all.find(v => v.id === id);
+            if (!entry) { document.title = 'Visa Not Found'; return; }
+
+            document.title = entry.destination + ' Visa Info – Packages demo';
+
+            // Hero
+            const heroImg = document.getElementById('visaHeroImg');
+            if (heroImg) heroImg.src = entry.hero || '';
+
+            // Breadcrumb
+            const bc = document.getElementById('visaBreadcrumb');
+            if (bc) bc.innerHTML = `<a href="index.html">Home</a> › <a href="visa.html">Visa Info</a> › ${entry.destination}`;
+
+            // Title
+            const titleEl = document.getElementById('visaTitle');
+            if (titleEl) titleEl.textContent = entry.destination + ', ' + entry.country;
+
+            // Tags
+            const tagsEl = document.getElementById('visaTags');
+            if (tagsEl) tagsEl.innerHTML = (entry.visa_tags || [])
+                .map(t => `<span class="visa-tag ${t.cls}">${t.text}</span>`).join('');
+
+            // Sidebar at-a-glance
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || '—'; };
+            set('vs-type', entry.visa_type);
+            set('vs-cost', entry.visa_cost);
+            set('vs-processing', entry.processing_time);
+            set('vs-where', entry.where_to_apply);
+            set('vs-season', entry.best_season);
+            set('vs-currency', entry.currency);
+
+            // Documents
+            const docList = document.getElementById('visaDocList');
+            if (docList) {
+                docList.innerHTML = (entry.documents || []).length
+                    ? entry.documents.map(d => `<div class="visa-doc-item">${d}</div>`).join('')
+                    : '<p style="color:#8a9caa;font-size:14px">No documents listed yet.</p>';
+            }
+
+            // Notes
+            if (entry.notes) {
+                const notesSection = document.getElementById('visaNotesSection');
+                const notesBox = document.getElementById('visaNotes');
+                if (notesSection) notesSection.style.display = 'block';
+                if (notesBox) notesBox.textContent = entry.notes;
+            }
+
+            // Package match — check ts-packages for a destination match
+            const pkgStored = localStorage.getItem('ts-packages');
+            if (pkgStored) {
+                const pkgs = JSON.parse(pkgStored);
+                const allPkgs = Array.isArray(pkgs) ? pkgs : Object.values(pkgs);
+                const matched = allPkgs.find(p =>
+                    p.status === 'published' &&
+                    p.destination.toLowerCase().includes(entry.destination.toLowerCase())
+                );
+                if (matched) {
+                    const linkBox = document.getElementById('visaPkgLink');
+                    const linkBtn = document.getElementById('visaPkgBtn');
+                    if (linkBox) linkBox.style.display = 'block';
+                    if (linkBtn) linkBtn.href = `package-detail.html?id=${matched.id}`;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
+            initVisaDetail();
+        });
+    </script>
+</body>
+
+</html>

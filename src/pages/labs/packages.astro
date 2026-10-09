@@ -1,0 +1,268 @@
+---
+/**
+ * Labs: Travel Packages. Frames the sanitised prototype that lives as plain
+ * static files in /public/labs/packages/demo/ (customer site + CMS). Both
+ * frames share one origin, so they share the visitor's private demo data:
+ * publish in the CMS, refresh the site, and the change shows up.
+ */
+import Base from '../../layouts/Base.astro';
+import Planet from '../../components/space/Planet.astro';
+
+const DEMO = '/labs/packages/demo/';
+const frames = [
+  {
+    id: 'site',
+    label: 'The customer site',
+    src: `${DEMO}index.html`,
+    note: 'Browse packages, filter by budget, open a package and send a request through the four-step form.',
+  },
+  {
+    id: 'cms',
+    label: 'The CMS',
+    src: `${DEMO}admin/index.html`,
+    note: 'Sign in with a demo account, then create, edit and publish packages and visa guides.',
+  },
+];
+---
+
+<Base
+  title="Travel Packages prototype"
+  description="A working prototype by Chinenye Ndigwe: a self-service publishing CMS and booking flow for bundled travel, built in plain HTML, CSS and JavaScript."
+>
+  <header class="wrap intro">
+    <a class="back mono" href="/work">← All work</a>
+    <div class="intro-grid">
+      <div>
+        <p class="kicker mono" data-reveal>Labs · <span class="proto">Working prototype</span></p>
+        <h1 data-reveal style="--reveal-i:1">Travel Packages</h1>
+        <p class="lede" data-reveal style="--reveal-i:2">
+          A self-service publishing CMS and booking flow that I designed and built myself, in plain
+          HTML, CSS and JavaScript. It let the business shape a bundled-travel product, beyond
+          flight-only revenue, without waiting on engineering.
+        </p>
+      </div>
+      <svg class="intro-planet" viewBox="-100 -100 200 200" aria-hidden="true" data-reveal style="--reveal-i:2">
+        <circle class="orbit" r="88"></circle>
+        <circle class="orbit faint" r="70"></circle>
+        <Planet id="labs-packages" r={46} tone="peach" />
+      </svg>
+    </div>
+
+    <ul class="how" role="list" data-reveal style="--reveal-i:3">
+      <li><span class="mono">01</span> Try the site and the CMS side by side.</li>
+      <li><span class="mono">02</span> Publish in the CMS, then refresh the site to see your change.</li>
+      <li><span class="mono">03</span> Your edits stay in your own browser. Nothing is sent anywhere.</li>
+    </ul>
+  </header>
+
+  <section class="wrap stage" aria-label="Prototype">
+    {
+      frames.map((f) => (
+        <figure class="frame" data-frame={f.id}>
+          <figcaption>
+            <span class="frame-label">{f.label}</span>
+            <span class="frame-note">{f.note}</span>
+            <span class="frame-actions">
+              <button type="button" class="chip mono" data-reload={f.id}>
+                Refresh
+              </button>
+              <a class="chip mono" href={f.src} target="_blank" rel="noopener">
+                Full screen ↗
+              </a>
+            </span>
+          </figcaption>
+          <div class="screen">
+            <iframe
+              id={`frame-${f.id}`}
+              src={f.src}
+              title={`Travel Packages prototype: ${f.label.toLowerCase()}`}
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"
+            />
+          </div>
+        </figure>
+      ))
+    }
+  </section>
+
+  <section class="wrap small-print">
+    <p>
+      Sample data throughout. Destination photos are replaced with simple illustrations, and
+      prices, fees and contact details are placeholders. Every page carries a “Reset demo data”
+      button.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-6) var(--space-7);
+  }
+  .back {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-7);
+    margin-top: var(--space-7);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .proto {
+    color: var(--accent-warm);
+  }
+  h1 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 5.4rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .lede {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .intro-planet {
+    width: 200px;
+    overflow: visible;
+  }
+  .orbit {
+    fill: none;
+    stroke: var(--line);
+  }
+  .orbit.faint {
+    stroke-dasharray: 2 6;
+  }
+  .how {
+    list-style: none;
+    padding: var(--space-5) 0 0;
+    margin-top: var(--space-7);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-4);
+    color: var(--text);
+  }
+  .how .mono {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--accent-warm);
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 34rem), 1fr));
+    gap: var(--space-5);
+  }
+  .frame {
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  figcaption {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-1) var(--space-4);
+    align-items: start;
+  }
+  .frame-label {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--heading);
+  }
+  .frame-note {
+    grid-column: 1;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .frame-actions {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    gap: var(--space-2);
+  }
+  .chip {
+    padding: 0.4em 0.9em;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--accent);
+    font-size: 0.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .chip:hover,
+  .chip:focus-visible {
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+  }
+  .screen {
+    position: relative;
+    height: min(78vh, 760px);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #062231;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .small-print {
+    padding-block: var(--space-6) var(--space-9);
+  }
+  .small-print p {
+    max-width: 60ch;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 52rem) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+    }
+    .intro-planet {
+      grid-row: 1;
+      width: 120px;
+    }
+    figcaption {
+      grid-template-columns: 1fr;
+    }
+    .frame-actions {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .screen {
+      height: 72vh;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-reload]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const frame = document.getElementById(`frame-${btn.dataset.reload}`) as HTMLIFrameElement | null;
+      frame?.contentWindow?.location.reload();
+    });
+  });
+</script>

@@ -1,0 +1,180 @@
+---
+/**
+ * Labs: Affiliate Dashboard V2.0. The prototype lives in Figma Make and is
+ * not published (publishing would list it on the Figma Community), so this
+ * page frames it and links out to the view-only preview.
+ */
+import Base from '../../layouts/Base.astro';
+import Planet from '../../components/space/Planet.astro';
+
+const PROTOTYPE = 'https://www.figma.com/make/uz94wqVwWuLLIvLUEibmox/Affiliate-Analytics-Dashboard?fullscreen=1';
+---
+
+<Base
+  title="Affiliate Dashboard prototype"
+  description="A working prototype by Chinenye Ndigwe: a self-service affiliate dashboard with an automated commission-reconciliation and payout engine, built on mock data."
+>
+  <header class="wrap intro">
+    <a class="back mono" href="/work">← All work</a>
+    <div class="intro-grid">
+      <div>
+        <p class="kicker mono" data-reveal>Labs · <span class="proto">Working prototype</span></p>
+        <h1 data-reveal style="--reveal-i:1">Affiliate Dashboard V2.0</h1>
+        <p class="lede" data-reveal style="--reveal-i:2">
+          A fully interactive prototype of a self-service affiliate platform, including an automated
+          commission-reconciliation and payout engine. Not a wireframe. It runs on mock data.
+        </p>
+        <p class="cta" data-reveal style="--reveal-i:3">
+          <a class="btn" href={PROTOTYPE} target="_blank" rel="noopener">
+            Open the live prototype <span aria-hidden="true">↗</span>
+          </a>
+          <span class="mono hint">Opens in Figma, view only</span>
+        </p>
+      </div>
+      <svg class="intro-planet" viewBox="-100 -100 200 200" aria-hidden="true" data-reveal style="--reveal-i:2">
+        <circle class="orbit" r="88"></circle>
+        <circle class="orbit faint" r="70"></circle>
+        <Planet id="labs-affiliate" r={46} tone="purple" />
+      </svg>
+    </div>
+
+    <ul class="facts" role="list" data-reveal style="--reveal-i:4">
+      <li>
+        <span class="value">~$240K</span>
+        <span class="label mono">annual net profit in the affiliate channel</span>
+      </li>
+      <li>
+        <span class="value">15%</span>
+        <span class="label mono">of Nigeria bookings</span>
+      </li>
+      <li>
+        <span class="value">1 sprint</span>
+        <span class="label mono">approved from the business case</span>
+      </li>
+    </ul>
+  </header>
+
+  <section class="wrap story">
+    <h2>Why I built it</h2>
+    <p>
+      The legacy affiliate tool had been shut down, and the channel it served was worth about $240K in
+      annual net profit and 15% of Nigeria bookings. I built a working prototype of its replacement so
+      people could click through the product instead of imagining it.
+    </p>
+    <p>
+      I secured technical sizing from the engineering teams and wrote the business case that won
+      leadership approval for a dedicated development sprint.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-6) var(--space-7);
+  }
+  .back {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-7);
+    margin-top: var(--space-7);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .proto {
+    color: var(--accent-warm);
+  }
+  h1 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 5.4rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .lede {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .intro-planet {
+    width: 200px;
+    overflow: visible;
+  }
+  .orbit {
+    fill: none;
+    stroke: var(--line);
+  }
+  .orbit.faint {
+    stroke-dasharray: 2 6;
+  }
+  .facts {
+    list-style: none;
+    padding: var(--space-6) 0 0;
+    margin-top: var(--space-7);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: var(--space-5);
+  }
+  .facts li {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .value {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--heading);
+  }
+  .label {
+    color: var(--text-muted);
+  }
+  .story {
+    padding-block: var(--space-6) var(--space-9);
+  }
+  .story > * {
+    max-width: var(--measure);
+  }
+  .story h2 {
+    font-size: var(--step-2);
+    font-weight: 500;
+  }
+  .story p {
+    margin-top: var(--space-4);
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 52rem) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+    }
+    .intro-planet {
+      grid-row: 1;
+      width: 120px;
+    }
+  }
+</style>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms & Conditions – Packages demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/labs/packages/demo/vendor/fa/css/all.min.css" />
+    <style>
+        /* ══════════════════════════════════════
+       HERO
+       ══════════════════════════════════════ */
+        .terms-hero {
+            background: var(--navy);
+            padding: 72px 5% 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dot-grid pattern overlay */
+        .terms-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(27, 179, 245, 0.18) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+        }
+
+        /* Radial fade so pattern fades toward center */
+        .terms-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%,
+                    rgba(6, 34, 49, 0.82) 0%,
+                    rgba(6, 34, 49, 0.55) 55%,
+                    rgba(6, 34, 49, 0.10) 100%);
+            pointer-events: none;
+        }
+
+        .terms-hero-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .terms-hero-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .terms-hero-label::before,
+        .terms-hero-label::after {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--blue);
+        }
+
+        .terms-hero-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(28px, 4vw, 48px);
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.1;
+        }
+
+        .terms-hero-sub {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.65;
+        }
+
+        .terms-hero-meta {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .terms-hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ══════════════════════════════════════
+       LAYOUT
+       ══════════════════════════════════════ */
+        .terms-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 5%;
+            align-items: start;
+        }
+
+        /* ══════════════════════════════════════
+       STICKY NAV
+       ══════════════════════════════════════ */
+        .terms-nav {
+            position: sticky;
+            top: 88px;
+            background: var(--white);
+            border: 1.5px solid var(--grey);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        [data-theme="dark"] .terms-nav {
+            background: rgba(8, 18, 28, 0.80);
+            border-color: rgba(27, 179, 245, 0.12);
+        }
+
+        .terms-nav-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 14px;
+        }
+
+        .terms-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+            color: #6b8090;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+            cursor: pointer;
+            margin-bottom: 2px;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .terms-nav-link i {
+            font-size: 12px;
+            flex-shrink: 0;
+            width: 14px;
+            color: #8a9caa;
+        }
+
+        .terms-nav-link:hover {
+            background: var(--grey);
+            color: var(--navy);
+        }
+
+        .terms-nav-link:hover i {
+            color: var(--navy);
+        }
+
+        [data-theme="dark"] .terms-nav-link:hover {
+            background: rgba(27, 179, 245, 0.08);
+            color: #E8F4FC;
+        }
+
+        [data-theme="dark"] .terms-nav-link:hover i {
+            color: #E8F4FC;
+        }
+
+        .terms-nav-link.active {
+            background: rgba(27, 179, 245, 0.10);
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .terms-nav-link.active i {
+            color: var(--blue);
+        }
+
+        /* ══════════════════════════════════════
+       CONTENT — SECTIONS
+       ══════════════════════════════════════ */
+        .terms-content {
+            min-width: 0;
+        }
+
+        .terms-section {
+            margin-bottom: 52px;
+            padding-bottom: 52px;
+            border-bottom: 1px solid var(--grey);
+            scroll-margin-top: 108px;
+        }
+
+        [data-theme="dark"] .terms-section {
+            border-bottom-color: rgba(27, 179, 245, 0.08);
+        }
+
+        .terms-section:last-child {
+            border: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .terms-section-num {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 8px;
+        }
+
+        .terms-section-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        [data-theme="dark"] .terms-section-title {
+            color: #E8F4FC;
+        }
+
+        .terms-p {
+            font-size: 15px;
+            color: #5a7080;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        [data-theme="dark"] .terms-p {
+            color: #7BAEC7;
+        }
+
+        .terms-p strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .terms-p strong {
+            color: #E8F4FC;
+        }
+
+        /* ── Bullet list ── */
+        .terms-list {
+            margin: 12px 0 14px;
+            padding-left: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .terms-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: #5a7080;
+            line-height: 1.65;
+        }
+
+        [data-theme="dark"] .terms-list li {
+            color: #7BAEC7;
+        }
+
+        .terms-list li i {
+            color: var(--blue);
+            flex-shrink: 0;
+            margin-top: 4px;
+            font-size: 11px;
+        }
+
+        /* ══════════════════════════════════════
+       STEP CARDS — booking process & amendments
+       ══════════════════════════════════════ */
+        .terms-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 20px 0;
+        }
+
+        .terms-step {
+            display: flex;
+            gap: 0;
+            position: relative;
+        }
+
+        /* Connector line between steps */
+        .terms-step:not(:last-child) .terms-step-left::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% - 8px);
+            background: var(--grey);
+            z-index: 0;
+        }
+
+        [data-theme="dark"] .terms-step:not(:last-child) .terms-step-left::after {
+            background: rgba(27, 179, 245, 0.15);
+        }
+
+        .terms-step-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .terms-step-num {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .terms-step-body {
+            padding: 8px 0 28px 0;
+            flex: 1;
+        }
+
+        .terms-step:last-child .terms-step-body {
+            padding-bottom: 0;
+        }
+
+        .terms-step-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--navy);
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        [data-theme="dark"] .terms-step-title {
+            color: #E8F4FC;
+        }
+
+        .terms-step-desc {
+            font-size: 14px;
+            color: #5a7080;
+            line-height: 1.65;
+        }
+
+        [data-theme="dark"] .terms-step-desc {
+            color: #7BAEC7;
+        }
+
+        /* ── Amendment cards ── */
+        .terms-amend-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .terms-amend-card {
+            background: var(--grey);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            border-left: 3px solid var(--blue);
+        }
+
+        [data-theme="dark"] .terms-amend-card {
+            background: rgba(8, 18, 28, 0.60);
+            border-left-color: var(--blue);
+        }
+
+        .terms-amend-card-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--navy);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        [data-theme="dark"] .terms-amend-card-title {
+            color: #E8F4FC;
+        }
+
+        .terms-amend-card-title i {
+            color: var(--blue);
+            font-size: 13px;
+        }
+
+        .terms-amend-card-desc {
+            font-size: 13px;
+            color: #5a7080;
+            line-height: 1.6;
+        }
+
+        [data-theme="dark"] .terms-amend-card-desc {
+            color: #7BAEC7;
+        }
+
+        /* ══════════════════════════════════════
+       CALLOUT & WARNING
+       ══════════════════════════════════════ */
+        .terms-callout {
+            background: rgba(27, 179, 245, 0.07);
+            border: 1.5px solid rgba(27, 179, 245, 0.18);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #0a7aaa;
+            line-height: 1.65;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        [data-theme="dark"] .terms-callout {
+            background: rgba(27, 179, 245, 0.10);
+            color: #1BB3F5;
+        }
+
+        .terms-callout>i {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .terms-callout strong {
+            color: #0a7aaa;
+        }
+
+        [data-theme="dark"] .terms-callout strong {
+            color: #1BB3F5;
+        }
+
+        .terms-warning {
+            background: rgba(244, 123, 32, 0.07);
+            border: 1.5px solid rgba(244, 123, 32, 0.22);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #b85a0a;
+            line-height: 1.65;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        [data-theme="dark"] .terms-warning {
+            background: rgba(244, 123, 32, 0.12);
+            color: #F47B20;
+        }
+
+        .terms-warning>i {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ══════════════════════════════════════
+       TABLES
+       ══════════════════════════════════════ */
+        .terms-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+            table-layout: fixed;
+        }
+
+        .terms-table th {
+            background: var(--grey);
+            text-align: left;
+            padding: 11px 16px;
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        [data-theme="dark"] .terms-table th {
+            background: rgba(8, 18, 28, 0.80);
+            color: #E8F4FC;
+        }
+
+        .terms-table td {
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--grey);
+            color: #5a7080;
+            line-height: 1.55;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+
+        [data-theme="dark"] .terms-table td {
+            border-bottom-color: rgba(27, 179, 245, 0.08);
+            color: #7BAEC7;
+        }
+
+        .terms-table tr:last-child td {
+            border: none;
+        }
+
+        .terms-table tr:hover td {
+            background: rgba(27, 179, 245, 0.03);
+        }
+
+        .terms-table.payment-table th:nth-child(1),
+        .terms-table.payment-table td:nth-child(1) {
+            width: 35%;
+        }
+
+        .terms-table.payment-table th:nth-child(2),
+        .terms-table.payment-table td:nth-child(2) {
+            width: 40%;
+        }
+
+        .terms-table.payment-table th:nth-child(3),
+        .terms-table.payment-table td:nth-child(3) {
+            width: 25%;
+        }
+
+        .terms-table.cancel-table th:nth-child(1),
+        .terms-table.cancel-table td:nth-child(1) {
+            width: 45%;
+        }
+
+        .terms-table.cancel-table th:nth-child(2),
+        .terms-table.cancel-table td:nth-child(2) {
+            width: 55%;
+        }
+
+        /* ══════════════════════════════════════
+       FOOTER STRIP
+       ══════════════════════════════════════ */
+        .terms-updated {
+            text-align: center;
+            padding: 28px;
+            font-size: 13px;
+            color: #8a9caa;
+            border-top: 1px solid var(--grey);
+        }
+
+        [data-theme="dark"] .terms-updated {
+            color: #4A7A96;
+            border-top-color: rgba(27, 179, 245, 0.08);
+        }
+
+        /* ══════════════════════════════════════
+       RESPONSIVE
+       ══════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .terms-layout {
+                grid-template-columns: 1fr;
+                padding: 32px 5%;
+            }
+
+            .terms-nav {
+                display: none;
+            }
+
+            .terms-amend-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .terms-table {
+                font-size: 13px;
+            }
+
+            .terms-table th,
+            .terms-table td {
+                padding: 9px 10px;
+            }
+        }
+    </style>
+  <meta name="robots" content="noindex" />
+  <script src="/labs/packages/demo/demo.js"></script>
+</head>
+
+<body>
+
+    <!-- ─── NAV ─────────────────────────────────────────── -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+                </span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Packages</a></li>
+            </ul>
+            <a href="index.html#packages" class="nav-cta">Browse Packages</a>
+        </div>
+    </nav>
+
+    <!-- ─── HERO ─────────────────────────────────────────── -->
+    <div class="terms-hero">
+        <div class="terms-hero-inner">
+            <div class="terms-hero-label">Legal</div>
+            <h1 class="terms-hero-title">Terms &amp; Conditions</h1>
+            <p class="terms-hero-sub">These are demo terms for a working prototype. Nothing here is a real offer.</p>
+            <div class="terms-hero-meta">
+                <span><i class="fa-solid fa-flask"></i> Working prototype</span>
+                <span><i class="fa-solid fa-file-lines"></i> 4 sections</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── LAYOUT ────────────────────────────────────────── -->
+    <div class="terms-layout">
+        <nav class="terms-nav" aria-label="Sections">
+            <div class="terms-nav-title">Sections</div>
+            <button class="terms-nav-link active" onclick="jumpTo('s1')">
+                <i class="fa-solid fa-flask"></i> 1. About this demo
+            </button>
+            <button class="terms-nav-link" onclick="jumpTo('s2')">
+                <i class="fa-solid fa-money-bill"></i> 2. Prices
+            </button>
+            <button class="terms-nav-link" onclick="jumpTo('s3')">
+                <i class="fa-solid fa-paper-plane"></i> 3. Requests
+            </button>
+            <button class="terms-nav-link" onclick="jumpTo('s4')">
+                <i class="fa-solid fa-lock"></i> 4. Your data
+            </button>
+        </nav>
+        <div class="terms-content">
+            <div class="terms-section" id="s1">
+                <div class="terms-section-num">Section 01</div>
+                <h2 class="terms-section-title">About this demo</h2>
+                <p class="terms-p">This is a working prototype of a bundled-travel product. It runs on sample data. It is not a live product, and no real trip can be booked here.</p>
+            </div>
+
+            <div class="terms-section" id="s2">
+                <div class="terms-section-num">Section 02</div>
+                <h2 class="terms-section-title">Prices</h2>
+                <p class="terms-p">Every price, visa fee and exchange rate shown is sample data for demonstration only. None of it is an offer.</p>
+            </div>
+
+            <div class="terms-section" id="s3">
+                <div class="terms-section-num">Section 03</div>
+                <h2 class="terms-section-title">Requests</h2>
+                <p class="terms-p">Submitting a request runs the full flow and ends on the confirmation page. Nothing is sent anywhere, and no one will contact you.</p>
+            </div>
+
+            <div class="terms-section" id="s4">
+                <div class="terms-section-num">Section 04</div>
+                <h2 class="terms-section-title">Your data</h2>
+                <p class="terms-p">Anything you type stays in your own browser. It is never sent to a server. Use "Reset demo data" in the banner to clear it.</p>
+            </div>
+        </div><!-- /terms-content -->
+    </div><!-- /terms-layout -->
+
+    <!-- ─── FOOTER ────────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <span style="display:flex;align-items:center;gap:10px;"><div class="nav-logo-mark">P</div><span class="nav-logo-text">Pack<span>ages</span></span>
+                        </span>
+                    </a>
+                    <p>Bundled travel packages for Nigerian travellers. Working prototype. Sample data. Not a live product.</p>
+                </div>
+                <div>
+                    <div class="footer-col-title">Services</div>
+                    <ul class="footer-links">
+                        <li><a href="index.html#packages">Travel Packages</a></li>
+                        <li><a href="visa.html">Visa Assistance</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="terms.html">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-col-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="index.html#faqGrid">FAQs</a></li>
+                        <li><a href="tel:+2349000000000"><i class="fa-solid fa-phone"
+                                    style="font-size:11px;margin-right:5px"></i>Call Us</a></li>
+                        <li><a href="https://wa.me/2349000000000" target="_blank"><i class="fa-brands fa-whatsapp"
+                                    style="font-size:11px;margin-right:5px"></i>WhatsApp</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="footer-bottom">
+                <p>Packages demo · Working prototype. Sample data. Not a live product.</p>
+                <p style="color:rgba(255,255,255,0.4);font-size:13px;">Packages are indicatively priced. Final price
+                    confirmed at quote stage.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ─── DARK MODE TOGGLE ──────────────────────────────── -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="icon-light"><i class="fa-solid fa-moon"></i></span>
+        <span class="toggle-label label-dark">Dark mode</span>
+        <span class="icon-dark"><i class="fa-solid fa-sun"></i></span>
+        <span class="toggle-label label-light">Light mode</span>
+    </button>
+
+    <script>
+        /* ── Dark mode ── */
+        function initDarkMode() {
+            const btn = document.getElementById('themeToggle');
+            const saved = localStorage.getItem('ts-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            btn.addEventListener('click', () => {
+                const cur = document.documentElement.getAttribute('data-theme') || 'light';
+                const next = cur === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('ts-theme', next);
+            });
+        }
+
+        /* ── Jump to section with nav offset ── */
+        function jumpTo(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const top = el.getBoundingClientRect().top + window.scrollY - 104;
+            window.scrollTo({ top, behavior: 'smooth' });
+            document.querySelectorAll('.terms-nav-link').forEach(l => l.classList.remove('active'));
+            const clicked = document.querySelector(`.terms-nav-link[onclick="jumpTo('${id}')"]`);
+            if (clicked) clicked.classList.add('active');
+        }
+
+        /* ── Intersection observer ── */
+        function initStickyNav() {
+            const sections = document.querySelectorAll('.terms-section');
+            const links = document.querySelectorAll('.terms-nav-link');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        links.forEach(l => l.classList.remove('active'));
+                        const match = document.querySelector(`.terms-nav-link[onclick="jumpTo('${e.target.id}')"]`);
+                        if (match) match.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+            sections.forEach(s => observer.observe(s));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
+            initStickyNav();
+        });
+    </script>
+</body>
+
+</html>
