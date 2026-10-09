@@ -256,3 +256,93 @@ a:hover {
     transition: opacity var(--dur-med) ease;
   }
 }
+
+/* ── Content pages: sections, cards, tags ──────── */
+.section {
+  padding-block: var(--space-7);
+}
+.section-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--step-2);
+  font-weight: 500;
+}
+.section-title .mono {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-warm);
+}
+.section-lede {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+  color: var(--text-muted);
+}
+.cards {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-6);
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+}
+.card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  color: var(--text);
+}
+.card h3 {
+  font-size: var(--step-1);
+  font-weight: 500;
+  color: var(--heading);
+}
+.card .meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+}
+.card p,
+.card li {
+  color: var(--text-muted);
+}
+.card ul {
+  padding-left: 1.1em;
+  display: grid;
+  gap: var(--space-2);
+}
+.status {
+  justify-self: start;
+  padding: 0.2em 0.7em;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--accent-warm) 18%, transparent);
+  color: var(--accent-warm);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.tags li {
+  padding: 0.3em 0.8em;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+}
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}

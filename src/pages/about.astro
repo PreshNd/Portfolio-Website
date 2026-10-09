@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import portrait from '../assets/photos/chi-warm-blazer.jpg';
+
+const lenses = [
+  ['Web development', 'What is actually buildable. I scope honestly, and I can prototype things myself.'],
+  ['CRM', 'What happens after the sale, so no customer falls through the cracks.'],
+  ['Marketing', 'How a product gets found, sold and measured.'],
+  ['CMS and platforms', 'How the people who run a tool live with it every day.'],
+  ['Product', 'Bringing all of that into one decision, and owning the outcome.'],
+];
+---
+
+<Base
+  title="About"
+  description="Chinenye (Chi) Ndigwe is a technical product manager in Lagos. Web developer first, then CRM, marketing, CMS and product."
+>
+  <PageIntro kicker="About" title="Hi, I'm Chi." id="about" tone="peach">
+    <p>
+      I'm a technical product manager in Lagos. I started as a web developer, then worked in CRM,
+      marketing and CMS before I moved into product.
+    </p>
+  </PageIntro>
+
+  <section class="wrap section about">
+    <figure class="photo" data-reveal>
+      <Image
+        src={portrait}
+        alt="Chi Ndigwe in a black blazer, smiling, in warm studio light"
+        widths={[360, 560, 720]}
+        sizes="(max-width: 52rem) 80vw, 360px"
+      />
+    </figure>
+    <div class="prose story" data-reveal style="--reveal-i:1">
+      <h2 class="section-title">How I think</h2>
+      <p>
+        I look at a product the way the whole system around it sees it. That means the customer, and
+        also the teams attached to the product: operations, finance, support and marketing.
+      </p>
+      <p>
+        That is what "technical" means to me. I understand the technical side well enough to scope
+        honestly and talk to engineers in their language. And I understand the people side well
+        enough to make sure the product works for everyone who touches it.
+      </p>
+      <p>
+        I call the products I build <em>everyday buddies</em>. A buddy works for the customer and
+        for the people who run it.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <h2 class="section-title"><span class="mono">01</span> The lenses I bring</h2>
+    <p class="section-lede">Every role I've had taught me to see a product from another side.</p>
+    <ul class="cards" role="list">
+      {
+        lenses.map(([name, line], i) => (
+          <li class="card" data-reveal style={`--reveal-i:${i % 3}`}>
+            <h3>{name}</h3>
+            <p>{line}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <h2 class="section-title"><span class="mono">02</span> Right now</h2>
+    <div class="prose now">
+      <p>
+        I'm open to product roles, with a special interest in payments and fintech. I also take on
+        freelance and consulting work: websites, platform and CMS advice, and project management.
+      </p>
+      <p>
+        Next year I'm taking a technical product management certification, covering API
+        integrations and payment gateways.
+      </p>
+      <p>
+        Outside work, I lead volunteer projects and serve in my church's leadership. You'll find that
+        in <a href="/beyond">Beyond Work</a>.
+      </p>
+    </div>
+    <dl class="edu">
+      <div>
+        <dt class="mono">Education</dt>
+        <dd>BSc Computer Science, Nnamdi Azikiwe University, 2018</dd>
+      </div>
+      <div>
+        <dt class="mono">Training</dt>
+        <dd>Product Design bootcamp, Genesys Tech Hub, 2022</dd>
+      </div>
+    </dl>
+    <p class="cta-row">
+      <a class="btn" href="/journey">Walk my journey <span aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="/contact">Say hello</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+  .photo {
+    margin: 0;
+  }
+  .photo img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-l);
+  }
+  .story p,
+  .now p {
+    color: var(--text-muted);
+    font-size: var(--step-0);
+  }
+  .now {
+    margin-top: var(--space-5);
+  }
+  .now a {
+    color: var(--accent);
+  }
+  .edu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+  .edu dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .edu dd {
+    margin: var(--space-1) 0 0;
+    color: var(--heading);
+  }
+  @media (max-width: 52rem) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .photo {
+      max-width: 320px;
+    }
+  }
+</style>

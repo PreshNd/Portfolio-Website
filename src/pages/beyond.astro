@@ -1,0 +1,143 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+
+const now = [
+  {
+    title: 'A gospel concert and live album project',
+    role: 'Volunteer Project Manager · Oct 2026 to now · Lagos',
+    summary:
+      'A worship concert that is also a live album recording and album launch, planned for March 2027.',
+    points: [
+      'Wrote the master plan: vision, success measures, scope and 105 requirements across 12 workstreams.',
+      'Set up the team structure with role cards and a RACI model, plus a live shared project board.',
+      'Planned five phases with four checkpoints, and a 20-item risk register with fallbacks, including backup audio recording.',
+      'Set the working rhythm: weekly meetings, escalation, change control and financial approval rules.',
+    ],
+    status: 'In progress',
+  },
+  {
+    title: 'Launch Command',
+    role: 'Launch programme for a first-time founder · Sep 2026 to now',
+    summary:
+      'An accountability and launch programme for an early-stage growth marketing startup, before launch.',
+    points: [
+      'Turned "finish and launch" into five launch criteria and a roadmap of 50+ tasks across 9 workstreams.',
+      'Built a live launch dashboard in Google Sheets and Apps Script.',
+      'Automated Monday, Wednesday and Friday check-in emails that carry live status.',
+      'Wrote a ~50-point UAT plan with a content-truth audit: no unverified claims or placeholder data go live.',
+    ],
+    status: 'In progress',
+  },
+];
+
+const church = [
+  'Ordained minister, serving since November 2025.',
+  'Worship team member since August 2023. Now part of the core worship leadership as soprano part leader.',
+  'Subsystem Coordinator in the Maturity Purpose Community, covering the New Believers Management, Baptism and Resource (books and library) teams.',
+];
+
+const past = [
+  {
+    title: 'Breast Cancer Awareness Walk',
+    role: 'Event Planning Volunteer · Oct 2020 to Oct 2021',
+    line: "Helped plan and run the walk, in line with the foundation's goal of reaching women and children with health support.",
+  },
+  {
+    title: 'Youth Summit',
+    role: 'Event Planning Volunteer · Feb 2021',
+    line: 'Planned and hosted a summit on youth empowerment and entrepreneurship skills, aligned with the SDGs.',
+  },
+  {
+    title: 'SkillUp programme',
+    role: 'Training Volunteer · Apr 2021',
+    line: 'Trained 45+ young people on time management in a two-day programme for new corporate skills.',
+  },
+];
+
+const skills = [
+  'Project Management',
+  'Event Planning',
+  'Stakeholder Management',
+  'Risk Management',
+  'Volunteer Coordination',
+  'Strategic Planning',
+  'Training',
+];
+---
+
+<Base
+  title="Beyond Work"
+  description="Volunteer project management and leadership by Chinenye Ndigwe: live events, founder launch programmes and church leadership."
+>
+  <PageIntro kicker="Beyond Work" title="The same skills, off the clock." id="beyond" tone="lilac">
+    <p>
+      I run volunteer projects the way I run products: clear goals, a plan people can see, and an
+      honest view of the risks.
+    </p>
+  </PageIntro>
+
+  <section class="wrap section">
+    <h2 class="section-title"><span class="mono">01</span> Now</h2>
+    <ul class="cards" role="list">
+      {
+        now.map((p, i) => (
+          <li class="card" data-reveal style={`--reveal-i:${i}`}>
+            <span class="status">{p.status}</span>
+            <h3>{p.title}</h3>
+            <span class="meta">{p.role}</span>
+            <p>{p.summary}</p>
+            <ul>
+              {p.points.map((pt) => (
+                <li>{pt}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <h2 class="section-title"><span class="mono">02</span> Church leadership</h2>
+    <p class="section-lede">
+      I'm part of the core leadership at The Elevation Church, Ogba. It's real people and project
+      management, and I bring my work skills into it.
+    </p>
+    <ul class="cards" role="list">
+      {
+        church.map((c, i) => (
+          <li class="card" data-reveal style={`--reveal-i:${i}`}>
+            <p>{c}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <h2 class="section-title"><span class="mono">03</span> Before</h2>
+    <p class="section-lede">LendALight Humanitarian Foundation.</p>
+    <ul class="cards" role="list">
+      {
+        past.map((p, i) => (
+          <li class="card" data-reveal style={`--reveal-i:${i}`}>
+            <h3>{p.title}</h3>
+            <span class="meta">{p.role}</span>
+            <p>{p.line}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <h2 class="section-title"><span class="mono">04</span> Skills I use here</h2>
+    <ul class="tags" role="list" style="margin-top: var(--space-4)">
+      {skills.map((s) => <li>{s}</li>)}
+    </ul>
+    <p class="cta-row">
+      <a class="btn" href="/contact">Say hello <span aria-hidden="true">→</span></a>
+    </p>
+  </section>
+</Base>

@@ -1,0 +1,217 @@
+---
+/**
+ * Contact. No backend: the form builds an email in the visitor's own mail
+ * app, so nothing is stored or sent by the site. /contact?type=project
+ * preselects the freelance option (used by Web Work's "Work with me").
+ */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import portrait from '../assets/photos/chi-warm-blazer.jpg';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Contact"
+  description="Get in touch with Chinenye Ndigwe about a product role, or a website or consulting project."
+>
+  <PageIntro kicker="Say hello" title="Let's talk." id="contact" tone="merge">
+    <p>Hiring for a product role, or need help with a website or platform? Tell me a little about it.</p>
+  </PageIntro>
+
+  <section class="wrap section contact">
+    <form class="card form" id="contact-form" data-email={site.email}>
+      <fieldset>
+        <legend class="mono">What brings you here?</legend>
+        <label class="choice">
+          <input type="radio" name="type" value="role" checked />
+          <span>Hiring for a role</span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="type" value="project" />
+          <span>A project or freelance work</span>
+        </label>
+      </fieldset>
+
+      <label class="field">
+        <span class="mono">Your name</span>
+        <input name="name" type="text" autocomplete="name" required />
+      </label>
+      <label class="field">
+        <span class="mono">Company (optional)</span>
+        <input name="company" type="text" autocomplete="organization" />
+      </label>
+      <label class="field">
+        <span class="mono">Message</span>
+        <textarea name="message" rows="6" required></textarea>
+      </label>
+
+      <button class="btn" type="submit">Write the email <span aria-hidden="true">→</span></button>
+      <p class="note">This opens your own email app with the message ready to send.</p>
+    </form>
+
+    <aside class="side">
+      <Image
+        src={portrait}
+        alt="Chi Ndigwe smiling"
+        widths={[240, 400]}
+        sizes="200px"
+        class="avatar"
+      />
+      <p class="side-line">Based in Lagos, Nigeria.</p>
+      <ul class="links" role="list">
+        {
+          site.email && (
+            <li>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </li>
+          )
+        }
+        {
+          site.linkedin && (
+            <li>
+              <a href={site.linkedin} target="_blank" rel="noopener">
+                LinkedIn ↗
+              </a>
+            </li>
+          )
+        }
+        <li>
+          <a href="/cv">CV</a>
+        </li>
+      </ul>
+    </aside>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 18rem);
+    gap: var(--space-7);
+    align-items: start;
+  }
+  .form {
+    gap: var(--space-5);
+    max-width: 40rem;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  legend {
+    width: 100%;
+    margin-bottom: var(--space-3);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .choice {
+    position: relative;
+  }
+  .choice input {
+    position: absolute;
+    opacity: 0;
+  }
+  .choice span {
+    display: inline-block;
+    padding: 0.6em 1.1em;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    color: var(--text);
+  }
+  .choice input:checked + span {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+  .choice input:focus-visible + span {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .field {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .field .mono {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  input[type='text'],
+  textarea {
+    width: 100%;
+    padding: 0.8em 1em;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+  }
+  input[type='text']:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .form .btn {
+    justify-self: start;
+  }
+  .note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .side {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .side :global(.avatar) {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .side-line {
+    color: var(--text-muted);
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .links a {
+    color: var(--accent);
+  }
+  @media (max-width: 52rem) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      grid-row: 1;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    if (new URLSearchParams(location.search).get('type') === 'project') {
+      const opt = form.querySelector<HTMLInputElement>('input[value="project"]');
+      if (opt) opt.checked = true;
+    }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(form);
+      const type = d.get('type') === 'project' ? 'A project' : 'A product role';
+      const company = String(d.get('company') || '').trim();
+      const subject = `${type}${company ? ` at ${company}` : ''}, via pcndigwe.site`;
+      const body = `${d.get('message')}\n\n${d.get('name')}${company ? `, ${company}` : ''}`;
+      location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
+</script>
