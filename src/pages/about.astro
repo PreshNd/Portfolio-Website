@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
 import portrait from '../assets/photos/chi-warm-blazer.jpg';
+import { skillGroups, tools } from '../data/skills';
 
 const lenses = [
   ['Web development', 'What is actually buildable. I scope honestly, and I can prototype things myself.'],
@@ -15,11 +16,11 @@ const lenses = [
 
 <Base
   title="About"
-  description="Chinenye (Chi) Ndigwe is a technical product manager in Lagos. Web developer first, then CRM, marketing, CMS and product."
+  description="Chinenye (Chi) Ndigwe is a technical product manager. Web developer first, then CRM, marketing, CMS and product."
 >
   <PageIntro kicker="About" title="Hi, I'm Chi." id="about" tone="peach">
     <p>
-      I'm a technical product manager in Lagos. I started as a web developer, then worked in CRM,
+      I'm a technical product manager. I started as a web developer, then worked in CRM,
       marketing and CMS before I moved into product.
     </p>
   </PageIntro>
@@ -66,8 +67,35 @@ const lenses = [
     </ul>
   </section>
 
+  <section class="wrap section" id="skills">
+    <h2 class="section-title"><span class="mono">02</span> Skills and tools</h2>
+    <p class="section-lede">What I use day to day, from discovery to launch.</p>
+    <div class="skills">
+      {
+        skillGroups.map((g, i) => (
+          <div class="card" data-reveal style={`--reveal-i:${i % 3}`}>
+            <h3>{g.name}</h3>
+            <ul class="tags" role="list">
+              {g.skills.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+      <div class="card tools" data-reveal>
+        <h3>Tools</h3>
+        <ul class="tags" role="list">
+          {tools.map((t) => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="wrap section">
-    <h2 class="section-title"><span class="mono">02</span> Right now</h2>
+    <h2 class="section-title"><span class="mono">03</span> Right now</h2>
     <div class="prose now">
       <p>
         I'm open to product roles, with a special interest in payments and fintech. I also take on
@@ -115,6 +143,12 @@ const lenses = [
     width: 100%;
     height: auto;
     border-radius: var(--radius-l);
+  }
+  .skills {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
   }
   .story p,
   .now p {
