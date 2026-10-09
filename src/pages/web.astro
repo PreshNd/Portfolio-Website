@@ -1,12 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import PageIntro from '../components/PageIntro.astro';
+import bfpr from '../assets/web/bfpraccountable.png';
+import justfantastic from '../assets/web/justfantastic.png';
+import metalshelving from '../assets/web/metalshelving.png';
+import solarshop from '../assets/web/solarshopoffices.png';
 
-const sites = [
+interface Site {
+  domain: string;
+  theme?: string;
+  status: 'Live' | 'In progress';
+  shot?: ImageMetadata;
+}
+
+const sites: Site[] = [
+  { domain: 'bfpraccountable.com', status: 'Live', shot: bfpr },
+  { domain: 'metalshelving.ng', theme: 'Existing theme', status: 'Live', shot: metalshelving },
+  { domain: 'justfantastic.com.ng', theme: 'Custom theme', status: 'Live', shot: justfantastic },
+  { domain: 'solarshopoffices.com', theme: 'Custom theme', status: 'In progress', shot: solarshop },
   { domain: 'voyacrestng.com', theme: 'Existing theme', status: 'Live' },
-  { domain: 'metalshelving.ng', theme: 'Existing theme', status: 'Live' },
-  { domain: 'justfantastic.com.ng', theme: 'Custom theme', status: 'Live' },
-  { domain: 'solarshopoffices.com', theme: 'Custom theme', status: 'In progress' },
   { domain: 'victoriamakanjuola.org', theme: 'Custom theme', status: 'In progress' },
 ];
 ---
@@ -28,21 +42,30 @@ const sites = [
         sites.map((s, i) => (
           <li data-reveal style={`--reveal-i:${i % 3}`}>
             <a class="card site" href={`https://${s.domain}`} target="_blank" rel="noopener">
-              <span class="browser" aria-hidden="true">
-                <span class="dots">
-                  <i />
-                  <i />
-                  <i />
+              {s.shot ? (
+                <Image
+                  class="shot"
+                  src={s.shot}
+                  alt={`Home page of ${s.domain}`}
+                  loading="lazy"
+                />
+              ) : (
+                <span class="browser" aria-hidden="true">
+                  <span class="dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span class="url mono">{s.domain}</span>
                 </span>
-                <span class="url mono">{s.domain}</span>
-              </span>
+              )}
               <span class="row">
                 <h3>{s.domain}</h3>
                 <span class="arrow" aria-hidden="true">
                   ↗
                 </span>
               </span>
-              <span class="meta">WordPress · {s.theme}</span>
+              <span class="meta">WordPress{s.theme && ` · ${s.theme}`}</span>
               {s.status !== 'Live' ? <span class="status">{s.status}</span> : <span class="live mono">Live</span>}
             </a>
           </li>
@@ -81,13 +104,22 @@ const sites = [
     display: grid;
     gap: var(--space-3);
     padding: var(--space-3);
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 10;
     border-radius: 12px;
     border: 1px solid var(--border);
     background:
       radial-gradient(circle at 80% 30%, color-mix(in oklab, var(--accent) 30%, transparent), transparent 55%),
       linear-gradient(160deg, color-mix(in oklab, var(--accent-warm) 18%, transparent), transparent 70%);
     align-content: start;
+  }
+  .site :global(.shot) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 12px;
+    border: 1px solid var(--border);
   }
   .dots {
     display: flex;
