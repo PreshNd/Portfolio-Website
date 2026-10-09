@@ -1,0 +1,81 @@
+---
+/** Shared night-sky page header: kicker, title, lede and a small planet. */
+import Planet from './space/Planet.astro';
+
+interface Props {
+  kicker: string;
+  title: string;
+  id: string;
+  tone?: 'orchid' | 'peach' | 'purple' | 'deep' | 'lilac' | 'merge';
+}
+const { kicker, title, id, tone = 'orchid' } = Astro.props;
+---
+
+<header class="wrap intro">
+  <div class="grid">
+    <div>
+      <p class="kicker mono" data-reveal>{kicker}</p>
+      <h1 data-reveal style="--reveal-i:1">{title}</h1>
+      <div class="lede" data-reveal style="--reveal-i:2"><slot /></div>
+    </div>
+    <svg class="planet" viewBox="-100 -100 200 200" aria-hidden="true" data-reveal style="--reveal-i:2">
+      <circle class="orbit" r="88"></circle>
+      <circle class="orbit faint" r="70"></circle>
+      <Planet id={`intro-${id}`} r={42} tone={tone} />
+    </svg>
+  </div>
+</header>
+
+<style>
+  .intro {
+    padding-block: var(--space-9) var(--space-7);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-7);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  h1 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.6rem, 1.5rem + 4.4vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    max-width: 16ch;
+  }
+  .lede {
+    margin-top: var(--space-5);
+    max-width: 52ch;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .lede :global(p + p) {
+    margin-top: var(--space-3);
+  }
+  .planet {
+    width: 180px;
+    overflow: visible;
+  }
+  .orbit {
+    fill: none;
+    stroke: var(--line);
+  }
+  .orbit.faint {
+    stroke-dasharray: 2 6;
+  }
+  @media (max-width: 52rem) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .planet {
+      grid-row: 1;
+      width: 110px;
+    }
+  }
+</style>

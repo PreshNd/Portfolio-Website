@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import PageIntro from '../components/PageIntro.astro';
+import bfpr from '../assets/web/bfpraccountable.png';
+import justfantastic from '../assets/web/justfantastic.png';
+import metalshelving from '../assets/web/metalshelving.png';
+import solarshop from '../assets/web/solarshopoffices.png';
+
+interface Site {
+  domain: string;
+  theme?: string;
+  status: 'Live' | 'In progress';
+  shot?: ImageMetadata;
+}
+
+const sites: Site[] = [
+  { domain: 'bfpraccountable.com', theme: 'Existing theme', status: 'Live', shot: bfpr },
+  { domain: 'metalshelving.ng', theme: 'Existing theme', status: 'Live', shot: metalshelving },
+  { domain: 'justfantastic.com.ng', theme: 'Custom theme', status: 'Live', shot: justfantastic },
+  { domain: 'solarshopoffices.com', theme: 'Custom theme', status: 'In progress', shot: solarshop },
+  { domain: 'voyacrestng.com', theme: 'Existing theme', status: 'Live' },
+  { domain: 'victoriamakanjuola.org', theme: 'Custom theme', status: 'In progress' },
+];
+---
+
+<Base
+  title="Web Work"
+  description="WordPress websites built by Chinenye Ndigwe for clients, on existing and custom-built themes."
+>
+  <PageIntro kicker="Web Work" title="I still build websites." id="web" tone="orchid">
+    <p>
+      Before product, I was a web developer. I still build sites for clients on WordPress, some on
+      existing themes and some on themes I build from scratch.
+    </p>
+  </PageIntro>
+
+  <section class="wrap section">
+    <ul class="cards" role="list">
+      {
+        sites.map((s, i) => (
+          <li data-reveal style={`--reveal-i:${i % 3}`}>
+            <a class="card site" href={`https://${s.domain}`} target="_blank" rel="noopener">
+              {s.shot ? (
+                <Image
+                  class="shot"
+                  src={s.shot}
+                  alt={`Home page of ${s.domain}`}
+                  loading="lazy"
+                />
+              ) : (
+                <span class="browser" aria-hidden="true">
+                  <span class="dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span class="url mono">{s.domain}</span>
+                </span>
+              )}
+              <span class="row">
+                <h3>{s.domain}</h3>
+                <span class="arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </span>
+              <span class="meta">WordPress{s.theme && ` · ${s.theme}`}</span>
+              {s.status !== 'Live' ? <span class="status">{s.status}</span> : <span class="live mono">Live</span>}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <div class="cta card">
+      <h2 class="section-title">Need a website?</h2>
+      <p>
+        I can build it, or help you choose the right platform and set it up so your team can run it
+        without me.
+      </p>
+      <p class="cta-row" style="margin-top: var(--space-3)">
+        <a class="btn" href="/contact?type=project">Work with me <span aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .site {
+    text-decoration: none;
+    transition:
+      border-color var(--dur-med) ease,
+      transform var(--dur-med) var(--ease-out);
+  }
+  .site:hover,
+  .site:focus-visible {
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+  }
+  .browser {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background:
+      radial-gradient(circle at 80% 30%, color-mix(in oklab, var(--accent) 30%, transparent), transparent 55%),
+      linear-gradient(160deg, color-mix(in oklab, var(--accent-warm) 18%, transparent), transparent 70%);
+    align-content: start;
+  }
+  .site :global(.shot) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .url {
+    justify-self: start;
+    padding: 0.2em 0.8em;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .arrow {
+    color: var(--accent);
+  }
+  .live {
+    font-size: 0.7rem;
+    color: var(--accent);
+  }
+  .cta {
+    max-width: 44rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site:hover,
+    .site:focus-visible {
+      transform: none;
+    }
+  }
+</style>

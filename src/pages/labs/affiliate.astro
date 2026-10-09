@@ -5,9 +5,22 @@
  * page frames it and links out to the view-only preview.
  */
 import Base from '../../layouts/Base.astro';
+import { Image } from 'astro:assets';
 import Planet from '../../components/space/Planet.astro';
+import adminOverview from '../../assets/labs/affiliate-admin-overview.png';
+import portalHome from '../../assets/labs/affiliate-portal-home.png';
+import commission from '../../assets/labs/affiliate-commission-payout.png';
+import payoutCycle from '../../assets/labs/affiliate-payout-cycle.png';
 
-const PROTOTYPE = 'https://www.figma.com/make/uz94wqVwWuLLIvLUEibmox/Affiliate-Analytics-Dashboard?fullscreen=1';
+const PROTOTYPE =
+  'https://www.figma.com/make/uz94wqVwWuLLIvLUEibmox/Affiliate-Analytics-Dashboard-Design?p=f&fullscreen=1';
+
+const shots = [
+  { src: adminOverview, cap: 'Admin: affiliate performance, leaderboard and trends' },
+  { src: portalHome, cap: 'Affiliate portal: bookings and earnings at a glance' },
+  { src: commission, cap: 'Affiliate portal: commission and payout centre' },
+  { src: payoutCycle, cap: 'Admin: a payout cycle, from claims to reconciliation and payment' },
+];
 ---
 
 <Base
@@ -53,6 +66,23 @@ const PROTOTYPE = 'https://www.figma.com/make/uz94wqVwWuLLIvLUEibmox/Affiliate-A
       </li>
     </ul>
   </header>
+
+  <section class="wrap gallery" aria-label="Screens from the prototype">
+    {
+      shots.map((s, i) => (
+        <figure data-reveal style={`--reveal-i:${i % 2}`}>
+          <Image
+            src={s.src}
+            alt={`${s.cap}. Mock data.`}
+            widths={[640, 1080, 1440]}
+            sizes="(max-width: 52rem) 100vw, 50vw"
+            loading="lazy"
+          />
+          <figcaption class="mono">{s.cap}</figcaption>
+        </figure>
+      ))
+    }
+  </section>
 
   <section class="wrap story">
     <h2>Why I built it</h2>
@@ -151,6 +181,27 @@ const PROTOTYPE = 'https://www.figma.com/make/uz94wqVwWuLLIvLUEibmox/Affiliate-A
     color: var(--heading);
   }
   .label {
+    color: var(--text-muted);
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+    gap: var(--space-5);
+    padding-bottom: var(--space-7);
+  }
+  .gallery figure {
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+  .gallery figcaption {
+    font-size: 0.75rem;
     color: var(--text-muted);
   }
   .story {

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { site } from '../data/site';
+---
+
+<Base title="CV" description="Download the CV of Chinenye Ndigwe, technical product manager in Lagos.">
+  <PageIntro kicker="CV" title="The short version." id="cv" tone="deep">
+    <p>Everything in one place, for when you need it on file.</p>
+  </PageIntro>
+
+  <section class="wrap section">
+    <p class="cta-row" style="margin-top: 0">
+      {
+        site.cvPdf && (
+          <a class="btn" href={site.cvPdf} download>
+            Download CV (PDF) <span aria-hidden="true">↓</span>
+          </a>
+        )
+      }
+      {
+        site.linkedin && (
+          <a class="btn btn--ghost" href={site.linkedin} target="_blank" rel="noopener">
+            LinkedIn ↗
+          </a>
+        )
+      }
+    </p>
+    <p class="more">
+      Want the longer story? <a href="/journey">Walk my journey</a> or read <a href="/work">the work</a>.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .more {
+    margin-top: var(--space-6);
+    color: var(--text-muted);
+  }
+  .more a {
+    color: var(--accent);
+  }
+</style>

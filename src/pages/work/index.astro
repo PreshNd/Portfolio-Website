@@ -8,6 +8,19 @@ import Base from '../../layouts/Base.astro';
 import Planet from '../../components/space/Planet.astro';
 
 const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+
+const labs = [
+  {
+    href: '/labs/affiliate',
+    title: 'Affiliate Dashboard V2.0',
+    summary: 'A self-service affiliate platform with an automated commission-reconciliation and payout engine. Mock data.',
+  },
+  {
+    href: '/labs/packages',
+    title: 'Travel Packages',
+    summary: 'A publishing CMS and booking flow I built myself. Try the site and the CMS side by side.',
+  },
+];
 ---
 
 <Base
@@ -42,6 +55,25 @@ const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data
                 {c.data.prototype ? 'Working prototype · ' : ''}
                 {c.data.role}
               </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap labs">
+    <p class="kicker mono">Labs · Working prototypes</p>
+    <ul class="cases" role="list">
+      {
+        labs.map((l) => (
+          <li>
+            <a class="case-card" href={l.href}>
+              <span class="lenses mono">Working prototype</span>
+              <span class="title">
+                {l.title} <span class="arrow" aria-hidden="true">→</span>
+              </span>
+              <span class="summary">{l.summary}</span>
             </a>
           </li>
         ))
@@ -98,6 +130,12 @@ const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data
   .case-card:focus-visible {
     border-color: var(--border-strong);
     transform: translateY(-4px);
+  }
+  .labs {
+    padding-block: var(--space-8) var(--space-9);
+  }
+  .labs .cases {
+    margin-top: var(--space-4);
   }
   .mini {
     width: 64px;
