@@ -1,9 +1,9 @@
 ---
 title: Offline Domestic Flight Booking
-subtitle: Selling the airlines we hadn't integrated yet.
-summary: Only two domestic airlines could be booked online. I proposed a booking request on the search results so customers could ask for the others, built the tracking myself, and our team booked them offline. 30,000+ unique bookings in year one.
+subtitle: Selling the airlines we had not yet integrated.
+summary: Only two domestic airlines could be booked online. I proposed a booking request on the search results page so customers could ask for the others, built the tracking myself, and our team completed those bookings offline. It produced more than 30,000 unique bookings in its first year.
 role: Proposed it, supported the early build, then owned it
-status: Launched. Later taken down when email delivery broke.
+status: Launched. Later retired when email delivery failed.
 lenses: [Product, Project Delivery]
 facts:
   - value: '60,000+'
@@ -18,37 +18,37 @@ order: 3
 
 ## The situation
 
-Customers could book only two domestic airlines directly on the website. We could sell more airlines than that, but they weren't integrated yet. With no API connection, there was no online booking flow for them.
+Customers could book only two domestic airlines directly on our website. We were able to sell many more, but those airlines were not yet integrated, and without an API connection there was no way to book them online.
 
 Customers who wanted those airlines had to call us or message us on WhatsApp.
 
 ## My role
 
-The idea started with me. I supported the early build as Technical Product Coordinator, then owned the product as Associate Product Manager.
+The idea was mine. I supported the early build as Technical Product Coordinator and then owned the product as Associate Product Manager.
 
 ## The lens I brought
 
-A search results page is where a customer decides. If the airline they want can't be booked, that page shouldn't be a dead end. And I knew our team could already book these airlines offline.
+The search results page is where a customer makes a decision. If the airline they want cannot be booked, that page should not be a dead end, and I knew our team could already book these airlines offline.
 
 ## Decisions I made
 
-- **Use what we already had.** The team could already make these bookings offline through the merchant dashboard. The missing piece was getting the customer's request to them.
-- **Put the request where the decision happens.** On the search results page, customers saw the airlines they could book and, alongside them, prices from the other airlines with a way to send a booking request. Over time I improved the form until it captured nearly the same details as the normal booking search.
-- **Build the tracking myself.** There was no engineering time for a dashboard. The simplest thing the front end could do was send every request to an email inbox, so I wrote my first Google Apps Script, with ChatGPT's help. It read the inbox every 15 minutes and broke each request into rows on a sheet. One tab kept every request, so we could count demand. A second tab removed duplicates, and that was where the team worked. It let us start, and prove the idea, without waiting.
-- **Set the bar for fulfilment.** Requests came in faster than they were being closed, so I wrote SLAs for how quickly each one should be handled.
+- **I used what we already had.** Our team could already make these bookings offline through the merchant dashboard. The missing piece was getting the customer's request to them.
+- **I placed the request where the decision happens.** On the search results page, customers saw the airlines they could book alongside prices from the other airlines, with an option to send a booking request. Over time, I refined the form until it captured nearly the same details as a standard booking search.
+- **I built the tracking myself.** There was no engineering capacity for a dashboard, and the simplest option for the front end was to send each request to an email inbox. So I wrote my first Google Apps Script, with help from ChatGPT. Every 15 minutes it read the inbox and broke each request into rows on a spreadsheet. One tab kept every request so we could measure demand, and a second tab removed duplicates and became the team's working list. It let us launch and prove the idea without waiting.
+- **I set the standard for fulfilment.** Requests were arriving faster than they were being closed, so I wrote service-level agreements defining how quickly each one should be handled.
 
 ## What happened
 
-In its first year, the product brought in more than 60,000 total requests, more than 30,000 unique bookings and more than ₦9M in revenue. That was revenue from airlines we couldn't yet sell online.
+In its first year, the product generated more than 60,000 requests, more than 30,000 unique bookings and over ₦9M in revenue, all from airlines we could not yet sell online.
 
-Later, email delivery from the form broke. The engineer who had built it had moved on, with no handover, and it took months just to trace where the code lived. Customers were sending requests that never arrived. We took the form down rather than keep making a promise we couldn't keep. It did not come back.
+Later, email delivery from the form failed. The engineer who had built it had moved on without a handover, and it took months simply to trace where the code lived. Customers were sending requests that never arrived, so we took the form down rather than keep making a promise we could not keep. It was not brought back.
 
 ## What I learned
 
-**When there's no dev time, build the smallest thing that works.** A script and a sheet were enough to launch, measure demand and prove the idea.
+**When there is no development time, build the smallest thing that works.** A script and a spreadsheet were enough to launch, measure demand and prove the idea.
 
-**A request is only half a product.** The other half is the people who fulfil it. Next time, I'd push for fulfilment capacity to be planned in from day one, alongside operations, not after the requests arrive.
+**A request is only half a product.** The other half is the people who fulfil it. Next time, I would plan fulfilment capacity with operations from day one, not after the requests begin to arrive.
 
-**Handover is part of done.** If no one knows where the code lives, the product is one departure away from breaking. I now treat documentation and handover as part of shipping, for every team I work with.
+**Handover is part of done.** If no one knows where the code lives, a product is one departure away from breaking. I now treat documentation and handover as part of shipping, with every team I work with.
 
-**Knowing when to stop is a product decision too.** Taking it down protected customers and the company's reputation. That mattered more than keeping a feature alive.
+**Knowing when to stop is also a product decision.** Taking the form down protected our customers and the company's reputation, and that mattered more than keeping a feature alive.
