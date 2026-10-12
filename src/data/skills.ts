@@ -1,6 +1,10 @@
 /** Skills and tools, matching Chi's CV. Add to these lists, never invent. */
 export const skillGroups: { name: string; skills: string[] }[] = [
   {
+    name: 'Payments and integrations',
+    skills: ['Payment Reconciliation', 'Payment Gateway Integrations (Paystack, Quickteller)', 'API Documentation', 'Partner Integrations', 'White-label & iframe Setup', 'Transaction Data Modelling', 'Incident Triage'],
+  },
+  {
     name: 'Product management',
     skills: ['Product Discovery', 'Business Cases', 'PRD/BRD Development', 'Roadmapping', 'Backlog Prioritization', 'Agile/Scrum', 'UAT', 'Product Launch'],
   },
@@ -10,15 +14,15 @@ export const skillGroups: { name: string; skills: string[] }[] = [
   },
   {
     name: 'Commercial and operational',
-    skills: ['Revenue Models', 'Pricing', 'Payments', 'Compliance', 'Financial Reconciliation', 'Partner/Vendor Models', 'Process Automation'],
+    skills: ['Revenue Models', 'Pricing', 'Compliance', 'Financial Reconciliation', 'Partner/Vendor Models', 'Process Automation'],
   },
   {
     name: 'Stakeholders and delivery',
-    skills: ['Cross-Functional Collaboration', 'Stakeholder Alignment', 'Regional Team Coordination', 'Change Management'],
+    skills: ['Cross-Functional Collaboration', 'Stakeholder Alignment', 'Regional Team Coordination', 'Operations Training', 'Change Management'],
   },
   {
     name: 'Technical and design',
-    skills: ['Web Development', 'HTML/CSS', 'JavaScript', 'CRM/CMS', 'SEO', 'API/Integration Concepts', 'Figma', 'Wireframing', 'Prototyping'],
+    skills: ['Web Development', 'HTML/CSS', 'JavaScript', 'CRM/CMS', 'SEO', 'Figma', 'Wireframing', 'Prototyping'],
   },
 ];
 
